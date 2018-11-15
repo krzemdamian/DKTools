@@ -1,0 +1,2 @@
+The SampleTool.csproj file contains conditions to modify the dependecies based on solution configuration (ie Debug/Release). All the test related dependencies are being ignored when compiled in Release mode.
+Have a look at the SampleTool.csproj in a text/xml editor for more info.

@@ -1,0 +1,29 @@
+﻿using Autodesk.Revit.UI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Scripting.Hosting;
+using IronPython.Hosting;
+using Autodesk.Revit.DB;
+using RevitDKTools;
+using System.Reflection;
+using System.Windows.Forms;
+using System.Drawing;
+
+namespace RevitDKTools.Command.Receiver
+{
+    public interface IMyPythonEngine
+    {
+        ScriptRuntime PythonScriptRuntime { get; set; }
+        ScriptEngine PythonEngine { get; set; }
+        Dictionary<string, CompiledCode> CompiledPythonScripts { get; set; }
+        string ExternalEventPythonScriptPath { get; set; }
+        ScriptScope LastUsedScope { get; set; }
+
+
+        void RunScript(string commandPath, ExternalCommandData commandData,
+            out string errorMessage, ElementSet elementSelection);
+    }
+}

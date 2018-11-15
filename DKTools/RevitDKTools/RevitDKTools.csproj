@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2129C1A4-5FBE-42FD-966E-7E2BD60E55BD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RevitDKTools</RootNamespace>
+    <AssemblyName>RevitDKTools</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug2016|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug2016\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug2017|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug2017\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;RELEASE2017</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug2018|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug2018\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug2019|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug2019\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.2.0\lib\net45\Castle.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Windsor.4.1.0\lib\net45\Castle.Windsor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Helpers">
+      <HintPath>Lib\Helpers.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="IronPython, Version=2.7.0.40, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Scripting, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>Lib\Moq.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>Lib\nunit.framework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Debug2016'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug2016'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2016\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Debug2017'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug2017'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2017\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Debug2018'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2018\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug2018'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2018\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPI" Condition="'$(Configuration)' == 'Debug2019'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2019\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == 'Debug2019'">
+      <HintPath>C:\Program Files\Autodesk\Revit 2019\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Expression.Blend.Sdk.1.0.2\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Command\ButtonData\AssignDetailReference.cs" />
+    <Compile Include="Command\ButtonData\BeamFlipFace.cs" />
+    <Compile Include="Command\ButtonData\BeamStartPoint.cs" />
+    <Compile Include="Command\ButtonData\ButtonImage.cs" />
+    <Compile Include="Command\ButtonData\ConnectionHostVerification.cs" />
+    <Compile Include="Command\ButtonData\CopyTemplate.cs" />
+    <Compile Include="Command\ButtonData\CustomDetailNumber.cs" />
+    <Compile Include="Command\ButtonData\DuplicatedTags.cs" />
+    <Compile Include="Command\ButtonData\GetId.cs" />
+    <Compile Include="Command\ButtonData\GetOpenings.cs" />
+    <Compile Include="Command\ButtonData\GetParameter.cs" />
+    <Compile Include="Command\ButtonData\ImportParameters.cs" />
+    <Compile Include="Command\ButtonData\ImportReferencedDetail.cs" />
+    <Compile Include="Command\ButtonData\Info.cs" />
+    <Compile Include="Command\ButtonData\InsertConnection.cs" />
+    <Compile Include="Command\ButtonData\MergeAnnotationGroups.cs" />
+    <Compile Include="Command\ButtonData\MissingTags.cs" />
+    <Compile Include="Command\ButtonData\OpeningVerifyAlignment.cs" />
+    <Compile Include="Command\ButtonData\OpeningVerifyHost.cs" />
+    <Compile Include="Command\ButtonData\PushButtonMaker.cs" />
+    <Compile Include="Command\ButtonData\RenumerateViews.cs" />
+    <Compile Include="Command\ButtonData\ReserveShared.cs" />
+    <Compile Include="Command\ButtonData\SectionBox.cs" />
+    <Compile Include="Command\ButtonData\SelectFamily.cs" />
+    <Compile Include="Command\ButtonData\SelectTags.cs" />
+    <Compile Include="Command\ButtonData\SetParameter.cs" />
+    <Compile Include="Command\ButtonData\ShowElements.cs" />
+    <Compile Include="Command\ButtonData\ShowParameterEditor.cs" />
+    <Compile Include="Command\ButtonData\WSInfo.cs" />
+    <Compile Include="Command\Receiver\IMyPythonEngine.cs" />
+    <Compile Include="Command\Receiver\ShowParameterEditor.cs" />
+    <Compile Include="Command\Receiver\Info.cs" />
+    <Compile Include="Command\Receiver\MyPythonEngine.cs" />
+    <Compile Include="Common\AssemblyResourceUtils.cs" />
+    <Compile Include="DKToolsApp.cs" />
+    <Compile Include="DockablePanels\ParameterEditor\Model\ISelectedElementParameterModel.cs" />
+    <Compile Include="DockablePanels\ParameterEditor\Model\SelectedElementParameterModel.cs" />
+    <Compile Include="DockablePanels\ParameterEditor\Model\LengthModel.cs" />
+    <Compile Include="DockablePanels\ParameterEditor\ViewModel\ExternalEventSetParameterValue.cs" />
+    <Compile Include="DockablePanels\ParameterEditor\ViewModel\IParameterEditorViewModel.cs" />
+    <Compile Include="DockablePanels\ParameterEditor\ViewModel\ParameterEditorViewModel.cs" />
+    <Compile Include="DockablePanels\ParameterEditor\ViewModel\RelayCommand.cs" />
+    <Compile Include="DockablePanels\ParameterEditor\ViewModel\SelectionChangedWatcher.cs" />
+    <Compile Include="DockablePanels\ParameterEditor\ViewModel\TextBoxHelper.cs" />
+    <Compile Include="DockablePanels\ParameterEditor\View\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DockablePanels\ParameterEditor\View\MainRevitPage.cs" />
+    <Compile Include="DockablePanels\ParameterEditor\View\ParameterEditorPage.xaml.cs">
+      <DependentUpon>ParameterEditorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\CombinedCommandsPanel.cs" />
+    <Compile Include="Panels\GenericPanel.cs" />
+    <Compile Include="Panels\RibbonPanelBuilder.cs" />
+    <Compile Include="Panels\RibbonPanelMaker.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Command\ButtonData\PushButtonDataBuilder.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Tests\UnitTests\MyPythonEngineTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DKTools_v2.addin" />
+    <None Include="packages.config" />
+    <Compile Include="Tests\UnitTests\ParameterEditiorTests.cs" />
+    <Compile Include="Tests\UnitTests\TestWindow.xaml.cs">
+      <DependentUpon>TestWindow.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Command\Images\Large\yellow\beam-rectangular.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\beam-square.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\beam.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\blueprint.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\bracket.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\bug.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\clipboard.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\credit-card.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\door.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\eye-scan.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\gamepad.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\joint.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\laptop.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\network.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\placeholder.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\tag-duplicated.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\tag-missing.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\tag-select.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\window.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\writing.png" />
+    <EmbeddedResource Include="Command\Images\Small\yellow\arrows.png" />
+    <EmbeddedResource Include="Command\Images\Small\yellow\brain-blue.png" />
+    <EmbeddedResource Include="Command\Images\Small\yellow\brain-purple.png" />
+    <EmbeddedResource Include="Command\Images\Small\yellow\brain-red.png" />
+    <EmbeddedResource Include="Command\Images\Small\yellow\center-alignment.png" />
+    <EmbeddedResource Include="Command\Images\Small\yellow\clipboard.png" />
+    <EmbeddedResource Include="Command\Images\Small\yellow\files.png" />
+    <EmbeddedResource Include="Command\Images\Small\yellow\packages.png" />
+    <EmbeddedResource Include="Command\Images\Small\yellow\push-pin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Command\Images\Small\yellow\eye-scan.png" />
+    <EmbeddedResource Include="Command\Images\Large\yellow\drawing.png" />
+    <EmbeddedResource Include="Command\Images\Small\yellow\drawing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="DockablePanels\ParameterEditor\View\MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DockablePanels\ParameterEditor\View\ParameterEditorPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Tests\UnitTests\TestWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Command\Images\Large\blue\analytics.png" />
+    <EmbeddedResource Include="Command\Images\Large\blue\controls.png" />
+    <EmbeddedResource Include="Command\Images\Large\blue\crop.png" />
+    <EmbeddedResource Include="Command\Images\Large\blue\hands-and-gestures.png" />
+    <EmbeddedResource Include="Command\Images\Large\blue\measure.png" />
+    <EmbeddedResource Include="Command\Images\Large\blue\network.png" />
+    <EmbeddedResource Include="Command\Images\Large\blue\question.png" />
+    <EmbeddedResource Include="Command\Images\Large\blue\visibility.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Command\Images\Small\blue\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Command\Images\Large\blue\laptop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="PythonScripts\Test\Info.py" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>echo Configuration: $(Configuration)
+
+if $(Configuration) == Debug2016 goto 2016
+if $(Configuration) == Debug2017 goto 2017
+if $(Configuration) == Debug2018 goto 2018
+if $(Configuration) == Debug2019 goto 2019
+
+:2016
+echo Copying results to 2016
+if not exist "%25ALLUSERSPROFILE%25\Autodesk\Revit\Addins\2016\DKTools" mkdir "%25ALLUSERSPROFILE%25\Autodesk\Revit\Addins\2016\DKTools"
+copy "$(TargetDir)" "%25ALLUSERSPROFILE%25\Autodesk\Revit\Addins\2016\DKTools"
+goto exit
+
+:2017
+echo Copying results to 2017
+if not exist "%25ALLUSERSPROFILE%25\Autodesk\Revit\Addins\2017\DKTools" mkdir "%25ALLUSERSPROFILE%25\Autodesk\Revit\Addins\2017\DKTools"
+copy "$(TargetDir)" "%25ALLUSERSPROFILE%25\Autodesk\Revit\Addins\2017\DKTools"
+goto exit
+
+:2018
+echo Copying results to 2018
+if not exist "%25ALLUSERSPROFILE%25\Autodesk\Revit\Addins\2018\DKTools" mkdir "%25ALLUSERSPROFILE%25\Autodesk\Revit\Addins\2018\DKTools"
+copy "$(TargetDir)" "%25ALLUSERSPROFILE%25\Autodesk\Revit\Addins\2018\DKTools"
+goto exit
+
+:2019
+echo Copying results to 2019
+if not exist "%25ALLUSERSPROFILE%25\Autodesk\Revit\Addins\2019\DKTools" mkdir "%25ALLUSERSPROFILE%25\Autodesk\Revit\Addins\2019\DKTools"
+copy "$(TargetDir)" "%25ALLUSERSPROFILE%25\Autodesk\Revit\Addins\2019\DKTools"
+goto exit
+
+:exit</PostBuildEvent>
+  </PropertyGroup>
+</Project>

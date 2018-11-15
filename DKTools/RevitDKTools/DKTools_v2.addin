@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>DKTools_v2</Name>
+    <Assembly>DKTools/RevitDKTools.dll</Assembly>
+    <AddInId>BAEFBAA3-135F-4D27-8226-866EC3D2953D</AddInId>
+    <FullClassName>RevitDKTools.DKToolsApp</FullClassName>
+    <VendorId>DK</VendorId>
+    <VendorDescription>Damian Krzemiński, dkrzeminski@prescientco.com</VendorDescription>
+  </AddIn>
+</RevitAddIns>
