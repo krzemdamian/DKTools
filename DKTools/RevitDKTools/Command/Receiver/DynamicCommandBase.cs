@@ -12,11 +12,8 @@ namespace RevitDKTools.Command.Receiver
     class DynamicCommandBase : IExternalCommand
     {
         readonly string _scriptPath;
-
-        public DynamicCommandBase(string scriptPath)
-        {
-            _scriptPath = scriptPath;
-        }
+        
+        // dynamic class have to have ctor assigning _scriptpath 
 
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
