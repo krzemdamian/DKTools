@@ -13,7 +13,7 @@ namespace RevitDKTools.Command.Receiver
     {
         readonly string _scriptPath;
         
-        // dynamic class have to have ctor assigning _scriptpath 
+        // dynamic class have to have ctor assigning _scriptpath
 
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
