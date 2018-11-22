@@ -30,7 +30,7 @@ namespace RevitDKTools.Command.Receiver
             _moduleBuilder = _assemblyBuilder.DefineDynamicModule(_asseblyName.Name, _asseblyName.Name + ".dll");
         }
 
-        protected Type BuildCommandType(string commandTypeName, string scriptPath)
+        public Type BuildCommandType(string commandTypeName, string scriptPath)
         {
             TypeBuilder typeBuilder = _moduleBuilder.DefineType(
                 commandTypeName, TypeAttributes.Public | TypeAttributes.Class, typeof(DynamicCommandBase));
