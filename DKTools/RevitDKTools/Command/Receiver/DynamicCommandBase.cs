@@ -9,9 +9,11 @@ using System.Threading.Tasks;
 namespace RevitDKTools.Command.Receiver
 {
     [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
-    class DynamicCommandBase : IExternalCommand
+    public class DynamicCommandBase : IExternalCommand
     {
-        readonly string _scriptPath;
+        public string _scriptPath;
+
+        public DynamicCommandBase() { }
         
         // dynamic class have to have ctor assigning _scriptpath
 

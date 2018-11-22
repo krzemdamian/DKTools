@@ -211,6 +211,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Tests\UnitTests\DynamicClassEmiterTests.cs" />
     <Compile Include="Tests\UnitTests\MyPythonEngineTests.cs" />
   </ItemGroup>
   <ItemGroup>
