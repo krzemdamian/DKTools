@@ -182,6 +182,7 @@
     <Compile Include="Command\Receiver\ShowParameterEditor.cs" />
     <Compile Include="Command\Receiver\Info.cs" />
     <Compile Include="Command\Receiver\MyPythonEngine.cs" />
+    <Compile Include="Command\Receiver\TestClass.cs" />
     <Compile Include="Common\AssemblyResourceUtils.cs" />
     <Compile Include="DKToolsApp.cs" />
     <Compile Include="DockablePanels\ParameterEditor\Model\ISelectedElementParameterModel.cs" />

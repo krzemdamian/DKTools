@@ -35,28 +35,24 @@ namespace RevitDKTools.Command.Receiver
             TypeBuilder typeBuilder = _moduleBuilder.DefineType(
                 commandTypeName, TypeAttributes.Public | TypeAttributes.Class, typeof(DynamicCommandBase));
             ConstructorBuilder ctorBuilder = typeBuilder.DefineConstructor(
-                MethodAttributes.Public, CallingConventions.Standard, new Type[0]);  //this might be a problem, use null instead of Type.EmptyTypes
+                MethodAttributes.Public|MethodAttributes.HideBySig|MethodAttributes.SpecialName|MethodAttributes.RTSpecialName,
+                CallingConventions.Standard, new Type[0]);
             
-            //used to get obj default constructor
-            Type objType = Type.GetType("System.Object");
-            ConstructorInfo objCtor = objType.GetConstructor(new Type[0]);
-            //ConstructorInfo objCtor = typeof(DynamicCommandBase).GetConstructor(Type.EmptyTypes);
+            ConstructorInfo objCtor = typeof(DynamicCommandBase).GetConstructor(Type.EmptyTypes);
 
-            //FieldInfo scriptPathField = typeBuilder.GetField("_scriptPath", BindingFlags.NonPublic | BindingFlags.Instance);
-            //FieldInfo scriptPathField = typeBuilder.GetRuntimeField("_scriptPath");
-            FieldInfo scriptPathField = typeof(DynamicCommandBase).GetField("_scriptPath",BindingFlags.FlattenHierarchy);
-            
+            FieldInfo scriptPathField = typeBuilder.BaseType.GetField("_scriptPath");
+
             ILGenerator ilg = ctorBuilder.GetILGenerator();
 
             ilg.Emit(OpCodes.Ldarg_0);
             ilg.Emit(OpCodes.Call, objCtor);
+            ilg.Emit(OpCodes.Nop);
+            ilg.Emit(OpCodes.Nop);
             ilg.Emit(OpCodes.Ldarg_0);
             ilg.Emit(OpCodes.Ldstr, scriptPath);
-            //ilg.Emit(OpCodes.Ldarg_0);
             ilg.Emit(OpCodes.Stfld, scriptPathField);
-            //ilg.Emit(OpCodes.Stelem_Ref, scriptPathField); 
             ilg.Emit(OpCodes.Ret);
-            
+
             return typeBuilder.CreateType();
         }
 
