@@ -39,10 +39,40 @@ namespace RevitDKTools.Tests.UnitTests
             // act
             Type dynamicType = emiter.BuildCommandType("my_command_class", "test");
 
+            //TODO: change to check assembly
             // assert
-            //Assert.Fail("assembly: " + dynamicType.Assembly.ToString());
-            //Assert.Fail("module: " + dynamicType.Module.ToString());
-            //Assert.Fail("is class : " + dynamicType.IsClass.ToString());
+            Assert.Fail("assembly: " + dynamicType.Assembly.ToString() + Environment.NewLine
+                + "module: " + dynamicType.Module.ToString() + Environment.NewLine
+                + "is class: " + dynamicType.IsClass.ToString() + Environment.NewLine
+                + "base class: " + dynamicType.BaseType.Name.ToString() + Environment.NewLine);
+        }
+
+        [Test]
+        public void DynamicCommandClassEmiter_InvokeInfo()
+        {
+            // arrange
+            DynamicCommandClassEmiter emiter = new DynamicCommandClassEmiter("my_assembly");
+
+            // act
+            //MessageBox.Show(Helpers.GeneralHelper.ExternalCommandData.ToString());
+            Type dynamicType = emiter.BuildCommandType(
+                "InfoInvokerDynamic", @"E:\Repos\DKTools_refactoring\DKTools\RevitDKTools\PythonScripts\Test\Info.py");
+            DynamicCommandBase infoInvoker = (DynamicCommandBase)Activator.CreateInstance(dynamicType);
+            string message = string.Empty;
+            
+            MessageBox.Show(infoInvoker._scriptPath);
+            infoInvoker.Execute(Helpers.GeneralHelper.ExternalCommandData, ref message, new ElementSet());
+            
+
+
+            //TODO: change to check assembly
+            // assert
+            Assert.Fail("assembly: " + dynamicType.Assembly.ToString() + Environment.NewLine
+                + "module: " + dynamicType.Module.ToString() + Environment.NewLine
+                + "is class: " + dynamicType.IsClass.ToString() + Environment.NewLine
+                + "base class: " + dynamicType.BaseType.Name.ToString() + Environment.NewLine);
+
+            
         }
     }
 
