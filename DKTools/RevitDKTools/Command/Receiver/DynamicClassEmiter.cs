@@ -14,8 +14,6 @@ namespace RevitDKTools.Command.Receiver
         readonly AssemblyName _asseblyName;
         AssemblyBuilder _assemblyBuilder;
         readonly ModuleBuilder _moduleBuilder;
-        
-
 
         public DynamicCommandClassEmiter(string dynamicAssemblyName)
         {
