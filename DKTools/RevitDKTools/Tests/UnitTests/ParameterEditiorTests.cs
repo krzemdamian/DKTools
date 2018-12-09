@@ -74,8 +74,8 @@ namespace RevitDKTools.Tests.UnitTests
 
             TestWindow testWindow = new TestWindow();
 
-            testWindow.Run(mrp);
-            testWindow.ShowDialog();
+            //testWindow.Run(mrp);
+            //testWindow.ShowDialog();
 
 
             //Act
