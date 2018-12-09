@@ -176,7 +176,7 @@
     <Compile Include="Command\ButtonData\ShowElements.cs" />
     <Compile Include="Command\ButtonData\ShowParameterEditor.cs" />
     <Compile Include="Command\ButtonData\WSInfo.cs" />
-    <Compile Include="Command\Receiver\DynamicClassEmiter.cs" />
+    <Compile Include="Command\Receiver\DynamicCommandClassEmiter.cs" />
     <Compile Include="Command\Receiver\DynamicCommandBase.cs" />
     <Compile Include="Command\Receiver\IMyPythonEngine.cs" />
     <Compile Include="Command\Receiver\ShowParameterEditor.cs" />
