@@ -213,12 +213,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Tests\UnitTests\DynamicButtonGeneratorTests.cs" />
     <Compile Include="Tests\UnitTests\DynamicClassEmiterTests.cs" />
     <Compile Include="Tests\UnitTests\MyPythonEngineTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="DKTools_v2.addin" />
+    <None Include="DKTools_v2.addin">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <Compile Include="Tests\UnitTests\ParameterEditiorTests.cs" />
     <Compile Include="Tests\UnitTests\TestWindow.xaml.cs">
@@ -293,12 +296,22 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Command\Images\Small\blue\" />
+    <Folder Include="PythonScripts\DynamicProxy\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Command\Images\Large\blue\laptop.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="PythonScripts\Test\Info.py" />
+    <Content Include="PythonScripts\Images\bug.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PythonScripts\Test\Info.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PythonScripts\ScriptsSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
