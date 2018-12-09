@@ -1,0 +1,10 @@
+﻿<Settings>
+  <Script>
+    <CommandName>Test</CommandName>
+    <NameOnRibbon>Test</NameOnRibbon>
+    <ScriptPath>E:\Repos\DKTools\DKTools\RevitDKTools\bin\Debug2017\PythonScripts\Test\Info.py</ScriptPath>
+    <ParentButton>Worksharing</ParentButton>
+    <ToolTip>This is test button</ToolTip>
+    <ImageUri>Images\bug.png</ImageUri>
+  </Script>
+</Settings>
