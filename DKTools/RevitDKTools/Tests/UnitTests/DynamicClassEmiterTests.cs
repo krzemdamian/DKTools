@@ -30,7 +30,7 @@ namespace RevitDKTools.Tests.UnitTests
             // cleanup
         }
 
-       
+       /*
         [Test]
         public void DynamicCommandClassEmiter_CreateDynamicType()
         {
@@ -45,9 +45,12 @@ namespace RevitDKTools.Tests.UnitTests
             Assert.Fail("assembly: " + dynamicType.Assembly.ToString() + Environment.NewLine
                 + "module: " + dynamicType.Module.ToString() + Environment.NewLine
                 + "is class: " + dynamicType.IsClass.ToString() + Environment.NewLine
-                + "base class: " + dynamicType.BaseType.Name.ToString() + Environment.NewLine);
-        }
+                + "base class: " + dynamicType.BaseType.Name.ToString() + Environment.NewLine
+                + "namespace: " + dynamicType.Namespace + Environment.NewLine
+                + "type name: " + dynamicType.FullName);
 
+        }
+        
         [Test]
         public void DynamicCommandClassEmiter_InvokeInfo()
         {
@@ -63,7 +66,7 @@ namespace RevitDKTools.Tests.UnitTests
             
             MessageBox.Show(infoInvoker._scriptPath);
             infoInvoker.Execute(Helpers.GeneralHelper.ExternalCommandData, ref message, new ElementSet());
-            
+
 
 
             //TODO: change to check assembly
@@ -71,10 +74,12 @@ namespace RevitDKTools.Tests.UnitTests
             Assert.Fail("assembly: " + dynamicType.Assembly.ToString() + Environment.NewLine
                 + "module: " + dynamicType.Module.ToString() + Environment.NewLine
                 + "is class: " + dynamicType.IsClass.ToString() + Environment.NewLine
-                + "base class: " + dynamicType.BaseType.Name.ToString() + Environment.NewLine);
+                + "base class: " + dynamicType.BaseType.Name.ToString() + Environment.NewLine
+                + "namespace: " + dynamicType.Namespace + Environment.NewLine
+                + "type name: " + dynamicType.FullName);
 
             
-        }
+        }*/
     }
 
 }
