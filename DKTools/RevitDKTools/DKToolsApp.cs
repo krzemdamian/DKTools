@@ -8,6 +8,8 @@ using RevitDKTools.Panels;
 using RevitDKTools.Command.Receiver;
 using RevitDKTools.DockablePanels.ParameterEditor.View;
 using Autodesk.Revit.UI.Events;
+using RevitDKTools.Command.ButtonData;
+using System.IO;
 
 namespace RevitDKTools
 {
@@ -41,6 +43,7 @@ namespace RevitDKTools
             panelMaker.BuildPanel();
             #endregion
 
+
             #region Register Dockable Panel: Parameter Editor
             DockablePaneProviderData data = new DockablePaneProviderData();
             //MainRevitPage mainDocableWindow = new MainRevitPage();
@@ -69,6 +72,17 @@ namespace RevitDKTools
             mainRevitPage.VM.RevitSelectionWatcher.SelectionChanged += new EventHandler(
                 mainRevitPage.OverwriteContentInRichTextBox);
 
+            #endregion
+
+            #region DynamicCommandsCreation
+            //read xml and generate and save dynamic assembly for proxy classes
+            System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
+            xml.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)+"\\PythonScripts\\ScriptsSettings.xml");
+            DynamicButtonGenerator generator = new DynamicButtonGenerator(xml, combinedCommandsPanel);
+
+            generator.ReadXML();
+            generator.CreateDynamicAssembly();
+            generator.CreateButtons();
             #endregion
 
             return Result.Succeeded;

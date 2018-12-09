@@ -155,6 +155,7 @@
     <Compile Include="Command\ButtonData\CopyTemplate.cs" />
     <Compile Include="Command\ButtonData\CustomDetailNumber.cs" />
     <Compile Include="Command\ButtonData\DuplicatedTags.cs" />
+    <Compile Include="Command\ButtonData\DynamicButtonGenerator.cs" />
     <Compile Include="Command\ButtonData\GetId.cs" />
     <Compile Include="Command\ButtonData\GetOpenings.cs" />
     <Compile Include="Command\ButtonData\GetParameter.cs" />
