@@ -149,14 +149,12 @@ namespace RevitDKTools.Command.ButtonData
                         "\\PythonScripts\\" + cmd["ImageUri"];
                     imagePath = Path.GetFullPath(imagePath);
                     BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
-                    if (bitmapImage.PixelHeight == 32 && bitmapImage.PixelWidth == 32 )
-                    {
-                        pbd.LargeImage = bitmapImage;
-                    }
-                    else if (bitmapImage.PixelHeight == 16 && bitmapImage.PixelWidth == 16)
+                    if (bitmapImage.PixelHeight == 16 && bitmapImage.PixelWidth == 16 )
                     {
                         pbd.Image = bitmapImage;
                     }
+                    pbd.LargeImage = bitmapImage;
+                    
                 }
             }
         }
