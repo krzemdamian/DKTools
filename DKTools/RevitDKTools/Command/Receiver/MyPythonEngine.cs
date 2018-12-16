@@ -38,14 +38,18 @@ namespace RevitDKTools.Command.Receiver
             PythonScriptRuntime.LoadAssembly(Assembly.Load("RevitAPI"));
             PythonScriptRuntime.LoadAssembly(Assembly.Load("RevitAPIUI"));
 
-
+            ExternalEventPythonScriptPath = new List<string>();
+            ExternalEventPythonScriptPath.Add(string.Empty);
             ScriptScope rvt = PythonEngine.CreateModule("rvt");
             rvt.SetVariable("_app_", RevitDKTools.DKToolsApp.Application);
+            rvt.SetVariable("_event_path_", ExternalEventPythonScriptPath);
             rvt.SetVariable("_handler_", EngineInstance);
             ExternalEvent exEvent = ExternalEvent.Create(EngineInstance);
             rvt.SetVariable("_event_", exEvent);
             rvt.SetVariable("_variables_", ScriptVariables);
+
             
+
         }
 
         public void RunScript(string commandPath, ExternalCommandData commandData,
