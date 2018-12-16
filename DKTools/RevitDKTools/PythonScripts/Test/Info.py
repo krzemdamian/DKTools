@@ -1,4 +1,5 @@
 ﻿#Created by Damian Krzemiński, contact: krzemodam2@gmail.com
+_debug_ = False
 
 import clr
 clr.AddReference("System.Collections")
