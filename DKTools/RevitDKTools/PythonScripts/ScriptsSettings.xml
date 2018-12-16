@@ -1,10 +1,273 @@
 ﻿<Settings>
+  <!--
+  In this xml you register your command.
+  Based on this xml DKTools app will create proxy class to invoke your python script from Ribbon.
+  Below you can find schema how to properly register your command.
+  
   <Script>
-    <CommandName>Test</CommandName>
-    <NameOnRibbon>Test</NameOnRibbon>
-    <ScriptPath>E:\Repos\DKTools\DKTools\RevitDKTools\bin\Debug2017\PythonScripts\Test\Info.py</ScriptPath>
+    <CommandName>TypeCommandNameWithoutSpaces This field is obligatory.</CommandName>
+    <NameOnRibbon>Can be with spaces. This field is obligatory.</NameOnRibbon> 
+    <ScriptPath>root path is PythonScripts folder. This field is obligatory.</ScriptPath>
+    <ParentButton>Possible buttons: Visual, Selection, Parameters, Views, Worksharing, Analyze. This field is obligatory.</ParentButton>
+    <ToolTip>Tool tip is a text describing command functionality. It is visible to user when you hover over button. This field is facultative.</ToolTip>
+    <ImageUri>The only format supported is .png with 96 DPI. This field is facultative.</ImageUri>
+  </Script> -->
+  <Script>
+    <CommandName>Memo1_Write</CommandName> 
+    <NameOnRibbon>Memo 1: Write</NameOnRibbon>
+    <ScriptPath>Memo\Memo1\Memo1_Write.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Write current selection to memory 1</ToolTip>
+    <ImageUri>Images\brain-blue.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo1_Read</CommandName>
+    <NameOnRibbon>Memo 1: Read</NameOnRibbon>
+    <ScriptPath>Memo\Memo1\Memo1_Read.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Read selection from memory 1</ToolTip>
+    <ImageUri>Images\brain-blue.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo1_Add</CommandName>
+    <NameOnRibbon>Memo 1: Add</NameOnRibbon>
+    <ScriptPath>Memo\Memo1\Memo1_Add.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Add selection to memory 1</ToolTip>
+    <ImageUri>Images\brain-blue.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo1_Subtract</CommandName>
+    <NameOnRibbon>Memo 1: Subtract</NameOnRibbon>
+    <ScriptPath>Memo\Memo1\Memo1_Subtract.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Subtract selection from memory 1</ToolTip>
+    <ImageUri>Images\brain-blue.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo1_Difference</CommandName>
+    <NameOnRibbon>Memo 1: Difference</NameOnRibbon>
+    <ScriptPath>Memo\Memo1\Memo1_Difference.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Difference between selection and memory 1</ToolTip>
+    <ImageUri>Images\brain-blue.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo1_Intersection</CommandName>
+    <NameOnRibbon>Memo 1: Intersection</NameOnRibbon>
+    <ScriptPath>Memo\Memo1\Memo1_Intersection.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Intersection of selection and memory 1</ToolTip>
+    <ImageUri>Images\brain-blue.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo2_Write</CommandName>
+    <NameOnRibbon>Memo 2: Write</NameOnRibbon>
+    <ScriptPath>Memo\Memo2\Memo2_Write.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Write current selection to memory 2</ToolTip>
+    <ImageUri>Images\brain-purple.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo2_Read</CommandName>
+    <NameOnRibbon>Memo 2: Read</NameOnRibbon>
+    <ScriptPath>Memo\Memo2\Memo2_Read.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Read selection from memory 2</ToolTip>
+    <ImageUri>Images\brain-purple.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo2_Add</CommandName>
+    <NameOnRibbon>Memo 2: Add</NameOnRibbon>
+    <ScriptPath>Memo\Memo2\Memo2_Add.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Add selection to memory 2</ToolTip>
+    <ImageUri>Images\brain-purple.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo2_Subtract</CommandName>
+    <NameOnRibbon>Memo 2: Subtract</NameOnRibbon>
+    <ScriptPath>Memo\Memo2\Memo2_Subtract.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Subtract selection from memory 2</ToolTip>
+    <ImageUri>Images\brain-purple.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo2_Difference</CommandName>
+    <NameOnRibbon>Memo 2: Difference</NameOnRibbon>
+    <ScriptPath>Memo\Memo2\Memo2_Difference.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Difference between selection and memory 2</ToolTip>
+    <ImageUri>Images\brain-purple.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo2_Intersection</CommandName>
+    <NameOnRibbon>Memo 2: Intersection</NameOnRibbon>
+    <ScriptPath>Memo\Memo2\Memo2_Intersection.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Intersection of selection and memory 2</ToolTip>
+    <ImageUri>Images\brain-purple.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo3_Write</CommandName>
+    <NameOnRibbon>Memo 3: Write</NameOnRibbon>
+    <ScriptPath>Memo\Memo3\Memo3_Write.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Write current selection to memory 3</ToolTip>
+    <ImageUri>Images\brain-red.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo3_Read</CommandName>
+    <NameOnRibbon>Memo 3: Read</NameOnRibbon>
+    <ScriptPath>Memo\Memo3\Memo3_Read.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Read selection from memory 3</ToolTip>
+    <ImageUri>Images\brain-red.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo3_Add</CommandName>
+    <NameOnRibbon>Memo 3: Add</NameOnRibbon>
+    <ScriptPath>Memo\Memo3\Memo3_Add.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Add selection to memory 3</ToolTip>
+    <ImageUri>Images\brain-red.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo3_Subtract</CommandName>
+    <NameOnRibbon>Memo 3: Subtract</NameOnRibbon>
+    <ScriptPath>Memo\Memo3\Memo3_Subtract.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Subtract selection from memory 3</ToolTip>
+    <ImageUri>Images\brain-red.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo3_Difference</CommandName>
+    <NameOnRibbon>Memo 3: Difference</NameOnRibbon>
+    <ScriptPath>Memo\Memo3\Memo3_Difference.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Difference between selection and memory 3</ToolTip>
+    <ImageUri>Images\brain-red.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>Memo3_Intersection</CommandName>
+    <NameOnRibbon>Memo 3: Intersection</NameOnRibbon>
+    <ScriptPath>Memo\Memo3\Memo3_Intersection.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Intersection of selection and memory 3</ToolTip>
+    <ImageUri>Images\brain-red.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>ShowElements</CommandName>
+    <NameOnRibbon>Show Elements</NameOnRibbon>
+    <ScriptPath>General\ShowElements.py</ScriptPath>
+    <ParentButton>Visual</ParentButton>
+    <ToolTip>Command zooms to show selected elements</ToolTip>
+    <ImageUri>Images\eye-scan.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>ConnectionHostVerification</CommandName>
+    <NameOnRibbon>Connection Host Verification</NameOnRibbon>
+    <ScriptPath>Connections\ConnectionHostVerification.py</ScriptPath>
+    <ParentButton>Analyze</ParentButton>
+    <ToolTip>Command verifies and fixes structural connections hosts.
+Command works only on selection. Select Strucutral Connections you want to analyze.
+Opens GUI with details.</ToolTip>
+    <ImageUri>Images\joint.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>SetParam</CommandName>
+    <NameOnRibbon>Set Parameter Sourcing</NameOnRibbon>
+    <ScriptPath>GetInfo\SetParam.py</ScriptPath>
+    <ParentButton>Parameters</ParentButton>
+    <ToolTip>Set parameter name for retrival.</ToolTip>
+    <ImageUri>Images\wrench96.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>GetParams</CommandName>
+    <NameOnRibbon>Get Parameter to Clipboard</NameOnRibbon>
+    <ScriptPath>GetInfo\GetParams.py</ScriptPath>
+    <ParentButton>Parameters</ParentButton>
+    <ToolTip>Copy selected elements' parameters to clipboard.</ToolTip>
+    <ImageUri>Images\molecule96.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>GetIds</CommandName>
+    <NameOnRibbon>Get Element Ids Clipboard</NameOnRibbon>
+    <ScriptPath>GetInfo\GetIds.py</ScriptPath>
+    <ParentButton>Parameters</ParentButton>
+    <ToolTip>Copy selected elements' ids to clipboard.</ToolTip>
+    <ImageUri>Images\credit-card.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>SelectTags</CommandName>
+    <NameOnRibbon>Select Tags</NameOnRibbon>
+    <ScriptPath>Tags\SelectTags.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Command add to selection tags visible in active view for selected elements.</ToolTip>
+    <ImageUri>Images\tag-select.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>MissingTags</CommandName>
+    <NameOnRibbon>Missing Tags</NameOnRibbon>
+    <ScriptPath>Tags\MissingTags.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Command shows elements with missing tags from current selection. \n(Select Tags command might be used at first to avoid tag duplication)\n\nElement Ids will be copied to clipboard.</ToolTip>
+    <ImageUri>Images\tag-missing.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>DuplicatedTags</CommandName>
+    <NameOnRibbon>Duplicated Tags</NameOnRibbon>
+    <ScriptPath>Tags\DuplicatedTags.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Command selects duplicated tags and affected elements in active view.</ToolTip>
+    <ImageUri>Images\tag-duplicated.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>CopyTemplate</CommandName>
+    <NameOnRibbon>Copy Template</NameOnRibbon>
+    <ScriptPath>General\CopyTemplate.py</ScriptPath>
+    <ParentButton>Views</ParentButton>
+    <ToolTip>Command copies template assigned to active view into other documents opened in current Revit session.</ToolTip>
+    <ImageUri>Images\paint-brush96.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>SelectFamily</CommandName>
+    <NameOnRibbon>Select Family</NameOnRibbon>
+    <ScriptPath>General\SelectFamily.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Select all instances of current element's family.</ToolTip>
+    <ImageUri>Images\packages96.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>SectionBox</CommandName>
+    <NameOnRibbon>Section Box</NameOnRibbon>
+    <ScriptPath>General\SectionBox.py</ScriptPath>
+    <ParentButton>Views</ParentButton>
+    <ToolTip>Select all instances of current element's family.</ToolTip>
+    <ImageUri>Images\cursor96.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>ReserveShared</CommandName>
+    <NameOnRibbon>Reserve Shared</NameOnRibbon>
+    <ScriptPath>General\ReserveShared.py</ScriptPath>
     <ParentButton>Worksharing</ParentButton>
-    <ToolTip>This is test button</ToolTip>
-    <ImageUri>Images\bug.png</ImageUri>
+    <ToolTip>Reserve selected elements to edit in worksharing mode.</ToolTip>
+    <ImageUri>Images\push-pin96.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>WSInfo</CommandName>
+    <NameOnRibbon>Worksharing Info</NameOnRibbon>
+    <ScriptPath>General\WSInfo.py</ScriptPath>
+    <ParentButton>Worksharing</ParentButton>
+    <ToolTip>Get basic information about workshared element:\nCreator, Last changed by, Current owner</ToolTip>
+    <ImageUri>Images\light-bulb96.png</ImageUri>
+  </Script>
+  <Script>
+    <CommandName>GetOpenings</CommandName>
+    <NameOnRibbon>Get Openings</NameOnRibbon>
+    <ScriptPath>Openings\GetOpenings.py</ScriptPath>
+    <ParentButton>Selection</ParentButton>
+    <ToolTip>Command selects openings inserted on element.\n If used on opening it selects host element.</ToolTip>
+    <ImageUri>Images\window.png</ImageUri>
   </Script>
 </Settings>
