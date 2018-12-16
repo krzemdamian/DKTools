@@ -2,6 +2,8 @@
 using Autodesk.Revit.UI;
 using System;
 using RevitDKTools;
+using System.Reflection;
+using System.IO;
 
 namespace RevitDKTools.Command.Receiver
 {
@@ -11,7 +13,7 @@ namespace RevitDKTools.Command.Receiver
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             DKToolsApp.MyPythonEngine.RunScript(
-                @"E:\Repos\DKTools_refactoring\DKTools\RevitDKTools\PythonScripts\Test\Info.py", 
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\PythonScripts\Test\Info.py", 
                 commandData, out message, elements);
 
             return Result.Succeeded;

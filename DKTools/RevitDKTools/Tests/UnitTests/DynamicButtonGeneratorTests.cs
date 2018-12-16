@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿#if DEBUG
+using NUnit.Framework;
 using System;
 using Helpers;
 using RevitDKTools.Command.Receiver;
@@ -108,3 +109,4 @@ namespace RevitDKTools.Tests.UnitTests
     }
 
 }
+#endif

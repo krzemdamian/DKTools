@@ -14,6 +14,10 @@ Global
 		Debug2017|Any CPU = Debug2017|Any CPU
 		Debug2018|Any CPU = Debug2018|Any CPU
 		Debug2019|Any CPU = Debug2019|Any CPU
+		R16_Release|Any CPU = R16_Release|Any CPU
+		R17_Release|Any CPU = R17_Release|Any CPU
+		R18_Release|Any CPU = R18_Release|Any CPU
+		R19_Release|Any CPU = R19_Release|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
@@ -27,6 +31,14 @@ Global
 		{2129C1A4-5FBE-42FD-966E-7E2BD60E55BD}.Debug2018|Any CPU.Build.0 = Debug2018|Any CPU
 		{2129C1A4-5FBE-42FD-966E-7E2BD60E55BD}.Debug2019|Any CPU.ActiveCfg = Debug2019|Any CPU
 		{2129C1A4-5FBE-42FD-966E-7E2BD60E55BD}.Debug2019|Any CPU.Build.0 = Debug2019|Any CPU
+		{2129C1A4-5FBE-42FD-966E-7E2BD60E55BD}.R16_Release|Any CPU.ActiveCfg = R16_Release|Any CPU
+		{2129C1A4-5FBE-42FD-966E-7E2BD60E55BD}.R16_Release|Any CPU.Build.0 = R16_Release|Any CPU
+		{2129C1A4-5FBE-42FD-966E-7E2BD60E55BD}.R17_Release|Any CPU.ActiveCfg = R17_Release|Any CPU
+		{2129C1A4-5FBE-42FD-966E-7E2BD60E55BD}.R17_Release|Any CPU.Build.0 = R17_Release|Any CPU
+		{2129C1A4-5FBE-42FD-966E-7E2BD60E55BD}.R18_Release|Any CPU.ActiveCfg = R18_Release|Any CPU
+		{2129C1A4-5FBE-42FD-966E-7E2BD60E55BD}.R18_Release|Any CPU.Build.0 = R18_Release|Any CPU
+		{2129C1A4-5FBE-42FD-966E-7E2BD60E55BD}.R19_Release|Any CPU.ActiveCfg = R19_Release|Any CPU
+		{2129C1A4-5FBE-42FD-966E-7E2BD60E55BD}.R19_Release|Any CPU.Build.0 = R19_Release|Any CPU
 		{2129C1A4-5FBE-42FD-966E-7E2BD60E55BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2129C1A4-5FBE-42FD-966E-7E2BD60E55BD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A4722ACF-DBB9-4B24-A4CF-F4BF71A19E75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -39,6 +51,10 @@ Global
 		{A4722ACF-DBB9-4B24-A4CF-F4BF71A19E75}.Debug2018|Any CPU.Build.0 = Debug|Any CPU
 		{A4722ACF-DBB9-4B24-A4CF-F4BF71A19E75}.Debug2019|Any CPU.ActiveCfg = Debug|Any CPU
 		{A4722ACF-DBB9-4B24-A4CF-F4BF71A19E75}.Debug2019|Any CPU.Build.0 = Debug|Any CPU
+		{A4722ACF-DBB9-4B24-A4CF-F4BF71A19E75}.R16_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4722ACF-DBB9-4B24-A4CF-F4BF71A19E75}.R17_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4722ACF-DBB9-4B24-A4CF-F4BF71A19E75}.R18_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4722ACF-DBB9-4B24-A4CF-F4BF71A19E75}.R19_Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4722ACF-DBB9-4B24-A4CF-F4BF71A19E75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4722ACF-DBB9-4B24-A4CF-F4BF71A19E75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

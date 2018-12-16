@@ -19,7 +19,7 @@ namespace RevitDKTools.Command.Receiver
         ScriptRuntime PythonScriptRuntime { get; set; }
         ScriptEngine PythonEngine { get; set; }
         Dictionary<string, CompiledCode> CompiledPythonScripts { get; set; }
-        string ExternalEventPythonScriptPath { get; set; }
+        List<string> ExternalEventPythonScriptPath { get; set; }
         ScriptScope LastUsedScope { get; set; }
 
 

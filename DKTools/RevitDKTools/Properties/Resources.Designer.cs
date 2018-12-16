@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RevitDK.Properties {
+namespace RevitDKTools.Properties {
     using System;
     
     

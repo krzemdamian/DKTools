@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿#if DEBUG
+using NUnit.Framework;
 using System;
 using Helpers;
 using RevitDKTools.Command.Receiver;
@@ -128,7 +129,7 @@ namespace RevitDKTools.Tests.UnitTests
 
 
             //Assert
-            Assert.IsNotNullOrEmpty(instance.ExternalEventPythonScriptPath);            
+            Assert.IsNotNullOrEmpty(instance.ExternalEventPythonScriptPath[0]);            
         }
 
         [Test]
@@ -221,7 +222,7 @@ namespace RevitDKTools.Tests.UnitTests
             MyPythonEngine instance = new MyPythonEngine();
 
             string scriptText = @"
-#this is first commentary line
+ 
 import rvt
 
 all_items = dir(rvt)
@@ -263,7 +264,7 @@ handler = rvt._handler_
             MyPythonEngine instance = new MyPythonEngine();
 
             string scriptText = @"
-#this is first commentary line
+ 
 import rvt
 
 all_items = dir(rvt)
@@ -306,7 +307,7 @@ event = rvt._event_
             MyPythonEngine instance = new MyPythonEngine();
 
             string scriptText = @"
-#script no 1
+ 
 import rvt
 ";
             string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".py";
@@ -314,7 +315,7 @@ import rvt
             File.WriteAllText(fileName, scriptText);
 
             scriptText = @"
-#script no 2
+ 
 import rvt
 ";
             string fileName2 = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".py";
@@ -339,7 +340,7 @@ import rvt
             MyPythonEngine instance = new MyPythonEngine();
 
             string scriptText = @"
-#script no 1
+ 
 import rvt
 ";
             string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".py";
@@ -347,7 +348,7 @@ import rvt
             File.WriteAllText(fileName, scriptText);
 
             scriptText = @"
-#script no 2
+ 
 import rvt
 ";
             string fileName2 = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".py";
@@ -372,7 +373,7 @@ import rvt
             MyPythonEngine instance = new MyPythonEngine();
 
             string scriptText = @"
-#this is first commentary line
+ 
 import rvt
 import Autodesk.Revit.DB as db
 
@@ -424,7 +425,7 @@ _element_set_ = db.ElementSet()
             string externalEventScriptPath = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".py";
 
             string scriptText = $@"
-#this is main script
+ 
 import rvt
 import Autodesk.Revit.DB as db
 
@@ -436,7 +437,7 @@ _event_.Raise()
 ";
 
             string externalEventScript = @"
-#this is main script
+ 
 import rvt
 import Autodesk.Revit.DB as db
 
@@ -471,7 +472,7 @@ _result_ = 'external_script'
             string secondScriptPath = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".py";
 
             string scriptText = $@"
-#this is main script
+ 
 import rvt
 import Autodesk.Revit.DB as db
 
@@ -481,7 +482,6 @@ rvt._variables_['number'] = 2
 ";
 
             string secondScript = @"
-#this is second script
 import rvt
 import Autodesk.Revit.DB as db
 
@@ -510,3 +510,4 @@ _result_ = rvt._variables_['memo']
     }
 
 }
+#endif

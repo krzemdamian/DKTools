@@ -78,9 +78,10 @@
                   IsChecked="False" IsTabStop="False" 
                   IsEnabled="False"/>
         <ComboBox Grid.Column="8" Margin="3,2,3,0" VerticalAlignment="Top" 
-                  ItemsSource="{Binding RevitElementParameterNames}" 
+                  ItemsSource="{Binding RevitElementParameterNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                   SelectedIndex="{Binding IndexOfSelectedRevitParameter, UpdateSourceTrigger=PropertyChanged}"
-                  IsEditable="False" IsTabStop="False"/>
+                  Text="{Binding ParameterName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  IsEditable="True" IsTabStop="False"/>
         <RichTextBox x:Name="ParameterValueTextBox" Grid.Row="1" Grid.ColumnSpan="9" Height="44" Margin="3,3,3,0" 
                  FlowDirection="LeftToRight" SelectionChanged="ParameterValueTextBox_SelectionChanged"
                  AcceptsReturn="False" AcceptsTab="False" 

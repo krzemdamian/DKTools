@@ -57,6 +57,7 @@ namespace RevitDKTools.DockablePanels.ParameterEditor.ViewModel
             PropertyExteralEventSetParameterValue = new ExternalEventSetParameterValue();
             SetParameterExternalEvent = ExternalEvent.Create(PropertyExteralEventSetParameterValue);
             _selectionRegex = new Regex(@"\d{4,5}");
+            _parameterName = "Comments";
 
             _revitElementParameterNames = new ObservableCollection<string>
             {
@@ -581,15 +582,19 @@ namespace RevitDKTools.DockablePanels.ParameterEditor.ViewModel
             FilteredElementCollector collector = new FilteredElementCollector(
                 RevitDocument, RevitSelectionWatcher.Selection).WhereElementIsNotElementType();
 
+            //Parameter selectedParameter = collector.FirstOrDefault().
+            //    LookupParameter(RevitElementParameterNames[IndexOfSelectedRevitParameter]);
             Parameter selectedParameter = collector.FirstOrDefault().
-                LookupParameter(RevitElementParameterNames[IndexOfSelectedRevitParameter]);
+                LookupParameter(ParameterName);
+            
             if (selectedParameter != null && selectedParameter.HasValue)
             {
                 string parameterValue = selectedParameter.AsString();
                 bool allValuesMatch = true;
                 foreach (Element el in collector.ToElements())
                 {
-                    Parameter parameter = el.LookupParameter(RevitElementParameterNames[IndexOfSelectedRevitParameter]);
+                    Parameter parameter = el.LookupParameter(ParameterName);
+                    //Parameter parameter = el.LookupParameter(RevitElementParameterNames[IndexOfSelectedRevitParameter]);
                     if (parameter == null)
                     {
                         ManualParameterEdition = false;
