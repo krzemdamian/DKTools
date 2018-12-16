@@ -79,12 +79,12 @@ namespace RevitDKTools.Command.Receiver
         }
         public void SaveAssembly()
         {
-            _assemblyBuilder.Save(_asseblyName.Name + ".dll");
-        }
+            try
+            {
+                _assemblyBuilder.Save(_asseblyName.Name + ".dll");
 
-        internal void BuildCommandType(string v)
-        {
-            throw new NotImplementedException();
+            }
+            catch { }
         }
     }
 }
