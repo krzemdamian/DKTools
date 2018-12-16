@@ -102,9 +102,10 @@ namespace RevitDKTools.Command.ButtonData
 
         public void CreateDynamicAssembly()
         {
+            string pathPrefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +"\\PythonScripts\\";
             foreach (Dictionary<string, string> command in _commands)
             {
-                _emiter.BuildCommandType(command["CommandName"], command["ScriptPath"]);
+                _emiter.BuildCommandType(command["CommandName"], pathPrefix + command["ScriptPath"]);
             }
 
             _emiter.SaveAssembly();
