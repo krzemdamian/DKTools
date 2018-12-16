@@ -2,6 +2,8 @@
 using Autodesk.Revit.UI;
 using System;
 using RevitDKTools;
+using System.Reflection;
+using System.IO;
 
 namespace RevitDKTools.Command.Receiver
 {
