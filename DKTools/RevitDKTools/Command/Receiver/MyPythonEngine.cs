@@ -21,7 +21,7 @@ namespace RevitDKTools.Command.Receiver
         public ScriptEngine PythonEngine { get; set; }
         public Dictionary<string, CompiledCode> CompiledPythonScripts { get; set; } = new Dictionary<string, CompiledCode>();
         public Dictionary<string, ScriptScope> CommandScopes { get; set; } = new Dictionary<string, ScriptScope>();
-        public string ExternalEventPythonScriptPath { get; set; }
+        public List<string> ExternalEventPythonScriptPath { get; set; }
         public ScriptScope LastUsedScope { get; set; }
         public Dictionary<string, dynamic> ScriptVariables { get; set; } = new Dictionary<string, dynamic>();
 
