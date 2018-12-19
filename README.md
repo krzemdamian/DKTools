@@ -14,7 +14,7 @@ Go to wiki pages for more information on:
 * how to use application as script framework
 * available command descriptions
 
-## Genesis
+## Origin
 The idea for this plug in derived from Dynamo which is visual programming environment for Revit.
 In Dynamo it is possible to create custom nodes which execute actions written in python.
 Unfortunately, it's not as convenient as Revit commands.
