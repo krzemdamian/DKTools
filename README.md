@@ -12,7 +12,7 @@ Go to wiki pages for more information on:
 * plugin installation
 * programming technologies used during development
 * how to use application as script framework
-* available command descriptions
+* descriptions of available commands
 
 ## Origin
 The idea for this plug in derived from Dynamo which is visual programming environment for Revit.
