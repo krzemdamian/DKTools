@@ -457,7 +457,7 @@ namespace RevitDKTools.DockablePanels.ParameterEditor.ViewModel
             {
                 PropertyExteralEventSetParameterValue.RevitDocument = RevitDocument;
                 PropertyExteralEventSetParameterValue.ElementList = RevitSelectionWatcher.Selection;
-                PropertyExteralEventSetParameterValue.ParameterName = this.RevitElementParameterNames[IndexOfSelectedRevitParameter];
+                PropertyExteralEventSetParameterValue.ParameterName = this.ParameterName;
                 PropertyExteralEventSetParameterValue.ParameterValue = this.ParameterValue;
                 SetParameterExternalEvent.Raise();
             }
