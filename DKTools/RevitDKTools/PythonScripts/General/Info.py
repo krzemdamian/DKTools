@@ -23,7 +23,6 @@ mainDialog.MainContent = """
 Created by Damian Krzemiński {}
 
 CONTACT: 
-dkrzeminski@prescientco.com
 damian.krzeminski@op.pl
 krzemodam2@gmail.com
 \n
