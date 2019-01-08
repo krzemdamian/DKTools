@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace RevitDKTools.Panels
 {
-    class CombinedCommandsPanel : RibbonPanelBuilder
+    class CombinedCommandsPanel : RibbonPanelButtonBuilder
     {
-        public override void BuildPanel()
+        public override void BuildPanelButtons()
         {
             PushButtonMaker buttonMaker = new PushButtonMaker(new Info());
             buttonMaker.BuildPushButtonData();

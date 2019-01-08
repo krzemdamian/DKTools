@@ -9,7 +9,7 @@ using Autodesk.Revit.UI;
 
 namespace RevitDKTools.DockablePanels.ParameterEditor.View
 {
-    public class MainRevitPage : MainPage, IDockablePaneProvider
+    public class ParameterEditorWPFPage : MainPage, IDockablePaneProvider
     {
         public Autodesk.Revit.DB.Document RevitDocument
         {

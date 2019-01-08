@@ -8,9 +8,9 @@ using RevitDKTools.Command.ButtonData;
 
 namespace RevitDKTools.Panels
 {
-    public class GenericPanel : RibbonPanelBuilder
+    public class GenericPanel : RibbonPanelButtonBuilder
     {
-        public override void BuildPanel()
+        public override void BuildPanelButtons()
         {
             PushButtonMaker buttonMaker = new PushButtonMaker(new Info());
             buttonMaker.BuildPushButtonData();

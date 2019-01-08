@@ -4,11 +4,11 @@ using Autodesk.Revit.UI;
 
 namespace RevitDKTools.Panels
 {
-    public abstract class RibbonPanelBuilder
+    public abstract class RibbonPanelButtonBuilder
     {
         public RibbonPanel Panel { get; set; }
 
-        public abstract void BuildPanel();
+        public abstract void BuildPanelButtons();
 
         public RibbonPanel GetPanel()
         {

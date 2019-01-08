@@ -42,7 +42,7 @@ namespace RevitDKTools.Command.Receiver
             ExternalEventPythonScriptPath = new List<string>();
             ExternalEventPythonScriptPath.Add(string.Empty);
             ScriptScope rvt = PythonEngine.CreateModule("rvt");
-            rvt.SetVariable("_app_", RevitDKTools.DKToolsApp.Application);
+            rvt.SetVariable("_app_", RevitDKTools.DKToolsApp.UIControlledApplication);
             rvt.SetVariable("_event_path_", ExternalEventPythonScriptPath);
             rvt.SetVariable("_handler_", EngineInstance);
             ExternalEvent exEvent = ExternalEvent.Create(EngineInstance);
