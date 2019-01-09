@@ -50,10 +50,15 @@ namespace RevitDKTools
 
         private void PrepareParameterEditorDockablePanel(UIControlledApplication application)
         {
-            DockablePaneProviderData dockablePaneProviderData = new DockablePaneProviderData();
-            _parameterEditorWPFPage = new ParameterEditorWPFPage();
-            _parameterEditorWPFPage.VM.RevitSelectionWatcher = new SelectionChangedWatcher(application);
+            CreateDockablePanel(application);
+            application.ViewActivated += new EventHandler
+                <Autodesk.Revit.UI.Events.ViewActivatedEventArgs>(PassRevitDocumentInstance_OnViewActivated);
+            RegisterDocablePanelToRevit(application);
+        }
 
+        private void RegisterDocablePanelToRevit(UIControlledApplication application)
+        {
+            DockablePaneProviderData dockablePaneProviderData = new DockablePaneProviderData();
             dockablePaneProviderData.FrameworkElement = _parameterEditorWPFPage as System.Windows.FrameworkElement;
             dockablePaneProviderData.InitialState = new DockablePaneState();
             dockablePaneProviderData.InitialState.DockPosition = DockPosition.Bottom;
@@ -62,13 +67,15 @@ namespace RevitDKTools
             application.RegisterDockablePane(
                 dpid, "DKTools: Parameter Editor", _parameterEditorWPFPage
                 as IDockablePaneProvider);
+        }
 
-            application.ViewActivated += new EventHandler
-                <Autodesk.Revit.UI.Events.ViewActivatedEventArgs>(PassRevitDocumentInstance_OnViewActivated);
-
+        private void CreateDockablePanel(UIControlledApplication application)
+        {
+            _parameterEditorWPFPage = new ParameterEditorWPFPage();
+            _parameterEditorWPFPage.VM.RevitSelectionWatcher = new SelectionChangedWatcher(application);
             _parameterEditorWPFPage.VM.RevitSelectionWatcher.SelectionChanged +=
                 new EventHandler(_parameterEditorWPFPage.VM.RevitActiveSelection_SelectionChanged);
-            _parameterEditorWPFPage.VM.RevitSelectionWatcher.SelectionChanged += 
+            _parameterEditorWPFPage.VM.RevitSelectionWatcher.SelectionChanged +=
                 new EventHandler(_parameterEditorWPFPage.OverwriteContentInRichTextBox);
         }
 
