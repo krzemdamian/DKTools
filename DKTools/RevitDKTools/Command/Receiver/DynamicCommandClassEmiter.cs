@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace RevitDKTools.Command.Receiver
 {
-    class DynamicCommandClassEmiter
+    class DynamicCommandClassEmiter<T> where T : IExternalCommand
     {
         readonly string _location;
         readonly AppDomain _appDomain;
         readonly AssemblyName _asseblyName;
-        AssemblyBuilder _assemblyBuilder;
+        private AssemblyBuilder _assemblyBuilder;
         readonly ModuleBuilder _moduleBuilder;
         public string AssemblyLocation { get
             {
@@ -50,7 +50,8 @@ namespace RevitDKTools.Command.Receiver
         public Type BuildCommandType(string commandTypeName, string scriptPath)
         {
             TypeBuilder typeBuilder = _moduleBuilder.DefineType(
-                commandTypeName, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.BeforeFieldInit, typeof(DynamicCommandBase),new Type[] { typeof(IExternalCommand) });
+                commandTypeName, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.BeforeFieldInit, 
+                typeof(T),new Type[] { typeof(IExternalCommand) });
             
             ConstructorBuilder ctorBuilder = typeBuilder.DefineConstructor(
                 MethodAttributes.Public|MethodAttributes.HideBySig|MethodAttributes.SpecialName|MethodAttributes.RTSpecialName,
@@ -60,7 +61,7 @@ namespace RevitDKTools.Command.Receiver
             byte[] b = new byte[] { 01, 00, 01, 00, 00, 00, 00, 00 };
 
             typeBuilder.SetCustomAttribute(cinfo,b);
-            ConstructorInfo objCtor = typeof(DynamicCommandBase).GetConstructor(Type.EmptyTypes);
+            ConstructorInfo objCtor = typeof(T).GetConstructor(Type.EmptyTypes);
 
             FieldInfo scriptPathField = typeBuilder.BaseType.GetField("_scriptPath");
 
@@ -77,6 +78,7 @@ namespace RevitDKTools.Command.Receiver
 
             return typeBuilder.CreateType();
         }
+
         public void SaveAssembly()
         {
             try

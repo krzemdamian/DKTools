@@ -20,7 +20,7 @@ namespace RevitDKTools.Command.ButtonData
     {
         private readonly XmlDocument _xml;
         private readonly string _assemblyName;
-        private readonly DynamicCommandClassEmiter _emiter;
+        private readonly DynamicCommandClassEmiter<DynamicCommandBase> _emiter;
         private List<Dictionary<string,string>> _commandDescriptionsList;
         private readonly RibbonPanel _ribbonPanel;
 
@@ -29,14 +29,14 @@ namespace RevitDKTools.Command.ButtonData
             _xml = xml;
             _ribbonPanel = panel;
             _assemblyName = assemblyName;
-            _emiter = new DynamicCommandClassEmiter(assemblyName);
+            _emiter = new DynamicCommandClassEmiter<DynamicCommandBase>(assemblyName);
             _commandDescriptionsList = new List<Dictionary<string,string>>();
         }
 
         public void GenerateDynamicButtons()
         {
             xmlToCommandDescriptionList();
-            CreateDynamicAssembly();
+            EmitProxyTypesToDynamicAssembly();
 
             Dictionary<string, PulldownButton> pulldownButtons = GetDictionaryWithPulldownButtons();
 
@@ -116,7 +116,7 @@ namespace RevitDKTools.Command.ButtonData
             }
         }
 
-        private void CreateDynamicAssembly()
+        private void EmitProxyTypesToDynamicAssembly()
         {
             string pathPrefix = Path.GetDirectoryName(
                 Assembly.GetExecutingAssembly().Location) + "\\PythonScripts\\";
