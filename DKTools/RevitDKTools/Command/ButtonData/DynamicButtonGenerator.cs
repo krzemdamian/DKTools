@@ -21,22 +21,35 @@ namespace RevitDKTools.Command.ButtonData
         private readonly XmlDocument _xml;
         private readonly string _assemblyName;
         private readonly DynamicCommandClassEmiter _emiter;
-        private List<Dictionary<string,string>> _commands;
-        private readonly RibbonPanel _panel;
+        private List<Dictionary<string,string>> _commandDescriptionsList;
+        private readonly RibbonPanel _ribbonPanel;
 
         public DynamicButtonGenerator(XmlDocument xml, RibbonPanel panel, string assemblyName = "DynamicProxy")
         {
             _xml = xml;
-            _panel = panel;
+            _ribbonPanel = panel;
             _assemblyName = assemblyName;
             _emiter = new DynamicCommandClassEmiter(assemblyName);
-            _commands = new List<Dictionary<string,string>>();
+            _commandDescriptionsList = new List<Dictionary<string,string>>();
         }
-        /// <summary>
-        /// Method reads about Python Scripts from XML file.
-        /// </summary>
-        /// <returns></returns>
-        public void ReadXML()
+
+        public void GenerateDynamicButtons()
+        {
+            xmlToCommandDescriptionList();
+            CreateDynamicAssembly();
+
+            Dictionary<string, PulldownButton> pulldownButtons = GetDictionaryWithPulldownButtons();
+
+            foreach (Dictionary<string, string> commandDescription in _commandDescriptionsList)
+            {
+                PushButtonData dynamicCommandPushButton = CreatePushButtonDataFromDescription(commandDescription);
+
+                PulldownButton parentPulldownButton = pulldownButtons[commandDescription["ParentButton"]];
+                parentPulldownButton.AddPushButton(dynamicCommandPushButton);
+            }
+        }
+
+        private void xmlToCommandDescriptionList()
         {
             string check = string.Empty;
             foreach(XmlNode node in _xml.DocumentElement)
@@ -78,7 +91,8 @@ namespace RevitDKTools.Command.ButtonData
                     !string.IsNullOrEmpty(scriptPath) &&
                     !string.IsNullOrEmpty(parentButton))
                 {
-                    commandName = Regex.Replace(commandName, @"\s+", "");
+                    commandName = Regex.Replace(commandName, @"\s+", "");  // remove white spaces
+
                     Dictionary<string, string> command = new Dictionary<string, string>()
                     {
                         {"CommandName", commandName },
@@ -86,24 +100,28 @@ namespace RevitDKTools.Command.ButtonData
                         {"ScriptPath", scriptPath},
                         {"ParentButton", parentButton }
                     };
+
                     if (!string.IsNullOrEmpty(toolTip)) { command.Add("ToolTip", toolTip); }
                     if (!string.IsNullOrEmpty(imageUri)) { command.Add("ImageUri", imageUri); }
-                    _commands.Add(command);
+
+                    _commandDescriptionsList.Add(command);
                 }
+
                 commandName = string.Empty;
                 nameOnRibbon = string.Empty;
                 scriptPath = string.Empty;
                 parentButton = string.Empty;
                 toolTip = string.Empty;
                 imageUri = string.Empty;
-
             }
         }
 
-        public void CreateDynamicAssembly()
+        private void CreateDynamicAssembly()
         {
-            string pathPrefix = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +"\\PythonScripts\\";
-            foreach (Dictionary<string, string> command in _commands)
+            string pathPrefix = Path.GetDirectoryName(
+                Assembly.GetExecutingAssembly().Location) + "\\PythonScripts\\";
+
+            foreach (Dictionary<string, string> command in _commandDescriptionsList)
             {
                 _emiter.BuildCommandType(command["CommandName"], pathPrefix + command["ScriptPath"]);
             }
@@ -111,25 +129,29 @@ namespace RevitDKTools.Command.ButtonData
             _emiter.SaveAssembly();
         }
 
-        public void CreateButtons()
+        private PushButtonData CreatePushButtonDataFromDescription(Dictionary<string, string> commandDescription)
         {
-            var items = _panel.GetItems();
-            Dictionary<string, PulldownButton> pulldowns = new Dictionary<string, PulldownButton>();
-            foreach (var item in items)
+            PushButtonData pushButton = new PushButtonData(
+                                commandDescription["CommandName"], commandDescription["NameOnRibbon"],
+                                _emiter.AssemblyLocation, commandDescription["CommandName"]);
+            AddImage(commandDescription, pushButton);
+            AddToolTip(commandDescription, pushButton);
+            return pushButton;
+        }
+
+        private Dictionary<string, PulldownButton> GetDictionaryWithPulldownButtons()
+        {
+            IList<RibbonItem> itemsOnRibbon = _ribbonPanel.GetItems();
+            Dictionary<string, PulldownButton> pulldownButtons = new Dictionary<string, PulldownButton>();
+            foreach (var ribbonItem in itemsOnRibbon)
             {
-                if (item.ItemType == RibbonItemType.PulldownButton)
+                if (ribbonItem.ItemType == RibbonItemType.PulldownButton)
                 {
-                    pulldowns[item.Name] = (PulldownButton)item;
+                    pulldownButtons[ribbonItem.Name] = (PulldownButton)ribbonItem;
                 }
             }
-            foreach(Dictionary<string, string> cmd in _commands)
-            {
-                PushButtonData pbd = new PushButtonData(
-                    cmd["CommandName"], cmd["NameOnRibbon"], _emiter.AssemblyLocation, cmd["CommandName"]);
-                AddImage(cmd, pbd);
-                AddToolTip(cmd, pbd);
-                pulldowns[cmd["ParentButton"]].AddPushButton(pbd);
-            }
+
+            return pulldownButtons;
         }
 
         private void AddToolTip(Dictionary<string, string> cmd, PushButtonData pbd)

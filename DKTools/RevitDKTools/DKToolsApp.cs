@@ -41,11 +41,10 @@ namespace RevitDKTools
         private void CreateDynamicAssemblyAsProxyForPythonScripts()
         {
             System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
-            xml.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\PythonScripts\\ScriptsSettings.xml");
+            xml.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                "\\PythonScripts\\ScriptsSettings.xml");
             DynamicButtonGenerator generator = new DynamicButtonGenerator(xml, _commandsRibbonPanel);
-            generator.ReadXML();
-            generator.CreateDynamicAssembly();
-            generator.CreateButtons();
+            generator.GenerateDynamicButtons();
         }
 
         private void PrepareParameterEditorDockablePanel(UIControlledApplication application)
