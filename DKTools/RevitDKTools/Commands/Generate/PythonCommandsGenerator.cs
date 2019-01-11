@@ -9,7 +9,7 @@ using System.Xml;
 
 namespace RevitDKTools.Commands.Generate
 {
-    class DynamicButtonGenerator
+    class PythonCommandsGenerator
     {
         private readonly XmlDocument _xml;
         private readonly string _assemblyName;
@@ -17,7 +17,7 @@ namespace RevitDKTools.Commands.Generate
         private List<Dictionary<string,string>> _commandDescriptionsList;
         private readonly RibbonPanel _ribbonPanel;
 
-        public DynamicButtonGenerator(XmlDocument xml, RibbonPanel panel, string assemblyName = "DynamicProxy")
+        public PythonCommandsGenerator(XmlDocument xml, RibbonPanel panel, string assemblyName = "DynamicProxy")
         {
             _xml = xml;
             _ribbonPanel = panel;

@@ -43,7 +43,7 @@ namespace RevitDKTools
             System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
             xml.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
                 "\\PythonScripts\\ScriptsSettings.xml");
-            DynamicButtonGenerator generator = new DynamicButtonGenerator(xml, _commandsRibbonPanel);
+            PythonCommandsGenerator generator = new PythonCommandsGenerator(xml, _commandsRibbonPanel);
             generator.GenerateDynamicButtons();
         }
 
