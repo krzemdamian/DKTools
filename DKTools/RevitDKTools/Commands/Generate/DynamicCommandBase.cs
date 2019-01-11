@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace RevitDKTools.Commands.Generate
 {
+    /// <summary>
+    /// This is a base class used for dynamic class emitter.
+    /// Inherited necessary Revit API interface to bind commands for script execution.
+    /// </summary>
     [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
     public class DynamicCommandBase : IExternalCommand
     {
