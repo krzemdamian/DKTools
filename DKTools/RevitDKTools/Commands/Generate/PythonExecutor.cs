@@ -13,11 +13,11 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
 
-namespace RevitDKTools.Command.Receiver
+namespace RevitDKTools.Commands.Generate.ButtonData
 {
-    public class MyPythonEngine : IExternalEventHandler, IMyPythonEngine
+    public class PythonExecutor : IExternalEventHandler, IPythonExecutor
     {
-        public MyPythonEngine EngineInstance { get; set; }
+        public PythonExecutor EngineInstance { get; set; }
         public ScriptRuntime PythonScriptRuntime { get; set; }
         public ScriptEngine PythonEngine { get; set; }
         public Dictionary<string, CompiledCode> CompiledPythonScripts { get; set; } = new Dictionary<string, CompiledCode>();
@@ -26,7 +26,7 @@ namespace RevitDKTools.Command.Receiver
         public ScriptScope LastUsedScope { get; set; }
         public Dictionary<string, dynamic> ScriptVariables { get; set; } = new Dictionary<string, dynamic>();
 
-        public MyPythonEngine()
+        public PythonExecutor()
         {
             Dictionary<string, object> engineOptions = new Dictionary<string, object>
             {

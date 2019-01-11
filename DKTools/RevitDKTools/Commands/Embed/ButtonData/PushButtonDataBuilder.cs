@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace RevitDKTools.Command.ButtonData
+namespace RevitDKTools.Commands.Embed.ButtonData
 {
     public abstract class PushButtonDataBuilder
     {

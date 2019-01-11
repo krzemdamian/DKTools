@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RevitDKTools.Command.ButtonData
+namespace RevitDKTools.Commands.Embed.ButtonData
 {
     public class PushButtonMaker
     {

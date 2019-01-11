@@ -4,12 +4,12 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Microsoft.Scripting.Hosting;
 using System.Reflection;
-using RevitDKTools.Panels;
-using RevitDKTools.Command.Receiver;
+using RevitDKTools.Commands.Panels;
+using RevitDKTools.Commands.Embed.Receiver;
 using RevitDKTools.DockablePanels.ParameterEditor.View;
 using Autodesk.Revit.UI.Events;
-using RevitDKTools.Command.ButtonData;
 using System.IO;
+using RevitDKTools.Commands.Generate.ButtonData;
 
 namespace RevitDKTools
 {
@@ -17,7 +17,7 @@ namespace RevitDKTools
     {
         public static DKToolsApp DKToolsAppInstance { get; set; }
         public static UIControlledApplication UIControlledApplication { get; set; } = null;
-        public static IMyPythonEngine MyPythonEngine { get; set; }
+        public static IPythonExecutor MyPythonEngine { get; set; }
 
         private ParameterEditorWPFPage _parameterEditorWPFPage;
         private RibbonPanel _commandsRibbonPanel;
@@ -87,7 +87,7 @@ namespace RevitDKTools
 
         private static void InstantiatePythonEngine()
         {
-            MyPythonEngine = new MyPythonEngine();
+            MyPythonEngine = new PythonExecutor();
         }
 
         private void AssignProperties(UIControlledApplication application)

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RevitDKTools.Panels
+namespace RevitDKTools.Commands.Panels
 {
     public class RibbonPanelButtonMaker
     {

@@ -9,7 +9,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RevitDKTools.Command.Receiver
+namespace RevitDKTools.Commands.Generate.ButtonData
 {
     class DynamicCommandClassEmiter<T> where T : IExternalCommand
     {

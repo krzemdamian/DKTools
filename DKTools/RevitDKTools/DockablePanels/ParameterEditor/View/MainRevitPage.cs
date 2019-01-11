@@ -27,7 +27,6 @@ namespace RevitDKTools.DockablePanels.ParameterEditor.View
                 data.FrameworkElement = this as FrameworkElement;
                 data.InitialState = new Autodesk.Revit.UI.DockablePaneState();
                 data.InitialState.DockPosition = DockPosition.Bottom;
-               // data.InitialState.TabBehind = Autodesk.Revit.UI.DockablePanes.BuiltInDockablePanes.ProjectBrowser;
             }
             catch (Exception ex)
             {

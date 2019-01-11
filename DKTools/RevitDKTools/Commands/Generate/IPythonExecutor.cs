@@ -12,9 +12,9 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace RevitDKTools.Command.Receiver
+namespace RevitDKTools.Commands.Generate.ButtonData
 {
-    public interface IMyPythonEngine
+    public interface IPythonExecutor
     {
         ScriptRuntime PythonScriptRuntime { get; set; }
         ScriptEngine PythonEngine { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RevitDKTools.Command.ButtonData
+namespace RevitDKTools.Commands.Embed.ButtonData
 {
     class ShowParameterEditor : PushButtonDataBuilder
     {
@@ -20,7 +20,7 @@ namespace RevitDKTools.Command.ButtonData
         public override void SetOptions()
         {
             base.Image = ButtonImage.Large;
-            string path = FormatResourceName("Command/Images/Large/blue/measure.png");
+            string path = FormatResourceName("Commands/Images/Large/blue/measure.png");
             base.LargeImageStream = ThisAssembly.GetManifestResourceStream(path);
         }
     }
