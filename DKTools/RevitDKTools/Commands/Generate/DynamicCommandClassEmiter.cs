@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RevitDKTools.Commands.Generate
 {
-    class DynamicCommandClassEmiter<T> where T : IExternalCommand
+    class DynamicCommandClassEmiter<T> : IDynamicCommandClassEmiter where T : IExternalCommand
     {
         readonly string _location;
         readonly AppDomain _appDomain;

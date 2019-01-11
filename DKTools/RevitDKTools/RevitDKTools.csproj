@@ -225,6 +225,7 @@
     <Compile Include="Commands\Embed\ButtonData\ShowParameterEditor.cs" />
     <Compile Include="Commands\Generate\DynamicCommandClassEmiter.cs" />
     <Compile Include="Commands\Generate\DynamicCommandBase.cs" />
+    <Compile Include="Commands\Generate\IDynamicCommandClassEmiter.cs" />
     <Compile Include="Commands\Generate\IPythonExecutionEnviroment.cs" />
     <Compile Include="Commands\Embed\Receiver\ShowParameterEditor.cs" />
     <Compile Include="Commands\Embed\Receiver\Info.cs" />
