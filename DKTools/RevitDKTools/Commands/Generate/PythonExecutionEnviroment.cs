@@ -13,7 +13,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
 
-namespace RevitDKTools.Commands.Generate.ButtonData
+namespace RevitDKTools.Commands.Generate
 {
     public class PythonExecutionEnviroment : IExternalEventHandler, IPythonExecutionEnviroment
     {

@@ -12,7 +12,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace RevitDKTools.Commands.Generate.ButtonData
+namespace RevitDKTools.Commands.Generate
 {
     public interface IPythonExecutionEnviroment
     {

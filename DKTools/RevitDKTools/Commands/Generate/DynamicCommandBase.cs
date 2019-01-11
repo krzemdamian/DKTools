@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RevitDKTools.Commands.Generate.ButtonData
+namespace RevitDKTools.Commands.Generate
 {
     [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
     public class DynamicCommandBase : IExternalCommand

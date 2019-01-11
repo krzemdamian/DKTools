@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
 using System.Xml;
 
-namespace RevitDKTools.Commands.Generate.ButtonData
+namespace RevitDKTools.Commands.Generate
 {
     class DynamicButtonGenerator
     {

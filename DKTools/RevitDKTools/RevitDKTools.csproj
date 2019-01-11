@@ -225,10 +225,10 @@
     <Compile Include="Commands\Embed\ButtonData\ShowParameterEditor.cs" />
     <Compile Include="Commands\Generate\DynamicCommandClassEmiter.cs" />
     <Compile Include="Commands\Generate\DynamicCommandBase.cs" />
-    <Compile Include="Commands\Generate\IMyPythonEngine.cs" />
+    <Compile Include="Commands\Generate\IPythonExecutionEnviroment.cs" />
     <Compile Include="Commands\Embed\Receiver\ShowParameterEditor.cs" />
     <Compile Include="Commands\Embed\Receiver\Info.cs" />
-    <Compile Include="Commands\Generate\MyPythonEngine.cs" />
+    <Compile Include="Commands\Generate\PythonExecutionEnviroment.cs" />
     <Compile Include="Common\AssemblyResourceUtils.cs" />
     <Compile Include="DKToolsApp.cs" />
     <Compile Include="DockablePanels\ParameterEditor\Model\ISelectedElementParameterModel.cs" />
