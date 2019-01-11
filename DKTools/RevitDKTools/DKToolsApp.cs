@@ -9,7 +9,7 @@ using RevitDKTools.Commands.Embed.Receiver;
 using RevitDKTools.DockablePanels.ParameterEditor.View;
 using Autodesk.Revit.UI.Events;
 using System.IO;
-using RevitDKTools.Commands.Generate.ButtonData;
+using RevitDKTools.Commands.Generate;
 
 namespace RevitDKTools
 {
