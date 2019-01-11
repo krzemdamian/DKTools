@@ -17,7 +17,7 @@ namespace RevitDKTools
     {
         public static DKToolsApp DKToolsAppInstance { get; set; }
         public static UIControlledApplication UIControlledApplication { get; set; } = null;
-        public static IPythonExecutor MyPythonEngine { get; set; }
+        public static IPythonExecutionEnviroment MyPythonEngine { get; set; }
 
         private ParameterEditorWPFPage _parameterEditorWPFPage;
         private RibbonPanel _commandsRibbonPanel;
@@ -87,7 +87,7 @@ namespace RevitDKTools
 
         private static void InstantiatePythonEngine()
         {
-            MyPythonEngine = new PythonExecutor();
+            MyPythonEngine = new PythonExecutionEnviroment();
         }
 
         private void AssignProperties(UIControlledApplication application)

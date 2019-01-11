@@ -14,7 +14,7 @@ using System.Drawing;
 
 namespace RevitDKTools.Commands.Generate.ButtonData
 {
-    public interface IPythonExecutor
+    public interface IPythonExecutionEnviroment
     {
         ScriptRuntime PythonScriptRuntime { get; set; }
         ScriptEngine PythonEngine { get; set; }

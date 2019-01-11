@@ -15,9 +15,9 @@ using System.IO;
 
 namespace RevitDKTools.Commands.Generate.ButtonData
 {
-    public class PythonExecutor : IExternalEventHandler, IPythonExecutor
+    public class PythonExecutionEnviroment : IExternalEventHandler, IPythonExecutionEnviroment
     {
-        public PythonExecutor EngineInstance { get; set; }
+        public PythonExecutionEnviroment EngineInstance { get; set; }
         public ScriptRuntime PythonScriptRuntime { get; set; }
         public ScriptEngine PythonEngine { get; set; }
         public Dictionary<string, CompiledCode> CompiledPythonScripts { get; set; } = new Dictionary<string, CompiledCode>();
@@ -26,7 +26,7 @@ namespace RevitDKTools.Commands.Generate.ButtonData
         public ScriptScope LastUsedScope { get; set; }
         public Dictionary<string, dynamic> ScriptVariables { get; set; } = new Dictionary<string, dynamic>();
 
-        public PythonExecutor()
+        public PythonExecutionEnviroment()
         {
             Dictionary<string, object> engineOptions = new Dictionary<string, object>
             {
