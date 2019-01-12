@@ -27,8 +27,10 @@ namespace RevitDKTools.Commands.Generate
         {
             if (!string.IsNullOrEmpty(Assembly.GetExecutingAssembly().Location))
             {
-                _location = Assembly.GetExecutingAssembly().Location;
-                _location = Path.GetDirectoryName(_location);
+                string proxyDllFolderLocation = Path.GetDirectoryName(
+                    Assembly.GetExecutingAssembly().Location) +
+                    System.Configuration.ConfigurationManager.AppSettings["PROXY_DLL_LOCATION"];
+
                 _location = _location + "\\PythonScripts\\";
             }
             else
