@@ -28,7 +28,7 @@ namespace RevitDKTools.Commands.Generate
 
         public void GenerateDynamicButtons()
         {
-            xmlToCommandDescriptionList();
+            XmlToCommandDescriptionList();
             EmitProxyTypesToDynamicAssembly();
 
             Dictionary<string, PulldownButton> pulldownButtons = GetDictionaryWithPulldownButtons();
@@ -42,71 +42,9 @@ namespace RevitDKTools.Commands.Generate
             }
         }
 
-        private void xmlToCommandDescriptionList()
+        private void XmlToCommandDescriptionList()
         {
-            string check = string.Empty;
-            foreach(XmlNode node in _xml.DocumentElement)
-            {
-                string commandName = string.Empty;
-                string nameOnRibbon = string.Empty;
-                string scriptPath = string.Empty;
-                string parentButton = string.Empty;
-                string toolTip = string.Empty;
-                string imageUri = string.Empty;
-
-                foreach (XmlNode child in node)
-                {
-                    switch (child.Name)
-                    {
-                        case "CommandName":
-                            commandName = child.InnerText;
-                            break;
-                        case "NameOnRibbon":
-                            nameOnRibbon = child.InnerText;
-                            break;
-                        case "ScriptPath":
-                            scriptPath = child.InnerText;
-                            break;
-                        case "ParentButton":
-                            parentButton = child.InnerText;
-                            break;
-                        case "ToolTip":
-                            toolTip = child.InnerText;
-                            break;
-                        case "ImageUri":
-                            imageUri = child.InnerText;
-                            break;
-                    }
-                }
-                
-                if(!string.IsNullOrEmpty(commandName) &&
-                    !string.IsNullOrEmpty(nameOnRibbon) &&
-                    !string.IsNullOrEmpty(scriptPath) &&
-                    !string.IsNullOrEmpty(parentButton))
-                {
-                    commandName = Regex.Replace(commandName, @"\s+", "");  // remove white spaces
-
-                    Dictionary<string, string> command = new Dictionary<string, string>()
-                    {
-                        {"CommandName", commandName },
-                        {"NameOnRibbon", nameOnRibbon },
-                        {"ScriptPath", scriptPath},
-                        {"ParentButton", parentButton }
-                    };
-
-                    if (!string.IsNullOrEmpty(toolTip)) { command.Add("ToolTip", toolTip); }
-                    if (!string.IsNullOrEmpty(imageUri)) { command.Add("ImageUri", imageUri); }
-
-                    _commandDescriptionsList.Add(command);
-                }
-
-                commandName = string.Empty;
-                nameOnRibbon = string.Empty;
-                scriptPath = string.Empty;
-                parentButton = string.Empty;
-                toolTip = string.Empty;
-                imageUri = string.Empty;
-            }
+            
         }
 
         private void EmitProxyTypesToDynamicAssembly()

@@ -218,7 +218,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Embed\ButtonData\ButtonImage.cs" />
-    <Compile Include="Commands\Generate\DynamicButtonGenerator.cs" />
+    <Compile Include="Commands\Generate\PythonCommandsGenerator.cs" />
     <Compile Include="Commands\Embed\ButtonData\Info.cs" />
     <Compile Include="Commands\Embed\ButtonData\PushButtonDataBuilder.cs" />
     <Compile Include="Commands\Embed\ButtonData\PushButtonMaker.cs" />
@@ -230,6 +230,8 @@
     <Compile Include="Commands\Embed\Receiver\ShowParameterEditor.cs" />
     <Compile Include="Commands\Embed\Receiver\Info.cs" />
     <Compile Include="Commands\Generate\PythonExecutionEnviroment.cs" />
+    <Compile Include="Commands\Generate\ScriptCommandSetting.cs" />
+    <Compile Include="Commands\Generate\SettingsInterpreter.cs" />
     <Compile Include="Common\AssemblyResourceUtils.cs" />
     <Compile Include="DKToolsApp.cs" />
     <Compile Include="DockablePanels\ParameterEditor\Model\ISelectedElementParameterModel.cs" />
