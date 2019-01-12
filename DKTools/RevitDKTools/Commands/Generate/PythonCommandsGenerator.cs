@@ -13,7 +13,7 @@ namespace RevitDKTools.Commands.Generate
     {
         private readonly XmlDocument _xml;
         private readonly string _assemblyName;
-        private readonly ClassEmitter<PythonCommandProxyClassBase> _emiter;
+        private readonly ClassEmitter<IExternalCommand> _emitter;
         private List<Dictionary<string,string>> _commandDescriptionsList;
         private readonly RibbonPanel _ribbonPanel;
 
@@ -22,7 +22,7 @@ namespace RevitDKTools.Commands.Generate
             _xml = xml;
             _ribbonPanel = panel;
             _assemblyName = assemblyName;
-            _emiter = new ClassEmitter<PythonCommandProxyClassBase>(assemblyName);
+            _emitter = emitter;
             _commandDescriptionsList = new List<Dictionary<string,string>>();
         }
 
@@ -54,17 +54,17 @@ namespace RevitDKTools.Commands.Generate
 
             foreach (Dictionary<string, string> command in _commandDescriptionsList)
             {
-                _emiter.BuildCommandType(command["CommandName"], pathPrefix + command["ScriptPath"]);
+                _emitter.BuildCommandType(command["CommandName"], pathPrefix + command["ScriptPath"]);
             }
 
-            _emiter.SaveAssembly();
+            _emitter.SaveAssembly();
         }
 
         private PushButtonData CreatePushButtonDataFromDescription(Dictionary<string, string> commandDescription)
         {
             PushButtonData pushButton = new PushButtonData(
                                 commandDescription["CommandName"], commandDescription["NameOnRibbon"],
-                                _emiter.AssemblyLocation, commandDescription["CommandName"]);
+                                _emitter.AssemblyLocation, commandDescription["CommandName"]);
             AddImage(commandDescription, pushButton);
             AddToolTip(commandDescription, pushButton);
             return pushButton;
