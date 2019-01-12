@@ -8,18 +8,18 @@ using System.Xml;
 
 namespace RevitDKTools.Commands.Generate
 {
-    class SettingsInterpreter
+    class XmlSettingsInterpreter : ISettingsInterpreter
     {
         private ICollection<CommandSetting> _scriptCommandSettings;
 
         public ICollection<CommandSetting> ScriptCommandSettings { get { return _scriptCommandSettings; } }
 
-        public SettingsInterpreter(XmlDocument xml)
+        public XmlSettingsInterpreter(XmlDocument xml)
         {
-            NewMethod(xml);
+            AssignSettingsToCollection(xml);
         }
 
-        private void NewMethod(XmlDocument xml)
+        private void AssignSettingsToCollection(XmlDocument xml)
         {
             foreach (XmlNode node in xml.DocumentElement)
             {
