@@ -17,7 +17,7 @@ namespace RevitDKTools.Commands.Generate
         private List<Dictionary<string,string>> _commandDescriptionsList;
         private readonly RibbonPanel _ribbonPanel;
 
-        public PythonCommandsGenerator(XmlDocument xml, RibbonPanel panel, string assemblyName = "DynamicProxy")
+        public PythonCommandsGenerator(ClassEmitter<IExternalCommand> emitter, XmlDocument xml, RibbonPanel panel, string assemblyName = "DynamicProxy")
         {
             _xml = xml;
             _ribbonPanel = panel;
