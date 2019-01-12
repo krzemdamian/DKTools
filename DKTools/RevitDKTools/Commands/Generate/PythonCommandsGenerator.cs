@@ -13,7 +13,7 @@ namespace RevitDKTools.Commands.Generate
     {
         private readonly XmlDocument _xml;
         private readonly string _assemblyName;
-        private readonly ClassEmitter<DynamicClassBase> _emiter;
+        private readonly ClassEmitter<PythonCommandProxyClassBase> _emiter;
         private List<Dictionary<string,string>> _commandDescriptionsList;
         private readonly RibbonPanel _ribbonPanel;
 
@@ -22,7 +22,7 @@ namespace RevitDKTools.Commands.Generate
             _xml = xml;
             _ribbonPanel = panel;
             _assemblyName = assemblyName;
-            _emiter = new ClassEmitter<DynamicClassBase>(assemblyName);
+            _emiter = new ClassEmitter<PythonCommandProxyClassBase>(assemblyName);
             _commandDescriptionsList = new List<Dictionary<string,string>>();
         }
 
