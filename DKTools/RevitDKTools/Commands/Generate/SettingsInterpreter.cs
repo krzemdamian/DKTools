@@ -10,9 +10,9 @@ namespace RevitDKTools.Commands.Generate
 {
     class SettingsInterpreter
     {
-        private ICollection<ScriptCommandSetting> _scriptCommandSettings;
+        private ICollection<CommandSetting> _scriptCommandSettings;
 
-        public ICollection<ScriptCommandSetting> ScriptCommandSettings { get { return _scriptCommandSettings; } }
+        public ICollection<CommandSetting> ScriptCommandSettings { get { return _scriptCommandSettings; } }
 
         public SettingsInterpreter(XmlDocument xml)
         {
@@ -23,7 +23,7 @@ namespace RevitDKTools.Commands.Generate
         {
             foreach (XmlNode node in xml.DocumentElement)
             {
-                ScriptCommandSetting scriptCommandSetting = GetSettingFromXmlNode(node);
+                CommandSetting scriptCommandSetting = GetSettingFromXmlNode(node);
                 if (scriptCommandSetting.HasRequiredItems())
                 {
                     _scriptCommandSettings.Add(scriptCommandSetting);
@@ -31,9 +31,9 @@ namespace RevitDKTools.Commands.Generate
             }
         }
 
-        private ScriptCommandSetting GetSettingFromXmlNode(XmlNode node)
+        private CommandSetting GetSettingFromXmlNode(XmlNode node)
         {
-            ScriptCommandSetting scriptCommandSetting = new ScriptCommandSetting();
+            CommandSetting scriptCommandSetting = new CommandSetting();
 
             foreach (XmlNode child in node)
             {
