@@ -46,7 +46,7 @@ namespace RevitDKTools.Commands.Generate
                         scriptCommandSetting.NameOnRibbon = child.InnerText;
                         break;
                     case "ScriptPath":
-                        scriptCommandSetting.ScriptPath = child.InnerText;
+                        scriptCommandSetting.ScriptRelativePath = child.InnerText;
                         break;
                     case "ParentButton":
                         scriptCommandSetting.ParentButton = child.InnerText;

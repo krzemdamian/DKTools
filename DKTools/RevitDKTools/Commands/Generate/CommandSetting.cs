@@ -16,7 +16,7 @@ namespace RevitDKTools.Commands.Generate
             }
         }
         public string NameOnRibbon { get; set; }
-        public string ScriptPath { get; set; }
+        public string ScriptRelativePath { get; set; }
         public string ParentButton { get; set; }
         public string ToolTip { get; set; }
         public string ImageUri { get; set; }
@@ -25,7 +25,7 @@ namespace RevitDKTools.Commands.Generate
         {
             if (string.IsNullOrEmpty(CommandName) ||
                string.IsNullOrEmpty(NameOnRibbon) ||
-               string.IsNullOrEmpty(ScriptPath) ||
+               string.IsNullOrEmpty(ScriptRelativePath) ||
                string.IsNullOrEmpty(ParentButton))
             {
                 return false;
