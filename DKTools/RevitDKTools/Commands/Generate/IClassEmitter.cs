@@ -2,7 +2,7 @@
 
 namespace RevitDKTools.Commands.Generate
 {
-    interface IDynamicCommandClassEmiter
+    interface IClassEmitter
     {
         string AssemblyLocation { get; }
 

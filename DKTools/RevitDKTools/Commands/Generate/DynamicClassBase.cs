@@ -13,11 +13,11 @@ namespace RevitDKTools.Commands.Generate
     /// Inherited necessary Revit API interface to bind commands for script execution.
     /// </summary>
     [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
-    public class DynamicCommandBase : IExternalCommand
+    public class DynamicClassBase : IExternalCommand
     {
         public string _scriptPath;
 
-        public DynamicCommandBase() { }
+        public DynamicClassBase() { }
         
         // dynamic class have to have ctor assigning _scriptpath
 

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RevitDKTools.Commands.Generate
 {
-    class DynamicCommandClassEmiter<T> : IDynamicCommandClassEmiter where T : IExternalCommand
+    class ClassEmitter<T> : IClassEmitter where T : IExternalCommand
     {
         readonly string _location;
         readonly AppDomain _appDomain;
@@ -23,7 +23,7 @@ namespace RevitDKTools.Commands.Generate
                 return _location + _asseblyName.Name + ".dll";
             } }
 
-        public DynamicCommandClassEmiter(string dynamicAssemblyName)
+        public ClassEmitter(string dynamicAssemblyName)
         {
             if (!string.IsNullOrEmpty(Assembly.GetExecutingAssembly().Location))
             {

@@ -16,10 +16,10 @@ namespace RevitDKTools.Commands.Generate
 
         public SettingsInterpreter(XmlDocument xml)
         {
-            CreateSettingsFromXml(xml);
+            NewMethod(xml);
         }
 
-        private void CreateSettingsFromXml(XmlDocument xml)
+        private void NewMethod(XmlDocument xml)
         {
             foreach (XmlNode node in xml.DocumentElement)
             {
