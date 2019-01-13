@@ -18,10 +18,13 @@ namespace RevitDKTools.Commands.Generate
         readonly AssemblyName _asseblyName;
         private AssemblyBuilder _assemblyBuilder;
         readonly ModuleBuilder _moduleBuilder;
-        public string AssemblyLocation { get
+        public string AssemblyLocation
+        {
+            get
             {
                 return _location + _asseblyName.Name + ".dll";
-            } }
+            }
+        }
 
         public ClassEmitter(string dynamicAssemblyName)
         {
