@@ -44,7 +44,7 @@ namespace RevitDKTools
             xml.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
                 "\\PythonScripts\\ScriptsSettings.xml");
             CommandsGenerator generator = new CommandsGenerator(xml, _commandsRibbonPanel);
-            generator.GenerateDynamicButtons();
+            generator.GenerateDynamicCommands();
         }
 
         private void PrepareParameterEditorDockablePanel(UIControlledApplication application)

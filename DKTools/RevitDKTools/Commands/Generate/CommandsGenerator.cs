@@ -9,64 +9,65 @@ using System.Xml;
 
 namespace RevitDKTools.Commands.Generate
 {
-    class PythonCommandsGenerator
+    class CommandsGenerator
     {
-        private readonly XmlDocument _xml;
-        private readonly string _assemblyName;
+        //private readonly XmlDocument _xml;
+        //private readonly string _assemblyName;
         private readonly ClassEmitter<IExternalCommand> _emitter;
-        private List<Dictionary<string,string>> _commandDescriptionsList;
+        private readonly ISettingsInterpreter _settingsInterpreter;
         private readonly RibbonPanel _ribbonPanel;
+        private readonly ICollection<PushButtonData> _generatedButtons;
+        //private readonly RibbonPanel _ribbonPanel;
 
-        public PythonCommandsGenerator(ClassEmitter<IExternalCommand> emitter, XmlDocument xml, RibbonPanel panel, string assemblyName = "DynamicProxy")
+
+        public CommandsGenerator(
+            ClassEmitter<IExternalCommand> emitter,
+            ISettingsInterpreter settingsInterpreter,
+            RibbonPanel ribbonPanel)
         {
-            _xml = xml;
-            _ribbonPanel = panel;
-            _assemblyName = assemblyName;
             _emitter = emitter;
-            _commandDescriptionsList = new List<Dictionary<string,string>>();
+            _settingsInterpreter = settingsInterpreter;
+            _ribbonPanel = ribbonPanel;
+            //_commandDescriptionsList = new List<Dictionary<string,string>>();
         }
 
-        public void GenerateDynamicButtons()
+        public void GenerateDynamicCommands()    
         {
-            XmlToCommandDescriptionList();
-            EmitProxyTypesToDynamicAssembly();
+            EmitProxyClassesToDynamicAssembly();
 
             Dictionary<string, PulldownButton> pulldownButtons = GetDictionaryWithPulldownButtons();
 
-            foreach (Dictionary<string, string> commandDescription in _commandDescriptionsList)
+            foreach (var commandSetting  in _settingsInterpreter.ScriptCommandSettings)
             {
-                PushButtonData dynamicCommandPushButton = CreatePushButtonDataFromDescription(commandDescription);
+                PushButtonData dynamicCommandPushButton = 
+                    CreatePushButtonDataFromSetting(commandSetting);
 
-                PulldownButton parentPulldownButton = pulldownButtons[commandDescription["ParentButton"]];
+                PulldownButton parentPulldownButton = pulldownButtons[commandSetting.ParentButton];
                 parentPulldownButton.AddPushButton(dynamicCommandPushButton);
             }
         }
 
-        private void XmlToCommandDescriptionList()
+        private void EmitProxyClassesToDynamicAssembly()
         {
-            
-        }
+            string scriptFolderLocation = Path.GetDirectoryName(
+                Assembly.GetExecutingAssembly().Location) +
+                System.Configuration.ConfigurationManager.AppSettings["SCRIPTS_FOLDER_LOCATION"];
 
-        private void EmitProxyTypesToDynamicAssembly()
-        {
-            string pathPrefix = Path.GetDirectoryName(
-                Assembly.GetExecutingAssembly().Location) + "\\PythonScripts\\";
-
-            foreach (Dictionary<string, string> command in _commandDescriptionsList)
+            foreach (CommandSetting setting in _settingsInterpreter.ScriptCommandSettings)
             {
-                _emitter.BuildCommandType(command["CommandName"], pathPrefix + command["ScriptPath"]);
+                _emitter.BuildCommandType(setting.CommandName, scriptFolderLocation + setting.ScriptRelativePath);
             }
 
             _emitter.SaveAssembly();
         }
 
-        private PushButtonData CreatePushButtonDataFromDescription(Dictionary<string, string> commandDescription)
+        private PushButtonData CreatePushButtonDataFromSetting(CommandSetting commandSetting)
         {
             PushButtonData pushButton = new PushButtonData(
-                                commandDescription["CommandName"], commandDescription["NameOnRibbon"],
-                                _emitter.AssemblyLocation, commandDescription["CommandName"]);
-            AddImage(commandDescription, pushButton);
-            AddToolTip(commandDescription, pushButton);
+                commandSetting.CommandName, commandSetting.NameOnRibbon,
+                _emitter.AssemblyLocation, commandSetting.CommandName);
+            if (string.IsNullOrEmpty(commandSetting.ImageUri)) { AddPngImage(commandSetting, pushButton); } 
+            AddToolTip(commandSetting, pushButton);
             return pushButton;
         }
 
@@ -85,30 +86,29 @@ namespace RevitDKTools.Commands.Generate
             return pulldownButtons;
         }
 
-        private void AddToolTip(Dictionary<string, string> cmd, PushButtonData pbd)
+        private void AddToolTip(CommandSetting commandSetting, PushButtonData pushButtonData)
         {
-            if (cmd.ContainsKey("ToolTip"))
+            if (!string.IsNullOrEmpty(commandSetting.ToolTip))
             {
-                pbd.ToolTip = cmd["ToolTip"];
+                pushButtonData.ToolTip = commandSetting.ToolTip;
             }
         }
 
-        private void AddImage(Dictionary<string, string> cmd, PushButtonData pbd)
+        private void AddPngImage(CommandSetting commandSetting, PushButtonData pbd)
         {
-            if (cmd.ContainsKey("ImageUri"))
+            if(Path.GetExtension(commandSetting.ImageUri) == ".png")
             {
-                if(Path.GetExtension(cmd["ImageUri"]) == ".png")
+                string imagePath = Path.GetDirectoryName(
+                    Assembly.GetExecutingAssembly().Location) +
+                    System.Configuration.ConfigurationManager.AppSettings["SCRIPTS_FOLDER_LOCATION"] + 
+                    commandSetting.ImageUri;
+                imagePath = Path.GetFullPath(imagePath);
+                BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
+                pbd.LargeImage = bitmapImage;
+
+                if (bitmapImage.PixelHeight == 16 && bitmapImage.PixelWidth == 16)
                 {
-                    string imagePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-                        "\\PythonScripts\\" + cmd["ImageUri"];
-                    imagePath = Path.GetFullPath(imagePath);
-                    BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
-                    if (bitmapImage.PixelHeight == 16 && bitmapImage.PixelWidth == 16 )
-                    {
-                        pbd.Image = bitmapImage;
-                    }
-                    pbd.LargeImage = bitmapImage;
-                    
+                    pbd.Image = bitmapImage;
                 }
             }
         }

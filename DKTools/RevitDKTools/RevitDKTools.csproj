@@ -218,20 +218,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Embed\ButtonData\ButtonImage.cs" />
-    <Compile Include="Commands\Generate\PythonCommandsGenerator.cs" />
+    <Compile Include="Commands\Generate\CommandsGenerator.cs" />
     <Compile Include="Commands\Embed\ButtonData\Info.cs" />
     <Compile Include="Commands\Embed\ButtonData\PushButtonDataBuilder.cs" />
     <Compile Include="Commands\Embed\ButtonData\PushButtonMaker.cs" />
     <Compile Include="Commands\Embed\ButtonData\ShowParameterEditor.cs" />
-    <Compile Include="Commands\Generate\DynamicCommandClassEmiter.cs" />
-    <Compile Include="Commands\Generate\DynamicCommandBase.cs" />
-    <Compile Include="Commands\Generate\IDynamicCommandClassEmiter.cs" />
+    <Compile Include="Commands\Generate\ClassEmitter.cs" />
+    <Compile Include="Commands\Generate\ISettingsInterpreter.cs" />
+    <Compile Include="Commands\Generate\PythonCommandProxyBaseClass.cs" />
+    <Compile Include="Commands\Generate\IClassEmitter.cs" />
     <Compile Include="Commands\Generate\IPythonExecutionEnviroment.cs" />
     <Compile Include="Commands\Embed\Receiver\ShowParameterEditor.cs" />
     <Compile Include="Commands\Embed\Receiver\Info.cs" />
     <Compile Include="Commands\Generate\PythonExecutionEnviroment.cs" />
-    <Compile Include="Commands\Generate\ScriptCommandSetting.cs" />
-    <Compile Include="Commands\Generate\SettingsInterpreter.cs" />
+    <Compile Include="Commands\Generate\CommandSetting.cs" />
+    <Compile Include="Commands\Generate\XmlSettingsInterpreter.cs" />
     <Compile Include="Common\AssemblyResourceUtils.cs" />
     <Compile Include="DKToolsApp.cs" />
     <Compile Include="DockablePanels\ParameterEditor\Model\ISelectedElementParameterModel.cs" />
