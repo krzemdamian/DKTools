@@ -54,7 +54,7 @@ namespace RevitDKTools.Commands.Generate
         {
             TypeBuilder typeBuilder = _moduleBuilder.DefineType(
                 commandTypeName, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.BeforeFieldInit, 
-                typeof(T),new Type[] { typeof(IExternalCommand) });
+                typeof(T), new Type[] { typeof(IExternalCommand) });
             
             ConstructorBuilder ctorBuilder = typeBuilder.DefineConstructor(
                 MethodAttributes.Public|MethodAttributes.HideBySig|MethodAttributes.SpecialName|MethodAttributes.RTSpecialName,
