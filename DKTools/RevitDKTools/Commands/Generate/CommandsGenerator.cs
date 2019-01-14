@@ -13,7 +13,7 @@ namespace RevitDKTools.Commands.Generate
     {
         //private readonly XmlDocument _xml;
         //private readonly string _assemblyName;
-        private readonly ClassEmitter<IExternalCommand> _emitter;
+        private readonly IClassEmitter _emitter;
         private readonly ISettingsInterpreter _settingsInterpreter;
         private readonly RibbonPanel _ribbonPanel;
         private readonly ICollection<PushButtonData> _generatedButtons;
@@ -21,7 +21,7 @@ namespace RevitDKTools.Commands.Generate
 
 
         public CommandsGenerator(
-            ClassEmitter<IExternalCommand> emitter,
+            IClassEmitter emitter,
             ISettingsInterpreter settingsInterpreter,
             RibbonPanel ribbonPanel)
         {
