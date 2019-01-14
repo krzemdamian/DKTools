@@ -42,8 +42,13 @@ namespace RevitDKTools
         {
             System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
             xml.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-                "\\PythonScripts\\ScriptsSettings.xml");
-            CommandsGenerator generator = new CommandsGenerator(xml, _commandsRibbonPanel);
+                System.Configuration.ConfigurationManager.AppSettings["SCRIPTS_SETTINGS_XML_LOCATION"]);
+ 
+            CommandsGenerator generator = new CommandsGenerator
+                (new ClassEmitter<PythonCommandProxyBaseClass>
+                    (System.Configuration.ConfigurationManager.AppSettings["DYNAMIC_ASSEMBLY_NAME"]), 
+                    new XmlSettingsInterpreter(xml),
+                    _commandsRibbonPanel);
             generator.GenerateDynamicCommands();
         }
 
