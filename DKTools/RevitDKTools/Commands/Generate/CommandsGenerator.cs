@@ -6,19 +6,17 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
 using System.Xml;
+using System.Resources;
+using System.Windows;
 
 namespace RevitDKTools.Commands.Generate
 {
     class CommandsGenerator
     {
-        //private readonly XmlDocument _xml;
-        //private readonly string _assemblyName;
         private readonly IClassEmitter _emitter;
         private readonly ISettingsInterpreter _settingsInterpreter;
         private readonly RibbonPanel _ribbonPanel;
         private readonly ICollection<PushButtonData> _generatedButtons;
-        //private readonly RibbonPanel _ribbonPanel;
-
 
         public CommandsGenerator(
             IClassEmitter emitter,
@@ -28,7 +26,6 @@ namespace RevitDKTools.Commands.Generate
             _emitter = emitter;
             _settingsInterpreter = settingsInterpreter;
             _ribbonPanel = ribbonPanel;
-            //_commandDescriptionsList = new List<Dictionary<string,string>>();
         }
 
         public void GenerateDynamicCommands()    
@@ -57,7 +54,8 @@ namespace RevitDKTools.Commands.Generate
 
             foreach (CommandSetting setting in _settingsInterpreter.ScriptCommandSettings)
             {
-                _emitter.BuildCommandType(setting.CommandName, scriptFolderLocation + setting.ScriptRelativePath);
+                _emitter.BuildCommandType(
+                    setting.CommandName, scriptFolderLocation + setting.ScriptRelativePath);
             }
 
             _emitter.SaveAssembly();
@@ -98,7 +96,7 @@ namespace RevitDKTools.Commands.Generate
 
         private void AddPngImage(CommandSetting commandSetting, PushButtonData pbd)
         {
-            if(Path.GetExtension(commandSetting.ImageUri) == ".png")
+            if (Path.GetExtension(commandSetting.ImageUri) == ".png")
             {
                 ResourceManager resourceManager = new ResourceManager(
                     "RevitDKTools.Properties.Resources",
