@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Resources;
 
 namespace RevitDKTools.Commands.Generate
 {
@@ -30,9 +31,12 @@ namespace RevitDKTools.Commands.Generate
         {
             if (!string.IsNullOrEmpty(Assembly.GetExecutingAssembly().Location))
             {
-                string _location = Path.GetDirectoryName(
-                    Assembly.GetExecutingAssembly().Location) +
-                    System.Configuration.ConfigurationManager.AppSettings["PROXY_DLL_LOCATION"];
+                ResourceManager resourceManager = new ResourceManager(
+                    "RevitDKTools.Properties.Resources",
+                    Assembly.GetExecutingAssembly());
+
+                _location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                    resourceManager.GetString("PROXY_DLL_LOCATION");
             }
             else
             {
