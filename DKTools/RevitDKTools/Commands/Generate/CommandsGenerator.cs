@@ -49,9 +49,11 @@ namespace RevitDKTools.Commands.Generate
 
         private void EmitProxyClassesToDynamicAssembly()
         {
-            string scriptFolderLocation = Path.GetDirectoryName(
-                Assembly.GetExecutingAssembly().Location) +
-                System.Configuration.ConfigurationManager.AppSettings["SCRIPTS_FOLDER_LOCATION"];
+            ResourceManager resourceManager = new ResourceManager(
+                "RevitDKTools.Properties.Resources",
+                Assembly.GetExecutingAssembly());
+            string scriptFolderLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                resourceManager.GetString("SCRIPTS_FOLDER_LOCATION");
 
             foreach (CommandSetting setting in _settingsInterpreter.ScriptCommandSettings)
             {
