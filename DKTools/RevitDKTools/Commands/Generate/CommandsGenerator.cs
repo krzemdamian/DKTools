@@ -68,7 +68,7 @@ namespace RevitDKTools.Commands.Generate
             PushButtonData pushButton = new PushButtonData(
                 commandSetting.CommandName, commandSetting.NameOnRibbon,
                 _emitter.AssemblyLocation, commandSetting.CommandName);
-            if (string.IsNullOrEmpty(commandSetting.ImageUri)) { AddPngImage(commandSetting, pushButton); } 
+            if (!string.IsNullOrEmpty(commandSetting.ImageUri)) { AddPngImage(commandSetting, pushButton); } 
             AddToolTip(commandSetting, pushButton);
             return pushButton;
         }
