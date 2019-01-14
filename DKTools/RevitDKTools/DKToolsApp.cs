@@ -10,6 +10,8 @@ using RevitDKTools.DockablePanels.ParameterEditor.View;
 using Autodesk.Revit.UI.Events;
 using System.IO;
 using RevitDKTools.Commands.Generate;
+using System.Windows;
+using System.Resources;
 
 namespace RevitDKTools
 {
@@ -37,16 +39,21 @@ namespace RevitDKTools
 
             return Result.Succeeded;
         }
-        
+
         private void CreateDynamicAssemblyAsProxyForPythonScripts()
         {
-            System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
+           System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
+            ResourceManager resourceManager = new ResourceManager(
+                "RevitDKTools.Properties.Resources",
+                Assembly.GetExecutingAssembly());
+
             xml.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-                System.Configuration.ConfigurationManager.AppSettings["SCRIPTS_SETTINGS_XML_LOCATION"]);
+                resourceManager.GetString("SCRIPTS_SETTINGS_XML_LOCATION"));
  
-            CommandsGenerator generator = new CommandsGenerator
-                (new ClassEmitter<PythonCommandProxyBaseClass>
-                    (System.Configuration.ConfigurationManager.AppSettings["DYNAMIC_ASSEMBLY_NAME"]), 
+            CommandsGenerator generator = 
+                new CommandsGenerator (
+                    new ClassEmitter<PythonCommandProxyBaseClass>(
+                        resourceManager.GetString("DYNAMIC_ASSEMBLY_NAME")), 
                     new XmlSettingsInterpreter(xml),
                     _commandsRibbonPanel);
             generator.GenerateDynamicCommands();
