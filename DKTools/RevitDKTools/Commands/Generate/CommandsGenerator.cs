@@ -100,10 +100,11 @@ namespace RevitDKTools.Commands.Generate
         {
             if(Path.GetExtension(commandSetting.ImageUri) == ".png")
             {
-                string imagePath = Path.GetDirectoryName(
-                    Assembly.GetExecutingAssembly().Location) +
-                    System.Configuration.ConfigurationManager.AppSettings["SCRIPTS_FOLDER_LOCATION"] + 
-                    commandSetting.ImageUri;
+                ResourceManager resourceManager = new ResourceManager(
+                    "RevitDKTools.Properties.Resources",
+                    Assembly.GetExecutingAssembly());
+                string imagePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                     resourceManager.GetString("SCRIPTS_FOLDER_LOCATION") + commandSetting.ImageUri;
                 imagePath = Path.GetFullPath(imagePath);
                 BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));
                 pbd.LargeImage = bitmapImage;
