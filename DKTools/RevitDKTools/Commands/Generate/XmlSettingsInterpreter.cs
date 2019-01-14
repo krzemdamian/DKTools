@@ -16,6 +16,7 @@ namespace RevitDKTools.Commands.Generate
 
         public XmlSettingsInterpreter(XmlDocument xml)
         {
+            _scriptCommandSettings = new List<CommandSetting>();
             AssignSettingsToCollection(xml);
         }
 
