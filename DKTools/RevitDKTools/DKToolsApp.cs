@@ -40,13 +40,23 @@ namespace RevitDKTools
             return Result.Succeeded;
         }
 
+        private void AssignProperties(UIControlledApplication application)
+        {
+            DKToolsAppInstance = this;
+            UIControlledApplication = application;
+        }
+ 
+        private static void InstantiatePythonEngine()
+        {
+            MyPythonEngine = new PythonExecutionEnviroment();
+        }
+ 
         private void CreateDynamicAssemblyAsProxyForPythonScripts()
         {
-           System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
+            System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
             ResourceManager resourceManager = new ResourceManager(
                 "RevitDKTools.Properties.Resources",
                 Assembly.GetExecutingAssembly());
-
             xml.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
                 resourceManager.GetString("SCRIPTS_SETTINGS_XML_LOCATION"));
  
@@ -67,6 +77,24 @@ namespace RevitDKTools
             RegisterDocablePanelToRevit(application);
         }
 
+        private void PassRevitDocumentInstance_OnViewActivated(object sender, ViewActivatedEventArgs e)
+        {
+            if (_parameterEditorWPFPage.RevitDocument != e.Document)
+            {
+                _parameterEditorWPFPage.RevitDocument = e.Document;
+            }
+        }
+ 
+        private void CreateDockablePanel(UIControlledApplication application)
+        {
+            _parameterEditorWPFPage = new ParameterEditorWPFPage();
+            _parameterEditorWPFPage.VM.RevitSelectionWatcher = new SelectionChangedWatcher(application);
+            _parameterEditorWPFPage.VM.RevitSelectionWatcher.SelectionChanged +=
+                new EventHandler(_parameterEditorWPFPage.VM.RevitActiveSelection_SelectionChanged);
+            _parameterEditorWPFPage.VM.RevitSelectionWatcher.SelectionChanged +=
+                new EventHandler(_parameterEditorWPFPage.OverwriteContentInRichTextBox);
+        }
+
         private void RegisterDocablePanelToRevit(UIControlledApplication application)
         {
             DockablePaneProviderData dockablePaneProviderData = new DockablePaneProviderData();
@@ -80,40 +108,11 @@ namespace RevitDKTools
                 as IDockablePaneProvider);
         }
 
-        private void CreateDockablePanel(UIControlledApplication application)
-        {
-            _parameterEditorWPFPage = new ParameterEditorWPFPage();
-            _parameterEditorWPFPage.VM.RevitSelectionWatcher = new SelectionChangedWatcher(application);
-            _parameterEditorWPFPage.VM.RevitSelectionWatcher.SelectionChanged +=
-                new EventHandler(_parameterEditorWPFPage.VM.RevitActiveSelection_SelectionChanged);
-            _parameterEditorWPFPage.VM.RevitSelectionWatcher.SelectionChanged +=
-                new EventHandler(_parameterEditorWPFPage.OverwriteContentInRichTextBox);
-        }
-
         private void CreateButtonsOnRevitRibbon(UIControlledApplication application)
         {
             _commandsRibbonPanel = application.CreateRibbonPanel("Commands");
             RibbonPanelButtonMaker ribbonPanelButtonMaker = new RibbonPanelButtonMaker(new CombinedCommandsPanel(), _commandsRibbonPanel);
             ribbonPanelButtonMaker.BuildButtons();
-        }
-
-        private static void InstantiatePythonEngine()
-        {
-            MyPythonEngine = new PythonExecutionEnviroment();
-        }
-
-        private void AssignProperties(UIControlledApplication application)
-        {
-            DKToolsAppInstance = this;
-            UIControlledApplication = application;
-        }
-
-        private void PassRevitDocumentInstance_OnViewActivated(object sender, ViewActivatedEventArgs e)
-        {
-            if (_parameterEditorWPFPage.RevitDocument != e.Document)
-            {
-                _parameterEditorWPFPage.RevitDocument = e.Document;
-            }
         }
     }
 }
