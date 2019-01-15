@@ -18,10 +18,10 @@ namespace RevitDKTools.Commands.Generate
     public class PythonExecutionEnviroment : IExternalEventHandler, IPythonExecutionEnviroment
     {
         public PythonExecutionEnviroment EngineInstance { get; set; }
-        public ScriptRuntime PythonScriptRuntime { get; set; }
         public ScriptEngine PythonEngine { get; set; }
-        public Dictionary<string, CompiledCode> CompiledPythonScripts { get; set; } = new Dictionary<string, CompiledCode>();
-        public Dictionary<string, ScriptScope> CommandScopes { get; set; } = new Dictionary<string, ScriptScope>();
+        public ScriptRuntime PythonScriptRuntime { get; set; }
+        public Dictionary<string, CompiledCode> CompiledPythonScripts { get; set; }
+        public Dictionary<string, ScriptScope> CommandScopes { get; set; }
         public List<string> ExternalEventPythonScriptPath { get; set; }
         public ScriptScope LastUsedScope { get; set; }
         public Dictionary<string, dynamic> ScriptVariables { get; set; } = new Dictionary<string, dynamic>();
@@ -29,13 +29,14 @@ namespace RevitDKTools.Commands.Generate
         public PythonExecutionEnviroment()
         {
             EngineInstance = this;
-
             Dictionary<string, object> engineOptions = new Dictionary<string, object>
             {
                 ["LightweightScopes"] = true
             };
             PythonEngine = Python.CreateEngine(engineOptions);
             PythonScriptRuntime = PythonEngine.Runtime;
+            CompiledPythonScripts = new Dictionary<string, CompiledCode>();
+            CommandScopes = new Dictionary<string, ScriptScope>();
 
             CreateRvtModuleInEnviroment();
         }
