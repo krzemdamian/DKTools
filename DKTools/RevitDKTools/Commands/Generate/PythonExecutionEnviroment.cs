@@ -76,15 +76,7 @@ namespace RevitDKTools.Commands.Generate
                 CompiledPythonScripts[commandPath].Execute();
 
                 errorMessage = RetriveErrorMessageFromPythonScript(errorMessage, defaultScope);
-
-                //TODO: not sure if it's needed. ElementSet is reference object. So it should be changed.
-                //      inside Python script
-                bool getElementSetResult = defaultScope.TryGetVariable<ElementSet>("_element_set_", out ElementSet tempElementSet);
-                if (getElementSetResult)
-                {
-                    elementSelection = tempElementSet;
-                }
-            }
+           }
 
             else //if (!CompiledPythonScripts.ContainsKey(commandPath))
             {
@@ -98,15 +90,6 @@ namespace RevitDKTools.Commands.Generate
                 source.Execute(scope);
 
                 errorMessage = RetriveErrorMessageFromPythonScript(errorMessage, scope);
-
-                //TODO: not sure if it's needed. ElementSet is reference object. So it should be changed.
-                //      inside Python script
-                bool getElementSetResult =
-                    scope.TryGetVariable<ElementSet>("_element_set_", out ElementSet tempElementSet);
-                if (getElementSetResult)
-                {
-                    elementSelection = tempElementSet;
-                }
 
                 if (CommandScopes.ContainsKey(commandPath) == false)
                 {
