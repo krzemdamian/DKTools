@@ -61,13 +61,14 @@ namespace RevitDKTools.Commands.Generate
                 errorMessage = RetriveErrorMessageFromPythonScript(errorMessage, defaultScope);
            }
 
-            else //if (!CompiledPythonScripts.ContainsKey(commandPath))
+            else
             {
                 ScriptSource source = PythonEngine.CreateScriptSourceFromFile(commandPath);
                 ScriptScope scope = PythonEngine.CreateScope();
                 scope.SetVariable("_command_data_", commandData);
                 scope.SetVariable("_my_path_", commandPath);
-                scope.SetVariable("_app_path_", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                scope.SetVariable("_app_path_",
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                 CompiledCode compiled = source.Compile();
                 LastUsedScope = scope;
                 source.Execute(scope);
