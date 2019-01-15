@@ -16,12 +16,14 @@ namespace RevitDKTools.Commands.Generate
 {
     public interface IPythonExecutionEnviroment
     {
-        ScriptRuntime PythonScriptRuntime { get; set; }
+        PythonExecutionEnviroment EngineInstance { get; set; }
         ScriptEngine PythonEngine { get; set; }
+        ScriptRuntime PythonScriptRuntime { get; set; }
         Dictionary<string, CompiledCode> CompiledPythonScripts { get; set; }
+        Dictionary<string, ScriptScope> CommandScopes { get; set; }
         ExternalPythonScriptSetting ExternalEventPythonScriptPath { get; set; }
         ScriptScope LastUsedScope { get; set; }
-
+        Dictionary<string, dynamic> ScriptVariables { get; set; }
 
         void RunScript(string commandPath, ExternalCommandData commandData,
             out string errorMessage, ElementSet elementSelection);

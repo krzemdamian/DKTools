@@ -59,7 +59,7 @@ namespace RevitDKTools.Commands.Generate
                 CompiledPythonScripts[commandPath].Execute();
 
                 errorMessage = RetriveErrorMessageFromPythonScript(errorMessage, defaultScope);
-           }
+            }
 
             else
             {
