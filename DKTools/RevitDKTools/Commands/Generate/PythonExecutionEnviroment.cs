@@ -56,25 +56,20 @@ namespace RevitDKTools.Commands.Generate
             ExternalEvent exEvent = ExternalEvent.Create(EngineInstance);
             rvt.SetVariable("_event_", exEvent);
             rvt.SetVariable("_variables_", ScriptVariables);
-
-            
-
         }
 
         public void RunScript(string commandPath, ExternalCommandData commandData,
-            out string errorMessage, ElementSet elementSelection)
+                              out string errorMessage, ElementSet elementSelection)
         {
-            //throw new NotImplementedException();
-            
             errorMessage = "No additional information";
-
 
             if (CompiledPythonScripts.ContainsKey(commandPath))
             {
                 ScriptScope defaultScope = CompiledPythonScripts[commandPath].DefaultScope;
                 defaultScope.SetVariable("_command_data_", commandData);
                 defaultScope.SetVariable("_my_path_", commandPath);
-                defaultScope.SetVariable("_app_path_", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                defaultScope.SetVariable("_app_path_",
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                 LastUsedScope = defaultScope;
 
                 //TODO: add scope from dictionary
@@ -82,13 +77,13 @@ namespace RevitDKTools.Commands.Generate
 
                 errorMessage = RetriveErrorMessageFromPythonScript(errorMessage, defaultScope);
 
+                //TODO: not sure if it's needed. ElementSet is reference object. So it should be changed.
+                //      inside Python script
                 bool getElementSetResult = defaultScope.TryGetVariable<ElementSet>("_element_set_", out ElementSet tempElementSet);
                 if (getElementSetResult)
                 {
                     elementSelection = tempElementSet;
                 }
-                #endregion
-
             }
 
             else //if (!CompiledPythonScripts.ContainsKey(commandPath))
