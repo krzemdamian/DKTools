@@ -28,12 +28,12 @@ namespace RevitDKTools.Commands.Generate
 
         public PythonExecutionEnviroment()
         {
+            EngineInstance = this;
+
             Dictionary<string, object> engineOptions = new Dictionary<string, object>
             {
                 ["LightweightScopes"] = true
             };
-            EngineInstance = this;
-
             PythonEngine = Python.CreateEngine(engineOptions);
             PythonScriptRuntime = PythonEngine.Runtime;
             PythonScriptRuntime.LoadAssembly(Assembly.Load("RevitAPI"));
