@@ -80,25 +80,7 @@ namespace RevitDKTools.Commands.Generate
                 //TODO: add scope from dictionary
                 CompiledPythonScripts[commandPath].Execute();
 
-                //ExternalEventPythonScriptPath[0] = string.Empty;
-
-                // region where engine tries to retrive _event_path_, _error_message_, _element_set_
-                #region _get_information_from_python_script_
-                /*bool getPathResult = defaultScope.TryGetVariable<string>("_event_path_", out string tempPath);
-                if (getPathResult)
-                {
-                    ExternalEventPythonScriptPath = tempPath;
-                }
-                else
-                {
-                    ExternalEventPythonScriptPath = null;
-                }
-                */
-                bool getErrorMessageResult = defaultScope.TryGetVariable<string>("_error_message_", out string tempErrorMessage);
-                if (getErrorMessageResult)
-                {
-                    errorMessage = tempErrorMessage;
-                }
+                errorMessage = RetriveErrorMessageFromPythonScript(errorMessage, defaultScope);
 
                 bool getElementSetResult = defaultScope.TryGetVariable<ElementSet>("_element_set_", out ElementSet tempElementSet);
                 if (getElementSetResult)
@@ -119,28 +101,6 @@ namespace RevitDKTools.Commands.Generate
                 CompiledCode compiled = source.Compile();
                 LastUsedScope = scope;
                 source.Execute(scope);
-                //ExternalEventPythonScriptPath[0] = string.Empty;
-                
-
-                
-                // region where engine tries to retrive _event_path_, _error_message_, _element_set_
-                #region _get_information_from_python_script_
-                /*
-                bool getPathResult = scope.TryGetVariable<string>("_event_path_", out string tempPath);
-                if (getPathResult)
-                {
-                    ExternalEventPythonScriptPath = tempPath;
-                }
-                else
-                {
-                    ExternalEventPythonScriptPath = null;
-                }
-                */
-                bool getErrorMessageResult = scope.TryGetVariable<string>("_error_message_", out string tempErrorMessage);
-                if (getErrorMessageResult)
-                {
-                    errorMessage = tempErrorMessage;
-                }
 
                 bool getElementSetResult = scope.TryGetVariable<ElementSet>("_element_set_", out ElementSet tempElementSet);
                 if (getElementSetResult)
