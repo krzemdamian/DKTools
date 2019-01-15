@@ -102,7 +102,12 @@ namespace RevitDKTools.Commands.Generate
                 LastUsedScope = scope;
                 source.Execute(scope);
 
-                bool getElementSetResult = scope.TryGetVariable<ElementSet>("_element_set_", out ElementSet tempElementSet);
+                errorMessage = RetriveErrorMessageFromPythonScript(errorMessage, scope);
+
+                //TODO: not sure if it's needed. ElementSet is reference object. So it should be changed.
+                //      inside Python script
+                bool getElementSetResult =
+                    scope.TryGetVariable<ElementSet>("_element_set_", out ElementSet tempElementSet);
                 if (getElementSetResult)
                 {
                     elementSelection = tempElementSet;
