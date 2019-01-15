@@ -153,16 +153,8 @@ namespace RevitDKTools.Commands.Generate
             if (ExternalEventPythonScriptPath.Any())
             {
                 ScriptSource externalScriptSource = PythonEngine.CreateScriptSourceFromFile(ExternalEventPythonScriptPath[0]);
-                //externalScriptSource.Compile();
                 externalScriptSource.Execute(LastUsedScope);
             }
         }
-
-        /*
-        private string RelativeToAbsolutePath(string path)
-        {
-            throw new NotImplementedException();
-        }
-        */
     }
 }
