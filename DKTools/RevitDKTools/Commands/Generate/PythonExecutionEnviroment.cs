@@ -36,11 +36,19 @@ namespace RevitDKTools.Commands.Generate
             };
             PythonEngine = Python.CreateEngine(engineOptions);
             PythonScriptRuntime = PythonEngine.Runtime;
+
+            CreateRvtModuleInEnviroment();
+        }
+
+        private void CreateRvtModuleInEnviroment()
+        {
             PythonScriptRuntime.LoadAssembly(Assembly.Load("RevitAPI"));
             PythonScriptRuntime.LoadAssembly(Assembly.Load("RevitAPIUI"));
 
+            //TODO: Change from list to object of new class with Set(), Get() methods
             ExternalEventPythonScriptPath = new List<string>();
             ExternalEventPythonScriptPath.Add(string.Empty);
+
             ScriptScope rvt = PythonEngine.CreateModule("rvt");
             rvt.SetVariable("_app_", RevitDKTools.DKToolsApp.UIControlledApplication);
             rvt.SetVariable("_event_path_", ExternalEventPythonScriptPath);
