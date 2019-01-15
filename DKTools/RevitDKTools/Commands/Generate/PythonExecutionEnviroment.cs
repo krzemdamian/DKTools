@@ -108,6 +108,10 @@ namespace RevitDKTools.Commands.Generate
                     elementSelection = tempElementSet;
                 }
 
+                if (CommandScopes.ContainsKey(commandPath) == false)
+                {
+                    CommandScopes.Add(commandPath, scope);
+                }
                 AddToCompiledScriptsList(commandPath, scope, compiled);
             }
         }
@@ -121,10 +125,9 @@ namespace RevitDKTools.Commands.Generate
                 debugMode = tempDebug;
             }
 
-            if (!debugMode)
+            if (debugMode == false)
             {
                 CompiledPythonScripts.Add(commandPath, compiled);
-                CommandScopes.Add(commandPath, scope);
             }
         }
 
