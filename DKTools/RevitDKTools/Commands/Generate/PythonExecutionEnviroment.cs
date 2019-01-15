@@ -107,20 +107,24 @@ namespace RevitDKTools.Commands.Generate
                 {
                     elementSelection = tempElementSet;
                 }
-                bool debugMode = false;
-                bool getDebugResult = scope.TryGetVariable<bool>("_debug_", out bool tempDebug);
-                if (getDebugResult)
-                {
-                    debugMode = tempDebug;
-                }
 
-                if (!debugMode)
-                {
-                    CompiledPythonScripts.Add(commandPath, compiled);
-                    CommandScopes.Add(commandPath, scope);
-                }
-                #endregion
+                AddToCompiledScriptsList(commandPath, scope, compiled);
+            }
+        }
 
+        private void AddToCompiledScriptsList(string commandPath, ScriptScope scope, CompiledCode compiled)
+        {
+            bool debugMode = false;
+            bool getDebugResult = scope.TryGetVariable<bool>("_debug_", out bool tempDebug);
+            if (getDebugResult)
+            {
+                debugMode = tempDebug;
+            }
+
+            if (!debugMode)
+            {
+                CompiledPythonScripts.Add(commandPath, compiled);
+                CommandScopes.Add(commandPath, scope);
             }
         }
 
