@@ -22,7 +22,7 @@ namespace RevitDKTools.Commands.Generate
         public ScriptRuntime PythonScriptRuntime { get; set; }
         public Dictionary<string, CompiledCode> CompiledPythonScripts { get; set; }
         public Dictionary<string, ScriptScope> CommandScopes { get; set; }
-        public List<string> ExternalEventPythonScriptPath { get; set; }
+        public ExternalPythonScriptSetting ExternalEventPythonScriptPath { get; set; }
         public ScriptScope LastUsedScope { get; set; }
         public Dictionary<string, dynamic> ScriptVariables { get; set; } = new Dictionary<string, dynamic>();
 
@@ -88,9 +88,7 @@ namespace RevitDKTools.Commands.Generate
             PythonScriptRuntime.LoadAssembly(Assembly.Load("RevitAPI"));
             PythonScriptRuntime.LoadAssembly(Assembly.Load("RevitAPIUI"));
 
-            //TODO: Change from list to object of new class with Set(), Get() methods
-            ExternalEventPythonScriptPath = new List<string>();
-            ExternalEventPythonScriptPath.Add(string.Empty);
+            ExternalEventPythonScriptPath = new ExternalPythonScriptSetting();
 
             ScriptScope rvt = PythonEngine.CreateModule("rvt");
             rvt.SetVariable("_app_", RevitDKTools.DKToolsApp.UIControlledApplication);
@@ -135,9 +133,10 @@ namespace RevitDKTools.Commands.Generate
 
         public void Execute(UIApplication app)
         {
-            if (ExternalEventPythonScriptPath.Any())
+            if (string.IsNullOrEmpty(ExternalEventPythonScriptPath.Location) == false)
             {
-                ScriptSource externalScriptSource = PythonEngine.CreateScriptSourceFromFile(ExternalEventPythonScriptPath[0]);
+                ScriptSource externalScriptSource =
+                    PythonEngine.CreateScriptSourceFromFile(ExternalEventPythonScriptPath.Location);
                 externalScriptSource.Execute(LastUsedScope);
             }
         }

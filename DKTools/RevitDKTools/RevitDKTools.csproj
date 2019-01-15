@@ -225,6 +225,8 @@
     <Compile Include="Commands\Embed\ButtonData\PushButtonMaker.cs" />
     <Compile Include="Commands\Embed\ButtonData\ShowParameterEditor.cs" />
     <Compile Include="Commands\Generate\ClassEmitter.cs" />
+    <Compile Include="Commands\Generate\ExternalPythonScriptSetting.cs" />
+    <Compile Include="Commands\Generate\IExternalPythonScriptSetting.cs" />
     <Compile Include="Commands\Generate\ISettingsInterpreter.cs" />
     <Compile Include="Commands\Generate\PythonCommandProxyBaseClass.cs" />
     <Compile Include="Commands\Generate\IClassEmitter.cs" />
