@@ -128,6 +128,18 @@ namespace RevitDKTools.Commands.Generate
             }
         }
 
+        private static string RetriveErrorMessageFromPythonScript(string errorMessage, ScriptScope defaultScope)
+        {
+            bool getErrorMessageResult = defaultScope.TryGetVariable<string>
+                ("_error_message_", out string tempErrorMessage);
+            if (getErrorMessageResult)
+            {
+                errorMessage = tempErrorMessage;
+            }
+
+            return errorMessage;
+        }
+
         public string GetName()
         {
             return "DKTools Python Engine with External Event";
