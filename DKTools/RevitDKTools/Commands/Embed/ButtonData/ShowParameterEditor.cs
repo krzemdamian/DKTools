@@ -8,7 +8,7 @@ namespace RevitDKTools.Commands.Embed.ButtonData
         {
             base.Name = this.GetType().Name;
             base.TextOnRibbon = "Parameter\r\nEditor";
-            base.ClassName = "RevitDKTools.Command.Receiver." + this.GetType().Name;
+            base.ClassName = "RevitDKTools.Commands.Embed.Receiver." + this.GetType().Name;
         }
 
         public override void SetToolTip()
