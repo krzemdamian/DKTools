@@ -225,9 +225,13 @@
     <Compile Include="Commands\Embed\ButtonData\PushButtonMaker.cs" />
     <Compile Include="Commands\Embed\ButtonData\ShowParameterEditor.cs" />
     <Compile Include="Commands\Generate\ClassEmitter.cs" />
+    <Compile Include="Commands\Generate\DefaultSettingProvider.cs" />
     <Compile Include="Commands\Generate\ExternalPythonScriptSetting.cs" />
+    <Compile Include="Commands\Generate\ICommandsGenerator.cs" />
+    <Compile Include="Commands\Generate\IEmitterSetting.cs" />
     <Compile Include="Commands\Generate\IExternalPythonScriptSetting.cs" />
     <Compile Include="Commands\Generate\ISettingsInterpreter.cs" />
+    <Compile Include="Commands\Generate\IXmlPythonScriptsSettingsProvider.cs" />
     <Compile Include="Commands\Generate\PythonCommandProxyBaseClass.cs" />
     <Compile Include="Commands\Generate\IClassEmitter.cs" />
     <Compile Include="Commands\Generate\IPythonExecutionEnviroment.cs" />
@@ -237,6 +241,7 @@
     <Compile Include="Commands\Generate\CommandSetting.cs" />
     <Compile Include="Commands\Generate\XmlSettingsInterpreter.cs" />
     <Compile Include="Common\AssemblyResourceUtils.cs" />
+    <Compile Include="CompositionRoot.cs" />
     <Compile Include="DKToolsApp.cs" />
     <Compile Include="DockablePanels\ParameterEditor\Model\ISelectedElementParameterModel.cs" />
     <Compile Include="DockablePanels\ParameterEditor\Model\SelectedElementParameterModel.cs" />
@@ -255,6 +260,7 @@
     <Compile Include="Commands\Panels\GenericPanel.cs" />
     <Compile Include="Commands\Panels\RibbonPanelBuilder.cs" />
     <Compile Include="Commands\Panels\RibbonPanelMaker.cs" />
+    <Compile Include="ICompositionRoot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

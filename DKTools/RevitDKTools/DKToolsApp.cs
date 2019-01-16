@@ -12,6 +12,8 @@ using System.IO;
 using RevitDKTools.Commands.Generate;
 using System.Windows;
 using System.Resources;
+using Castle.Windsor;
+using Castle.MicroKernel.Registration;
 
 namespace RevitDKTools
 {
@@ -35,7 +37,25 @@ namespace RevitDKTools
             InstantiatePythonEngine();
             CreateButtonsOnRevitRibbon(application);
             PrepareParameterEditorDockablePanel(application);
-            CreateDynamicAssemblyAsProxyForPythonScripts();
+            //CreateDynamicAssemblyAsProxyForPythonScripts();
+
+            WindsorContainer container = new WindsorContainer();
+            container.Register(Component.For<UIControlledApplication>().Instance(application));
+            container.Register(Component.For<ICompositionRoot>().ImplementedBy<CompositionRoot>());
+            //types for dynamic buttons generation
+            container.Register(Component.For<ICommandsGenerator>().ImplementedBy<CommandsGenerator>());
+            container.Register(Component.For<IClassEmitter>().
+                               ImplementedBy<ClassEmitter<PythonCommandProxyBaseClass>>());
+            container.Register(
+                Component.For<IEmitterSetting,IXmlPythonScriptsSettingsProvider>().
+                ImplementedBy<DefaultSettingsProvider>());
+            container.Register(Component.For<ISettingsInterpreter>().ImplementedBy<XmlSettingsInterpreter>());
+            container.Register(Component.For<RibbonPanel>().Instance(_commandsRibbonPanel).
+                LifestyleSingleton());
+
+            RibbonPanel panel = container.Resolve<RibbonPanel>();
+            ICommandsGenerator generator = container.Resolve<ICommandsGenerator>();
+            generator.GenerateDynamicCommands();
 
             return Result.Succeeded;
         }
@@ -45,26 +65,18 @@ namespace RevitDKTools
             _DKToolsAppInstance = this;
             UIControlledApplication = application;
         }
- 
+
         private static void InstantiatePythonEngine()
         {
             MyPythonEngine = new PythonExecutionEnviroment();
         }
- 
+
         private void CreateDynamicAssemblyAsProxyForPythonScripts()
         {
-            System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
-            ResourceManager resourceManager = new ResourceManager(
-                "RevitDKTools.Properties.Resources",
-                Assembly.GetExecutingAssembly());
-            xml.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-                resourceManager.GetString("SCRIPTS_SETTINGS_XML_LOCATION"));
- 
-            CommandsGenerator generator = 
+            CommandsGenerator generator =
                 new CommandsGenerator (
-                    new ClassEmitter<PythonCommandProxyBaseClass>(
-                        resourceManager.GetString("DYNAMIC_ASSEMBLY_NAME")), 
-                    new XmlSettingsInterpreter(xml),
+                    new ClassEmitter<PythonCommandProxyBaseClass>(new DefaultSettingsProvider()),
+                    new XmlSettingsInterpreter(new DefaultSettingsProvider()),
                     _commandsRibbonPanel);
             generator.GenerateDynamicCommands();
         }
@@ -108,11 +120,13 @@ namespace RevitDKTools
                 as IDockablePaneProvider);
         }
 
-        private void CreateButtonsOnRevitRibbon(UIControlledApplication application)
+        private RibbonPanel CreateButtonsOnRevitRibbon(UIControlledApplication application)
         {
             _commandsRibbonPanel = application.CreateRibbonPanel("Commands");
-            RibbonPanelButtonMaker ribbonPanelButtonMaker = new RibbonPanelButtonMaker(new CombinedCommandsPanel(), _commandsRibbonPanel);
+            RibbonPanelButtonMaker ribbonPanelButtonMaker =
+                new RibbonPanelButtonMaker (new CombinedCommandsPanel(), _commandsRibbonPanel);
             ribbonPanelButtonMaker.BuildButtons();
+            return _commandsRibbonPanel;
         }
     }
 }

@@ -14,9 +14,10 @@ namespace RevitDKTools.Commands.Generate
 
         public ICollection<CommandSetting> ScriptCommandSettings { get { return _scriptCommandSettings; } }
 
-        public XmlSettingsInterpreter(XmlDocument xml)
+        public XmlSettingsInterpreter(IXmlPythonScriptsSettingsProvider settingsProvider)
         {
             _scriptCommandSettings = new List<CommandSetting>();
+            XmlDocument xml = settingsProvider.Xml;
             AssignSettingsToCollection(xml);
         }
 

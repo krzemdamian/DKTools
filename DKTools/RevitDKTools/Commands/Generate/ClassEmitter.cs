@@ -30,8 +30,9 @@ namespace RevitDKTools.Commands.Generate
             }
         }
 
-        public ClassEmitter(string dynamicAssemblyName)
+        public ClassEmitter(IEmitterSetting emitterSetting)
         {
+            _emitterSetting = emitterSetting;
             if (!string.IsNullOrEmpty(Assembly.GetExecutingAssembly().Location))
             {
                 ResourceManager resourceManager = new ResourceManager(
@@ -48,7 +49,7 @@ namespace RevitDKTools.Commands.Generate
 
             _asseblyName = new AssemblyName
             {
-                Name = dynamicAssemblyName
+                Name = _emitterSetting.DynamicAssemblName
             };
             _appDomain = AppDomain.CurrentDomain;
             _assemblyBuilder = _appDomain.DefineDynamicAssembly(_asseblyName,
