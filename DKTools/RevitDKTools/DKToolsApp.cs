@@ -17,10 +17,10 @@ namespace RevitDKTools
 {
     public class DKToolsApp : IExternalApplication
     {
-        public static DKToolsApp DKToolsAppInstance { get; set; }
-        public static UIControlledApplication UIControlledApplication { get; set; } = null;
+        public static UIControlledApplication UIControlledApplication { get; set; }
         public static IPythonExecutionEnviroment MyPythonEngine { get; set; }
 
+        private DKToolsApp _DKToolsAppInstance;
         private ParameterEditorWPFPage _parameterEditorWPFPage;
         private RibbonPanel _commandsRibbonPanel;
 
@@ -42,7 +42,7 @@ namespace RevitDKTools
 
         private void AssignProperties(UIControlledApplication application)
         {
-            DKToolsAppInstance = this;
+            _DKToolsAppInstance = this;
             UIControlledApplication = application;
         }
  
