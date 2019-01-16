@@ -17,26 +17,27 @@ namespace RevitDKTools.Commands.Generate
 {
     public class PythonExecutionEnviroment : IExternalEventHandler, IPythonExecutionEnviroment
     {
-        public PythonExecutionEnviroment EngineInstance { get; set; }
-        public ScriptEngine PythonEngine { get; set; }
-        public ScriptRuntime PythonScriptRuntime { get; set; }
-        public Dictionary<string, CompiledCode> CompiledPythonScripts { get; set; }
-        public Dictionary<string, ScriptScope> CommandScopes { get; set; }
-        public ExternalPythonScriptSetting ExternalEventPythonScriptPath { get; set; }
-        public ScriptScope LastUsedScope { get; set; }
-        public Dictionary<string, dynamic> ScriptVariables { get; set; } = new Dictionary<string, dynamic>();
+        private PythonExecutionEnviroment _engineInstance;
+        private ScriptEngine _pythonEngine;
+        private ScriptRuntime _pythonScriptRuntime;
+        private Dictionary<string, CompiledCode> _compiledPythonScripts;
+        private Dictionary<string, ScriptScope> _commandScopes;
+        private ExternalPythonScriptSetting _externalEventPythonScriptPath;
+        private ScriptScope _lastUsedScope;
+        private Dictionary<string, dynamic> _scriptVariables;
 
         public PythonExecutionEnviroment()
         {
-            EngineInstance = this;
+            _engineInstance = this;
             Dictionary<string, object> engineOptions = new Dictionary<string, object>
             {
                 ["LightweightScopes"] = true
             };
-            PythonEngine = Python.CreateEngine(engineOptions);
-            PythonScriptRuntime = PythonEngine.Runtime;
-            CompiledPythonScripts = new Dictionary<string, CompiledCode>();
-            CommandScopes = new Dictionary<string, ScriptScope>();
+            _pythonEngine = Python.CreateEngine(engineOptions);
+            _pythonScriptRuntime = _pythonEngine.Runtime;
+            _compiledPythonScripts = new Dictionary<string, CompiledCode>();
+            _commandScopes = new Dictionary<string, ScriptScope>();
+            _scriptVariables = new Dictionary<string, dynamic>();
 
             CreateRvtModuleInEnviroment();
         }
@@ -46,38 +47,38 @@ namespace RevitDKTools.Commands.Generate
         {
             errorMessage = "No additional information";
 
-            if (CompiledPythonScripts.ContainsKey(commandPath))
+            if (_compiledPythonScripts.ContainsKey(commandPath))
             {
-                ScriptScope defaultScope = CompiledPythonScripts[commandPath].DefaultScope;
+                ScriptScope defaultScope = _compiledPythonScripts[commandPath].DefaultScope;
                 defaultScope.SetVariable("_command_data_", commandData);
                 defaultScope.SetVariable("_my_path_", commandPath);
                 defaultScope.SetVariable("_app_path_",
                     Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                LastUsedScope = defaultScope;
+                _lastUsedScope = defaultScope;
 
                 //TODO: add scope from dictionary
-                CompiledPythonScripts[commandPath].Execute();
+                _compiledPythonScripts[commandPath].Execute();
 
                 errorMessage = RetriveErrorMessageFromPythonScript(errorMessage, defaultScope);
             }
 
             else
             {
-                ScriptSource source = PythonEngine.CreateScriptSourceFromFile(commandPath);
-                ScriptScope scope = PythonEngine.CreateScope();
+                ScriptSource source = _pythonEngine.CreateScriptSourceFromFile(commandPath);
+                ScriptScope scope = _pythonEngine.CreateScope();
                 scope.SetVariable("_command_data_", commandData);
                 scope.SetVariable("_my_path_", commandPath);
                 scope.SetVariable("_app_path_",
                     Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                 CompiledCode compiled = source.Compile();
-                LastUsedScope = scope;
+                _lastUsedScope = scope;
                 source.Execute(scope);
 
                 errorMessage = RetriveErrorMessageFromPythonScript(errorMessage, scope);
 
-                if (CommandScopes.ContainsKey(commandPath) == false)
+                if (_commandScopes.ContainsKey(commandPath) == false)
                 {
-                    CommandScopes.Add(commandPath, scope);
+                    _commandScopes.Add(commandPath, scope);
                 }
                 AddToCompiledScriptsList(commandPath, scope, compiled);
             }
@@ -85,18 +86,18 @@ namespace RevitDKTools.Commands.Generate
 
         private void CreateRvtModuleInEnviroment()
         {
-            PythonScriptRuntime.LoadAssembly(Assembly.Load("RevitAPI"));
-            PythonScriptRuntime.LoadAssembly(Assembly.Load("RevitAPIUI"));
+            _pythonScriptRuntime.LoadAssembly(Assembly.Load("RevitAPI"));
+            _pythonScriptRuntime.LoadAssembly(Assembly.Load("RevitAPIUI"));
 
-            ExternalEventPythonScriptPath = new ExternalPythonScriptSetting();
+            _externalEventPythonScriptPath = new ExternalPythonScriptSetting();
 
-            ScriptScope rvt = PythonEngine.CreateModule("rvt");
+            ScriptScope rvt = _pythonEngine.CreateModule("rvt");
             rvt.SetVariable("_app_", RevitDKTools.DKToolsApp.UIControlledApplication);
-            rvt.SetVariable("_event_path_", ExternalEventPythonScriptPath);
-            rvt.SetVariable("_handler_", EngineInstance);
-            ExternalEvent exEvent = ExternalEvent.Create(EngineInstance);
+            rvt.SetVariable("_event_path_", _externalEventPythonScriptPath);
+            rvt.SetVariable("_handler_", _engineInstance);
+            ExternalEvent exEvent = ExternalEvent.Create(_engineInstance);
             rvt.SetVariable("_event_", exEvent);
-            rvt.SetVariable("_variables_", ScriptVariables);
+            rvt.SetVariable("_variables_", _scriptVariables);
         }
 
         private void AddToCompiledScriptsList(string commandPath, ScriptScope scope, CompiledCode compiled)
@@ -110,7 +111,7 @@ namespace RevitDKTools.Commands.Generate
 
             if (debugMode == false)
             {
-                CompiledPythonScripts.Add(commandPath, compiled);
+                _compiledPythonScripts.Add(commandPath, compiled);
             }
         }
 
@@ -133,11 +134,11 @@ namespace RevitDKTools.Commands.Generate
 
         public void Execute(UIApplication app)
         {
-            if (string.IsNullOrEmpty(ExternalEventPythonScriptPath.Location) == false)
+            if (string.IsNullOrEmpty(_externalEventPythonScriptPath.Location) == false)
             {
                 ScriptSource externalScriptSource =
-                    PythonEngine.CreateScriptSourceFromFile(ExternalEventPythonScriptPath.Location);
-                externalScriptSource.Execute(LastUsedScope);
+                    _pythonEngine.CreateScriptSourceFromFile(_externalEventPythonScriptPath.Location);
+                externalScriptSource.Execute(_lastUsedScope);
             }
         }
     }
