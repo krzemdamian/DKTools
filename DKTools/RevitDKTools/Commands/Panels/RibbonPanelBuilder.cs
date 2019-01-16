@@ -2,13 +2,13 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
-namespace RevitDKTools.Panels
+namespace RevitDKTools.Commands.Panels
 {
-    public abstract class RibbonPanelBuilder
+    public abstract class RibbonPanelButtonBuilder
     {
         public RibbonPanel Panel { get; set; }
 
-        public abstract void BuildPanel();
+        public abstract void BuildPanelButtons();
 
         public RibbonPanel GetPanel()
         {

@@ -59,5 +59,41 @@ namespace RevitDKTools.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DynamicProxy.
+        /// </summary>
+        internal static string DYNAMIC_ASSEMBLY_NAME {
+            get {
+                return ResourceManager.GetString("DYNAMIC_ASSEMBLY_NAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \PythonScripts\.
+        /// </summary>
+        internal static string PROXY_DLL_LOCATION {
+            get {
+                return ResourceManager.GetString("PROXY_DLL_LOCATION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \PythonScripts\.
+        /// </summary>
+        internal static string SCRIPTS_FOLDER_LOCATION {
+            get {
+                return ResourceManager.GetString("SCRIPTS_FOLDER_LOCATION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \PythonScripts\ScriptsSettings.xml.
+        /// </summary>
+        internal static string SCRIPTS_SETTINGS_XML_LOCATION {
+            get {
+                return ResourceManager.GetString("SCRIPTS_SETTINGS_XML_LOCATION", resourceCulture);
+            }
+        }
     }
 }

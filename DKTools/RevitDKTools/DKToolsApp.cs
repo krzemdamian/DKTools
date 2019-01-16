@@ -4,23 +4,25 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Microsoft.Scripting.Hosting;
 using System.Reflection;
-using RevitDKTools.Panels;
-using RevitDKTools.Command.Receiver;
+using RevitDKTools.Commands.Panels;
+using RevitDKTools.Commands.Embed.Receiver;
 using RevitDKTools.DockablePanels.ParameterEditor.View;
 using Autodesk.Revit.UI.Events;
-using RevitDKTools.Command.ButtonData;
 using System.IO;
+using RevitDKTools.Commands.Generate;
+using System.Windows;
+using System.Resources;
 
 namespace RevitDKTools
 {
     public class DKToolsApp : IExternalApplication
     {
-        public static DKToolsApp thisApp = null;
-        public static UIControlledApplication Application { get; set; } = null;
+        public static DKToolsApp DKToolsAppInstance { get; set; }
+        public static UIControlledApplication UIControlledApplication { get; set; } = null;
+        public static IPythonExecutionEnviroment MyPythonEngine { get; set; }
 
-        public static IMyPythonEngine MyPythonEngine { get; set; }
-
-        private MainRevitPage mainRevitPage;
+        private ParameterEditorWPFPage _parameterEditorWPFPage;
+        private RibbonPanel _commandsRibbonPanel;
 
         public Result OnShutdown(UIControlledApplication application)
         {
@@ -29,71 +31,88 @@ namespace RevitDKTools
 
         public Result OnStartup(UIControlledApplication application)
         {
-            #region Assign properties
-            thisApp = this;
-            Application = application;
-            MyPythonEngine = new MyPythonEngine();
-            // RevitApiVersion = application.ControlledApplication.VersionNumber;
-            #endregion
-
-            #region Create Panels
-            RibbonPanel combinedCommandsPanel = application.CreateRibbonPanel("Commands");
-
-            RibbonPanelMaker panelMaker = new RibbonPanelMaker(new CombinedCommandsPanel(), combinedCommandsPanel);
-            panelMaker.BuildPanel();
-            #endregion
-
-
-            #region Register Dockable Panel: Parameter Editor
-            DockablePaneProviderData data = new DockablePaneProviderData();
-            //MainRevitPage mainDocableWindow = new MainRevitPage();
-            mainRevitPage = new MainRevitPage();
-            mainRevitPage.VM.RevitSelectionWatcher = new SelectionChangedWatcher(application);
-
-            data.FrameworkElement = mainRevitPage
-                as System.Windows.FrameworkElement;
-
-            data.InitialState = new DockablePaneState();
-
-            data.InitialState.DockPosition = DockPosition.Bottom;
-
-            DockablePaneId dpid = new DockablePaneId(
-                new Guid("{F1D5DCB2-DB78-483C-8A77-C7BD7CBC6557}"));
-
-            application.RegisterDockablePane(
-                dpid, "DKTools: Parameter Editor", mainRevitPage
-                as IDockablePaneProvider);
-            
-            application.ViewActivated += new EventHandler
-                <Autodesk.Revit.UI.Events.ViewActivatedEventArgs>(OnViewActivated);
-
-            mainRevitPage.VM.RevitSelectionWatcher.SelectionChanged += 
-                new EventHandler(mainRevitPage.VM.RevitActiveSelection_SelectionChanged);
-            mainRevitPage.VM.RevitSelectionWatcher.SelectionChanged += new EventHandler(
-                mainRevitPage.OverwriteContentInRichTextBox);
-
-            #endregion
-
-            #region DynamicCommandsCreation
-            //read xml and generate and save dynamic assembly for proxy classes
-            System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
-            xml.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)+"\\PythonScripts\\ScriptsSettings.xml");
-            DynamicButtonGenerator generator = new DynamicButtonGenerator(xml, combinedCommandsPanel);
-
-            generator.ReadXML();
-            generator.CreateDynamicAssembly();
-            generator.CreateButtons();
-            #endregion
+            AssignProperties(application);
+            InstantiatePythonEngine();
+            CreateButtonsOnRevitRibbon(application);
+            PrepareParameterEditorDockablePanel(application);
+            CreateDynamicAssemblyAsProxyForPythonScripts();
 
             return Result.Succeeded;
         }
 
-        void OnViewActivated(object sender, ViewActivatedEventArgs e)
+        private void AssignProperties(UIControlledApplication application)
         {
-            if (mainRevitPage.RevitDocument != e.Document)
+            DKToolsAppInstance = this;
+            UIControlledApplication = application;
+        }
+ 
+        private static void InstantiatePythonEngine()
+        {
+            MyPythonEngine = new PythonExecutionEnviroment();
+        }
+ 
+        private void CreateDynamicAssemblyAsProxyForPythonScripts()
+        {
+            System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
+            ResourceManager resourceManager = new ResourceManager(
+                "RevitDKTools.Properties.Resources",
+                Assembly.GetExecutingAssembly());
+            xml.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                resourceManager.GetString("SCRIPTS_SETTINGS_XML_LOCATION"));
+ 
+            CommandsGenerator generator = 
+                new CommandsGenerator (
+                    new ClassEmitter<PythonCommandProxyBaseClass>(
+                        resourceManager.GetString("DYNAMIC_ASSEMBLY_NAME")), 
+                    new XmlSettingsInterpreter(xml),
+                    _commandsRibbonPanel);
+            generator.GenerateDynamicCommands();
+        }
+
+        private void PrepareParameterEditorDockablePanel(UIControlledApplication application)
+        {
+            CreateDockablePanel(application);
+            application.ViewActivated += new EventHandler
+                <Autodesk.Revit.UI.Events.ViewActivatedEventArgs>(PassRevitDocumentInstance_OnViewActivated);
+            RegisterDocablePanelToRevit(application);
+        }
+
+        private void PassRevitDocumentInstance_OnViewActivated(object sender, ViewActivatedEventArgs e)
+        {
+            if (_parameterEditorWPFPage.RevitDocument != e.Document)
             {
-                mainRevitPage.RevitDocument = e.Document;
+                _parameterEditorWPFPage.RevitDocument = e.Document;
             }
+        }
+ 
+        private void CreateDockablePanel(UIControlledApplication application)
+        {
+            _parameterEditorWPFPage = new ParameterEditorWPFPage();
+            _parameterEditorWPFPage.VM.RevitSelectionWatcher = new SelectionChangedWatcher(application);
+            _parameterEditorWPFPage.VM.RevitSelectionWatcher.SelectionChanged +=
+                new EventHandler(_parameterEditorWPFPage.VM.RevitActiveSelection_SelectionChanged);
+            _parameterEditorWPFPage.VM.RevitSelectionWatcher.SelectionChanged +=
+                new EventHandler(_parameterEditorWPFPage.OverwriteContentInRichTextBox);
+        }
+
+        private void RegisterDocablePanelToRevit(UIControlledApplication application)
+        {
+            DockablePaneProviderData dockablePaneProviderData = new DockablePaneProviderData();
+            dockablePaneProviderData.FrameworkElement = _parameterEditorWPFPage as System.Windows.FrameworkElement;
+            dockablePaneProviderData.InitialState = new DockablePaneState();
+            dockablePaneProviderData.InitialState.DockPosition = DockPosition.Bottom;
+            DockablePaneId dpid = new DockablePaneId(
+                new Guid("{F1D5DCB2-DB78-483C-8A77-C7BD7CBC6557}"));
+            application.RegisterDockablePane(
+                dpid, "DKTools: Parameter Editor", _parameterEditorWPFPage
+                as IDockablePaneProvider);
+        }
+
+        private void CreateButtonsOnRevitRibbon(UIControlledApplication application)
+        {
+            _commandsRibbonPanel = application.CreateRibbonPanel("Commands");
+            RibbonPanelButtonMaker ribbonPanelButtonMaker = new RibbonPanelButtonMaker(new CombinedCommandsPanel(), _commandsRibbonPanel);
+            ribbonPanelButtonMaker.BuildButtons();
         }
     }
 }

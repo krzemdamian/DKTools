@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RevitDKTools.Command.ButtonData;
+using RevitDKTools.Commands.Embed.ButtonData;
 
-namespace RevitDKTools.Panels
+namespace RevitDKTools.Commands.Panels
 {
-    public class GenericPanel : RibbonPanelBuilder
+    public class GenericPanel : RibbonPanelButtonBuilder
     {
-        public override void BuildPanel()
+        public override void BuildPanelButtons()
         {
             PushButtonMaker buttonMaker = new PushButtonMaker(new Info());
             buttonMaker.BuildPushButtonData();

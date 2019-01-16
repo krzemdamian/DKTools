@@ -5,21 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RevitDKTools.Panels
+namespace RevitDKTools.Commands.Panels
 {
-    public class RibbonPanelMaker
+    public class RibbonPanelButtonMaker
     {
-        readonly RibbonPanelBuilder _builder;
+        readonly RibbonPanelButtonBuilder _builder;
 
-        public RibbonPanelMaker(RibbonPanelBuilder builder, RibbonPanel panel)
+        public RibbonPanelButtonMaker(RibbonPanelButtonBuilder builder, RibbonPanel panel)
         {
             _builder = builder;
             _builder.Panel = panel;
         }
 
-        public void BuildPanel()
+        public void BuildButtons()
         {
-            _builder.BuildPanel();
+            _builder.BuildPanelButtons();
         }
 
         public void GetPanel()

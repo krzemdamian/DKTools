@@ -8,28 +8,35 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Resources;
 
-namespace RevitDKTools.Command.Receiver
+namespace RevitDKTools.Commands.Generate
 {
-    class DynamicCommandClassEmiter
+    class ClassEmitter<T> : IClassEmitter where T : IExternalCommand
     {
         readonly string _location;
         readonly AppDomain _appDomain;
         readonly AssemblyName _asseblyName;
-        AssemblyBuilder _assemblyBuilder;
+        private AssemblyBuilder _assemblyBuilder;
         readonly ModuleBuilder _moduleBuilder;
-        public string AssemblyLocation { get
+        public string AssemblyLocation
+        {
+            get
             {
                 return _location + _asseblyName.Name + ".dll";
-            } }
+            }
+        }
 
-        public DynamicCommandClassEmiter(string dynamicAssemblyName)
+        public ClassEmitter(string dynamicAssemblyName)
         {
             if (!string.IsNullOrEmpty(Assembly.GetExecutingAssembly().Location))
             {
-                _location = Assembly.GetExecutingAssembly().Location;
-                _location = Path.GetDirectoryName(_location);
-                _location = _location + "\\PythonScripts\\";
+                ResourceManager resourceManager = new ResourceManager(
+                    "RevitDKTools.Properties.Resources",
+                    Assembly.GetExecutingAssembly());
+
+                _location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                    resourceManager.GetString("PROXY_DLL_LOCATION");
             }
             else
             {
@@ -50,7 +57,8 @@ namespace RevitDKTools.Command.Receiver
         public Type BuildCommandType(string commandTypeName, string scriptPath)
         {
             TypeBuilder typeBuilder = _moduleBuilder.DefineType(
-                commandTypeName, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.BeforeFieldInit, typeof(DynamicCommandBase),new Type[] { typeof(IExternalCommand) });
+                commandTypeName, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.BeforeFieldInit, 
+                typeof(T), new Type[] { typeof(IExternalCommand) });
             
             ConstructorBuilder ctorBuilder = typeBuilder.DefineConstructor(
                 MethodAttributes.Public|MethodAttributes.HideBySig|MethodAttributes.SpecialName|MethodAttributes.RTSpecialName,
@@ -60,7 +68,7 @@ namespace RevitDKTools.Command.Receiver
             byte[] b = new byte[] { 01, 00, 01, 00, 00, 00, 00, 00 };
 
             typeBuilder.SetCustomAttribute(cinfo,b);
-            ConstructorInfo objCtor = typeof(DynamicCommandBase).GetConstructor(Type.EmptyTypes);
+            ConstructorInfo objCtor = typeof(T).GetConstructor(Type.EmptyTypes);
 
             FieldInfo scriptPathField = typeBuilder.BaseType.GetField("_scriptPath");
 
@@ -77,6 +85,7 @@ namespace RevitDKTools.Command.Receiver
 
             return typeBuilder.CreateType();
         }
+
         public void SaveAssembly()
         {
             try

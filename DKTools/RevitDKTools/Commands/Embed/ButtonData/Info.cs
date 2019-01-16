@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RevitDKTools.Command.ButtonData
+namespace RevitDKTools.Commands.Embed.ButtonData
 {
     class Info : PushButtonDataBuilder
     {
@@ -8,7 +8,7 @@ namespace RevitDKTools.Command.ButtonData
         {
             base.Name = this.GetType().Name;
             base.TextOnRibbon = "Info";
-            base.ClassName = "RevitDKTools.Command.Receiver." + this.GetType().Name;
+            base.ClassName = "RevitDKTools.Commands.Embed.Receiver." + this.GetType().Name;
         }
 
         public override void SetToolTip()
@@ -19,7 +19,7 @@ namespace RevitDKTools.Command.ButtonData
         public override void SetOptions()
         {
             base.Image = ButtonImage.Large;
-            string path = FormatResourceName("Command/Images/Large/blue/laptop.png");
+            string path = FormatResourceName("Commands/Images/Large/blue/laptop.png");
             base.LargeImageStream = ThisAssembly.GetManifestResourceStream(path);
         }
     }

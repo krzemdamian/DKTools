@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RevitDKTools.Command.ButtonData
+namespace RevitDKTools.Commands.Embed.ButtonData
 {
     class ShowParameterEditor : PushButtonDataBuilder
     {
@@ -8,7 +8,7 @@ namespace RevitDKTools.Command.ButtonData
         {
             base.Name = this.GetType().Name;
             base.TextOnRibbon = "Parameter\r\nEditor";
-            base.ClassName = "RevitDKTools.Command.Receiver." + this.GetType().Name;
+            base.ClassName = "RevitDKTools.Commands.Embed.Receiver." + this.GetType().Name;
         }
 
         public override void SetToolTip()
@@ -20,7 +20,7 @@ namespace RevitDKTools.Command.ButtonData
         public override void SetOptions()
         {
             base.Image = ButtonImage.Large;
-            string path = FormatResourceName("Command/Images/Large/blue/measure.png");
+            string path = FormatResourceName("Commands/Images/Large/blue/measure.png");
             base.LargeImageStream = ThisAssembly.GetManifestResourceStream(path);
         }
     }

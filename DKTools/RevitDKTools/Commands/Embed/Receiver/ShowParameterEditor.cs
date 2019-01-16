@@ -3,7 +3,7 @@ using Autodesk.Revit.UI;
 using System;
 using RevitDKTools;
 
-namespace RevitDKTools.Command.Receiver
+namespace RevitDKTools.Commands.Embed.Receiver
 {
     [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
     class ShowParameterEditor : IExternalCommand

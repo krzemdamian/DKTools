@@ -28,7 +28,7 @@ uidoc = uiapp.ActiveUIDocument
 doc = uidoc.Document
 cdoc = doc.Create
 
-rvt._event_path_[0]="{}\\PythonScripts\\Connections\\ConnectionHostVerification_sub.py".format(_app_path_)
+rvt._event_path_.Location = "{}\\PythonScripts\\Connections\\ConnectionHostVerification_sub.py".format(_app_path_)
 
 class Program(MainForm):
     #set "console" class parameter to 1 for debug dialog, set 2 fore modeless dialog

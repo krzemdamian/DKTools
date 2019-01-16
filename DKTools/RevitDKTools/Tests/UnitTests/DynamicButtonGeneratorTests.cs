@@ -56,9 +56,7 @@ namespace RevitDKTools.Tests.UnitTests
             DynamicButtonGenerator generator = new DynamicButtonGenerator(xml,_panel);
 
             // act
-            generator.ReadXML();
-            generator.CreateDynamicAssembly();
-            generator.CreateButtons();
+            generator.GenerateDynamicButtons();
 
             //TODO: change to check assembly
             // assert

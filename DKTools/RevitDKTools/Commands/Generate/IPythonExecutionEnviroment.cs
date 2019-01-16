@@ -12,17 +12,10 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace RevitDKTools.Command.Receiver
+namespace RevitDKTools.Commands.Generate
 {
-    public interface IMyPythonEngine
+    public interface IPythonExecutionEnviroment
     {
-        ScriptRuntime PythonScriptRuntime { get; set; }
-        ScriptEngine PythonEngine { get; set; }
-        Dictionary<string, CompiledCode> CompiledPythonScripts { get; set; }
-        List<string> ExternalEventPythonScriptPath { get; set; }
-        ScriptScope LastUsedScope { get; set; }
-
-
         void RunScript(string commandPath, ExternalCommandData commandData,
             out string errorMessage, ElementSet elementSelection);
     }
