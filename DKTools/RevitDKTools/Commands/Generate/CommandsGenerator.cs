@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace RevitDKTools.Commands.Generate
 {
-    class CommandsGenerator
+    class CommandsGenerator : ICommandsGenerator
     {
         private readonly IClassEmitter _emitter;
         private readonly ISettingsInterpreter _settingsInterpreter;
