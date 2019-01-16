@@ -14,11 +14,14 @@ namespace RevitDKTools.Commands.Generate
 {
     class ClassEmitter<T> : IClassEmitter where T : IExternalCommand
     {
+        private AssemblyBuilder _assemblyBuilder;
+        private IEmitterSetting _emitterSetting;
+
         readonly string _location;
         readonly AppDomain _appDomain;
         readonly AssemblyName _asseblyName;
-        private AssemblyBuilder _assemblyBuilder;
         readonly ModuleBuilder _moduleBuilder;
+
         public string AssemblyLocation
         {
             get

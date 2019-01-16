@@ -84,7 +84,7 @@ namespace RevitDKTools
                 _parameterEditorWPFPage.RevitDocument = e.Document;
             }
         }
- 
+
         private void CreateDockablePanel(UIControlledApplication application)
         {
             _parameterEditorWPFPage = new ParameterEditorWPFPage();
