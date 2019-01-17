@@ -34,13 +34,9 @@ namespace RevitDKTools
             _registrator = new ComponentRegistrator(application);
             _registrator.Container.Resolve<ICompositionRoot>();
 
-            // TODO: UIControlledApplication can be removed. 
-            // PythonExecutrion environment should have it injected.
-            UIControlledApplication = application;
-
             // Its more complicated to get rid of PythonEngine.
             // Base class for emitter has strong reference static property of DKToolsApp.
-            MyPythonEngine = new PythonExecutionEnvironment();
+            MyPythonEngine = _registrator.Container.Resolve<IPythonExecutionEnvironment>();
 
             return Result.Succeeded;
         }

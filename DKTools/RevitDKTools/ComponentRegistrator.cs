@@ -42,6 +42,8 @@ namespace RevitDKTools
             _container.Register(Component.For<ISettingsInterpreter>().ImplementedBy<XmlSettingsInterpreter>());
             _container.Register(Component.For<RibbonPanel>().Instance(_commandsRibbonPanel).
                 LifestyleSingleton());
+            _container.Register(Component.For<IPythonExecutionEnvironment>().
+                ImplementedBy<PythonExecutionEnvironment>());
         }
 
         private void CreateButtonsOnRevitRibbon()

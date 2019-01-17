@@ -25,9 +25,11 @@ namespace RevitDKTools.Commands.Generate
         private ExternalPythonScriptSetting _externalEventPythonScriptPath;
         private ScriptScope _lastUsedScope;
         private Dictionary<string, dynamic> _scriptVariables;
+        private UIControlledApplication _applicaton;
 
-        public PythonExecutionEnvironment()
+        public PythonExecutionEnvironment(UIControlledApplication applicaton)
         {
+            _applicaton = applicaton;
             _engineInstance = this;
             Dictionary<string, object> engineOptions = new Dictionary<string, object>
             {
@@ -92,7 +94,7 @@ namespace RevitDKTools.Commands.Generate
             _externalEventPythonScriptPath = new ExternalPythonScriptSetting();
 
             ScriptScope rvt = _pythonEngine.CreateModule("rvt");
-            rvt.SetVariable("_app_", RevitDKTools.DKToolsApp.UIControlledApplication);
+            rvt.SetVariable("_app_", _applicaton);
             rvt.SetVariable("_event_path_", _externalEventPythonScriptPath);
             rvt.SetVariable("_handler_", _engineInstance);
             ExternalEvent exEvent = ExternalEvent.Create(_engineInstance);
