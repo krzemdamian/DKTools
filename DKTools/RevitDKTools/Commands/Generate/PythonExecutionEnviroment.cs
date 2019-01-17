@@ -1,23 +1,16 @@
 ﻿using Autodesk.Revit.UI;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Scripting.Hosting;
 using IronPython.Hosting;
 using Autodesk.Revit.DB;
-using RevitDKTools;
 using System.Reflection;
-using System.Windows.Forms;
-using System.Drawing;
 using System.IO;
 
 namespace RevitDKTools.Commands.Generate
 {
-    public class PythonExecutionEnviroment : IExternalEventHandler, IPythonExecutionEnviroment
+    public class PythonExecutionEnvironment : IExternalEventHandler, IPythonExecutionEnvironment
     {
-        private PythonExecutionEnviroment _engineInstance;
+        private PythonExecutionEnvironment _engineInstance;
         private ScriptEngine _pythonEngine;
         private ScriptRuntime _pythonScriptRuntime;
         private Dictionary<string, CompiledCode> _compiledPythonScripts;
@@ -25,9 +18,11 @@ namespace RevitDKTools.Commands.Generate
         private ExternalPythonScriptSetting _externalEventPythonScriptPath;
         private ScriptScope _lastUsedScope;
         private Dictionary<string, dynamic> _scriptVariables;
+        private UIControlledApplication _applicaton;
 
-        public PythonExecutionEnviroment()
+        public PythonExecutionEnvironment(UIControlledApplication applicaton)
         {
+            _applicaton = applicaton;
             _engineInstance = this;
             Dictionary<string, object> engineOptions = new Dictionary<string, object>
             {
@@ -92,7 +87,7 @@ namespace RevitDKTools.Commands.Generate
             _externalEventPythonScriptPath = new ExternalPythonScriptSetting();
 
             ScriptScope rvt = _pythonEngine.CreateModule("rvt");
-            rvt.SetVariable("_app_", RevitDKTools.DKToolsApp.UIControlledApplication);
+            rvt.SetVariable("_app_", _applicaton);
             rvt.SetVariable("_event_path_", _externalEventPythonScriptPath);
             rvt.SetVariable("_handler_", _engineInstance);
             ExternalEvent exEvent = ExternalEvent.Create(_engineInstance);

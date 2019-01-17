@@ -1,24 +1,23 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.UI;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using System.Resources;
 
 namespace RevitDKTools.Commands.Generate
 {
     class ClassEmitter<T> : IClassEmitter where T : IExternalCommand
     {
+        private AssemblyBuilder _assemblyBuilder;
+        private IEmitterSetting _emitterSetting;
+
         readonly string _location;
         readonly AppDomain _appDomain;
         readonly AssemblyName _asseblyName;
-        private AssemblyBuilder _assemblyBuilder;
         readonly ModuleBuilder _moduleBuilder;
+
         public string AssemblyLocation
         {
             get
@@ -27,8 +26,9 @@ namespace RevitDKTools.Commands.Generate
             }
         }
 
-        public ClassEmitter(string dynamicAssemblyName)
+        public ClassEmitter(IEmitterSetting emitterSetting)
         {
+            _emitterSetting = emitterSetting;
             if (!string.IsNullOrEmpty(Assembly.GetExecutingAssembly().Location))
             {
                 ResourceManager resourceManager = new ResourceManager(
@@ -45,7 +45,7 @@ namespace RevitDKTools.Commands.Generate
 
             _asseblyName = new AssemblyName
             {
-                Name = dynamicAssemblyName
+                Name = _emitterSetting.DynamicAssemblName
             };
             _appDomain = AppDomain.CurrentDomain;
             _assemblyBuilder = _appDomain.DefineDynamicAssembly(_asseblyName,

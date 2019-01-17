@@ -14,7 +14,7 @@ using System.Drawing;
 
 namespace RevitDKTools.Commands.Generate
 {
-    public interface IPythonExecutionEnviroment
+    public interface IPythonExecutionEnvironment
     {
         void RunScript(string commandPath, ExternalCommandData commandData,
             out string errorMessage, ElementSet elementSelection);

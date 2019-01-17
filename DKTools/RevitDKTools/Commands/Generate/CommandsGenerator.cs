@@ -3,15 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
-using System.Xml;
 using System.Resources;
-using System.Windows;
 
 namespace RevitDKTools.Commands.Generate
 {
-    class CommandsGenerator
+    class CommandsGenerator : ICommandsGenerator
     {
         private readonly IClassEmitter _emitter;
         private readonly ISettingsInterpreter _settingsInterpreter;

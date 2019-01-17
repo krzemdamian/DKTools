@@ -1,7 +1,6 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using System;
-using RevitDKTools;
 
 namespace RevitDKTools.Commands.Embed.Receiver
 {
