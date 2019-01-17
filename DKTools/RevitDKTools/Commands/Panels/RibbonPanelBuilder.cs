@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Autodesk.Revit.DB;
-using Autodesk.Revit.UI;
+﻿using Autodesk.Revit.UI;
 
 namespace RevitDKTools.Commands.Panels
 {

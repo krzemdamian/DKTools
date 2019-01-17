@@ -1,19 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Autodesk.Revit.DB;
-using Autodesk.Revit.UI;
-using Microsoft.Scripting.Hosting;
-using System.Reflection;
-using RevitDKTools.Commands.Panels;
-using RevitDKTools.Commands.Embed.Receiver;
-using RevitDKTools.DockablePanels.ParameterEditor.View;
-using Autodesk.Revit.UI.Events;
-using System.IO;
+﻿using Autodesk.Revit.UI;
 using RevitDKTools.Commands.Generate;
-using System.Windows;
-using System.Resources;
-using Castle.Windsor;
-using Castle.MicroKernel.Registration;
 
 namespace RevitDKTools
 {

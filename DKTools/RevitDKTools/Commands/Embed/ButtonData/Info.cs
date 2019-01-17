@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RevitDKTools.Commands.Embed.ButtonData
+﻿namespace RevitDKTools.Commands.Embed.ButtonData
 {
     class Info : PushButtonDataBuilder
     {

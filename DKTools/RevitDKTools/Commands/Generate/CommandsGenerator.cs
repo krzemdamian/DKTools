@@ -3,11 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
-using System.Xml;
 using System.Resources;
-using System.Windows;
 
 namespace RevitDKTools.Commands.Generate
 {
