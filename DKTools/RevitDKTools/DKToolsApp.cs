@@ -40,7 +40,7 @@ namespace RevitDKTools
 
             // Its more complicated to get rid of PythonEngine.
             // Base class for emitter has strong reference static property of DKToolsApp.
-            MyPythonEngine = new PythonExecutionEnviroment();
+            MyPythonEngine = new PythonExecutionEnvironment();
 
             return Result.Succeeded;
         }

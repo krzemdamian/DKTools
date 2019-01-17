@@ -15,9 +15,9 @@ using System.IO;
 
 namespace RevitDKTools.Commands.Generate
 {
-    public class PythonExecutionEnviroment : IExternalEventHandler, IPythonExecutionEnvironment
+    public class PythonExecutionEnvironment : IExternalEventHandler, IPythonExecutionEnvironment
     {
-        private PythonExecutionEnviroment _engineInstance;
+        private PythonExecutionEnvironment _engineInstance;
         private ScriptEngine _pythonEngine;
         private ScriptRuntime _pythonScriptRuntime;
         private Dictionary<string, CompiledCode> _compiledPythonScripts;
@@ -26,7 +26,7 @@ namespace RevitDKTools.Commands.Generate
         private ScriptScope _lastUsedScope;
         private Dictionary<string, dynamic> _scriptVariables;
 
-        public PythonExecutionEnviroment()
+        public PythonExecutionEnvironment()
         {
             _engineInstance = this;
             Dictionary<string, object> engineOptions = new Dictionary<string, object>
