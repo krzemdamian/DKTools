@@ -20,10 +20,9 @@ namespace RevitDKTools
     public class DKToolsApp : IExternalApplication
     {
         public static UIControlledApplication UIControlledApplication { get; set; }
-        public static IPythonExecutionEnviroment MyPythonEngine { get; set; }
+        public static IPythonExecutionEnvironment MyPythonEngine { get; set; }
 
-        private RibbonPanel _commandsRibbonPanel;
-        private WindsorContainer _container;
+        private ComponentRegistrator _registrator;
 
         public Result OnShutdown(UIControlledApplication application)
         {
@@ -32,38 +31,18 @@ namespace RevitDKTools
 
         public Result OnStartup(UIControlledApplication application)
         {
-            UIControlledApplication = application;
-            MyPythonEngine = new PythonExecutionEnviroment();
+            _registrator = new ComponentRegistrator(application);
+            _registrator.Container.Resolve<ICompositionRoot>();
 
-            RegisterTypesToDIContainer(application);
+            // TODO: UIControlledApplication can be removed. 
+            // PythonExecutrion environment should have it injected.
+            UIControlledApplication = application;
+
+            // Its more complicated to get rid of PythonEngine.
+            // Base class for emitter has strong reference static property of DKToolsApp.
+            MyPythonEngine = new PythonExecutionEnviroment();
 
             return Result.Succeeded;
         }
-
-        private void RegisterTypesToDIContainer(UIControlledApplication application)
-        {
-            _container = new WindsorContainer();
-            _container.Register(Component.For<UIControlledApplication>().Instance(application));
-            _container.Register(Component.For<ICompositionRoot>().ImplementedBy<CompositionRoot>());
-            //types for dynamic buttons generation
-            _container.Register(Component.For<ICommandsGenerator>().ImplementedBy<CommandsGenerator>());
-            _container.Register(Component.For<IClassEmitter>().
-                               ImplementedBy<ClassEmitter<PythonCommandProxyBaseClass>>());
-            _container.Register(
-                Component.For<IEmitterSetting, IXmlPythonScriptsSettingsProvider>().
-                ImplementedBy<DefaultSettingsProvider>());
-            _container.Register(Component.For<ISettingsInterpreter>().ImplementedBy<XmlSettingsInterpreter>());
-            _container.Register(Component.For<RibbonPanel>().Instance(_commandsRibbonPanel).
-                LifestyleSingleton());
-        }
-
-        private RibbonPanel CreateButtonsOnRevitRibbon(UIControlledApplication application)
-        {
-            _commandsRibbonPanel = application.CreateRibbonPanel("Commands");
-            RibbonPanelButtonMaker ribbonPanelButtonMaker =
-                new RibbonPanelButtonMaker (new CombinedCommandsPanel(), _commandsRibbonPanel);
-            ribbonPanelButtonMaker.BuildButtons();
-            return _commandsRibbonPanel;
-        }
-    }
+   }
 }

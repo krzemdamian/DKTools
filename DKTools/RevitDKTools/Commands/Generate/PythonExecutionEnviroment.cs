@@ -15,7 +15,7 @@ using System.IO;
 
 namespace RevitDKTools.Commands.Generate
 {
-    public class PythonExecutionEnviroment : IExternalEventHandler, IPythonExecutionEnviroment
+    public class PythonExecutionEnviroment : IExternalEventHandler, IPythonExecutionEnvironment
     {
         private PythonExecutionEnviroment _engineInstance;
         private ScriptEngine _pythonEngine;

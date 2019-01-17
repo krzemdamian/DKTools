@@ -18,11 +18,12 @@ namespace RevitDKTools
         private UIControlledApplication _application;
         private ParameterEditorWPFPage _parameterEditorWPFPage;
 
-        public CompositionRoot(UIControlledApplication application)
+        public CompositionRoot(UIControlledApplication application, ICommandsGenerator commandsGenerator)
         {
             _application = application;
 
             PrepareParameterEditorDockablePanel();
+            commandsGenerator.GenerateDynamicCommands();
         }
 
         private void PrepareParameterEditorDockablePanel()
