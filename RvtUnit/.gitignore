@@ -108,3 +108,6 @@ Backup*/
 UpgradeLog*.XML
 /_rvtunit.zip
 /_rvtunit
+
+# Prevent ignoring TestResultViewer
+!TestResultViewer*
