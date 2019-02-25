@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RevitAddIns>
   <AddIn Type="Command">    
-    <Assembly>C:\ProgramData\Autodesk\Revit\2017\rvtUnit.dll</Assembly>
+    <Assembly>C:\ProgramData\Autodesk\Revit\Addins\2017\RvtUnit\rvtUnit.dll</Assembly>
     <ClientId>a98fa02e-3696-4e61-b7b4-0cd4813d4b7e</ClientId>
     <FullClassName>rvtUnit.Commands.rvtUnitCmd</FullClassName>
     <Text>rvtUnit - Test Runner</Text>
