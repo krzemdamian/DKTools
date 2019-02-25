@@ -8,7 +8,7 @@ using System.Resources;
 
 namespace RevitDKTools.Commands.Generate
 {
-    class ClassEmitter<T> : IClassEmitter where T : IExternalCommand
+    class ClassEmitter : IClassEmitter
     {
         private AssemblyBuilder _assemblyBuilder;
         private IEmitterSetting _emitterSetting;
@@ -51,20 +51,25 @@ namespace RevitDKTools.Commands.Generate
             _assemblyBuilder = _appDomain.DefineDynamicAssembly(_asseblyName,
                 AssemblyBuilderAccess.Save,_location);
 
-            _moduleBuilder = _assemblyBuilder.DefineDynamicModule(_asseblyName.Name, _asseblyName.Name + ".dll");
+            _moduleBuilder = _assemblyBuilder.DefineDynamicModule(_asseblyName.Name, 
+                _asseblyName.Name + ".dll");
         }
 
-        public Type BuildCommandType(string commandTypeName, string scriptPath)
+        public Type BuildCommandType<T>(string commandTypeName, string scriptPath) 
+            where T : IExternalCommand
         {
             TypeBuilder typeBuilder = _moduleBuilder.DefineType(
-                commandTypeName, TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.BeforeFieldInit, 
+                commandTypeName, TypeAttributes.Public | TypeAttributes.Class 
+                | TypeAttributes.BeforeFieldInit, 
                 typeof(T), new Type[] { typeof(IExternalCommand) });
             
             ConstructorBuilder ctorBuilder = typeBuilder.DefineConstructor(
-                MethodAttributes.Public|MethodAttributes.HideBySig|MethodAttributes.SpecialName|MethodAttributes.RTSpecialName,
+                MethodAttributes.Public|MethodAttributes.HideBySig|MethodAttributes.SpecialName
+                | MethodAttributes.RTSpecialName,
                 CallingConventions.Standard, new Type[0]);
 
-            ConstructorInfo cinfo = typeof(TransactionAttribute).GetConstructor(new Type[] { typeof(TransactionMode) });
+            ConstructorInfo cinfo = typeof(TransactionAttribute).GetConstructor(
+                new Type[] { typeof(TransactionMode) });
             byte[] b = new byte[] { 01, 00, 01, 00, 00, 00, 00, 00 };
 
             typeBuilder.SetCustomAttribute(cinfo,b);

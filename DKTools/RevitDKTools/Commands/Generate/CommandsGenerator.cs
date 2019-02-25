@@ -51,7 +51,7 @@ namespace RevitDKTools.Commands.Generate
 
             foreach (CommandSetting setting in _settingsInterpreter.ScriptCommandSettings)
             {
-                _emitter.BuildCommandType(
+                _emitter.BuildCommandType<PythonCommandProxyBaseClass>(
                     setting.CommandName, scriptFolderLocation + setting.ScriptRelativePath);
             }
 
