@@ -239,6 +239,7 @@
     <Compile Include="Commands\Embed\Receiver\Info.cs" />
     <Compile Include="Commands\Generate\PythonExecutionEnviroment.cs" />
     <Compile Include="Commands\Generate\CommandSetting.cs" />
+    <Compile Include="Commands\Generate\VisibilitySwitcherBaseClass.cs" />
     <Compile Include="Commands\Generate\XmlSettingsInterpreter.cs" />
     <Compile Include="Common\AssemblyResourceUtils.cs" />
     <Compile Include="ComponentRegistrator.cs" />
@@ -272,6 +273,7 @@
     <Compile Include="Tests\UnitTests\DynamicClassEmiterTests.cs" />
     <Compile Include="Tests\UnitTests\MyPythonEngineTests.cs" />
     <Compile Include="Tests\UnitTests\VisibilityShortcutsTests.cs" />
+    <Compile Include="Tests\UnitTests\VisibilitySwitcherTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
