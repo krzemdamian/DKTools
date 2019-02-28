@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autodesk.Revit.DB;
 
 namespace RevitDKTools.Tests.UnitTests
 {
@@ -22,13 +23,24 @@ namespace RevitDKTools.Tests.UnitTests
         }
 
         [Test]
-        public void Switcher_Test()
+        public void VisibilitySwitcher_GetFiltersFromView()
         {
+            // arrange
             string test = string.Empty;
             VisibilitySwitcherBaseClass switcher = new VisibilitySwitcherBaseClass();
+
+            // act
             switcher.Execute(Helpers.GeneralHelper.ExternalCommandData,
-                ref test, new Autodesk.Revit.DB.ElementSet());
-           
+                ref test, new ElementSet());
+            IList<ParameterFilterElement> filters = switcher.FiltersAppliedToView;
+            string output = string.Empty;
+            foreach (Element element in filters)
+            {
+                output = output + element.ToString() + "\r\n";
+            }
+
+            // assert
+            Assert.IsInstanceOf(typeof(IList<ParameterFilterElement>),filters);
         }
     }
 }

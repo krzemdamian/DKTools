@@ -129,7 +129,7 @@
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Lib\nunit.framework.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -272,7 +272,6 @@
     <Compile Include="Tests\UnitTests\DynamicButtonGeneratorTests.cs" />
     <Compile Include="Tests\UnitTests\DynamicClassEmiterTests.cs" />
     <Compile Include="Tests\UnitTests\MyPythonEngineTests.cs" />
-    <Compile Include="Tests\UnitTests\VisibilityShortcutsTests.cs" />
     <Compile Include="Tests\UnitTests\VisibilitySwitcherTest.cs" />
   </ItemGroup>
   <ItemGroup>

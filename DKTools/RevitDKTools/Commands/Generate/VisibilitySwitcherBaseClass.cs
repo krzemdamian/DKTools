@@ -9,20 +9,34 @@ namespace RevitDKTools.Commands.Generate
     class VisibilitySwitcherBaseClass : IExternalCommand
     {
         private string _visibilityNameRegex;
+        private IList<ParameterFilterElement> _filterElementsAppliedToView;
 
-        public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
+        public IList<ParameterFilterElement> FiltersAppliedToView
+        {
+            get { return _filterElementsAppliedToView; }
+        }
+
+        public Result Execute(ExternalCommandData commandData, ref string message,
+            ElementSet elements)
+        {
+            GetFiltersAppliedToView(commandData);
+            return Result.Succeeded;
+        }
+
+        public void SwitchVisibilitySetting()
+        {
+        }
+
+        private void GetFiltersAppliedToView(ExternalCommandData commandData)
         {
             View view = commandData.Application.ActiveUIDocument.Document.ActiveView;
-            ICollection<ElementId> filters = view.GetFilters();
-            string output = string.Empty;
-            foreach (var id in filters)
+            ICollection<ElementId> filterIds = view.GetFilters();
+            Document doc = commandData.Application.ActiveUIDocument.Document;
+            _filterElementsAppliedToView = new List<ParameterFilterElement>();
+            foreach (ElementId id in filterIds)
             {
-                output = output + id + "\r\n";
+                _filterElementsAppliedToView.Add(doc.GetElement(id) as ParameterFilterElement);
             }
-
-            MessageBox.Show(output);
-
-            return Result.Succeeded;
         }
     }
 }
