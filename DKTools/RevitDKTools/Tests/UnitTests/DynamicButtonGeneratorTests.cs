@@ -65,19 +65,6 @@ namespace RevitDKTools.Tests.UnitTests
         }
         */
 
-        [Test]
-        public void BitmapTest()
-        {
-            string output = Path.GetFullPath("Path/Images\\bug.png");
-            //string imagePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-            //            "\\PythonScripts\\" + cmd["ImageUri"];
-            //string output = string.Empty;
-            //foreach (Assembly ass in AppDomain.CurrentDomain.GetAssemblies())
-            //{
-            //    output = output + ass.FullName + Environment.NewLine;
-            //}
-            Assert.Fail(output);
-        }
         /*
         [Test]
         public void AssemblyTest()
