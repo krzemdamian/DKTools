@@ -9,7 +9,7 @@ namespace RevitDKTools.Common
 {
     static class RegexUtils
     {
-        private static bool IsValidRegex(string pattern)
+        public static bool IsValidRegex(string pattern)
         {
             if (string.IsNullOrEmpty(pattern)) return false;
 
