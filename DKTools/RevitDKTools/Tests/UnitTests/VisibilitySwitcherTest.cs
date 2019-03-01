@@ -34,13 +34,28 @@ namespace RevitDKTools.Tests.UnitTests
                 ref test, new ElementSet());
             IList<ParameterFilterElement> filters = switcher.FiltersAppliedToView;
             string output = string.Empty;
-            foreach (Element element in filters)
+            foreach (ParameterFilterElement element in filters)
             {
-                output = output + element.ToString() + "\r\n";
+                output = output + element.Name + "\r\n";
             }
 
             // assert
             Assert.IsInstanceOf(typeof(IList<ParameterFilterElement>),filters);
         }
+
+        [Test]
+        public void VisibilitySwitcher_SwitchVisibility()
+        {
+            // arrange
+            string test = string.Empty;
+            VisibilitySwitcherBaseClass switcher = new VisibilitySwitcherBaseClass();
+            switcher.Execute(Helpers.GeneralHelper.ExternalCommandData,
+                ref test, new ElementSet());
+
+            // act
+            switcher.SwitchVisibility(switcher.FiltersAppliedToView[0]);
+
+            // assert
+        } 
     }
 }

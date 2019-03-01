@@ -2,6 +2,7 @@
 using Autodesk.Revit.DB;
 using System.Collections.Generic;
 using System.Windows;
+using System;
 
 namespace RevitDKTools.Commands.Generate
 {
@@ -9,6 +10,8 @@ namespace RevitDKTools.Commands.Generate
     class VisibilitySwitcherBaseClass : IExternalCommand
     {
         private string _visibilityNameRegex;
+        private View _view;
+        Document _doc;
         private IList<ParameterFilterElement> _filterElementsAppliedToView;
 
         public IList<ParameterFilterElement> FiltersAppliedToView
@@ -23,19 +26,30 @@ namespace RevitDKTools.Commands.Generate
             return Result.Succeeded;
         }
 
-        public void SwitchVisibilitySetting()
-        {
-        }
-
         private void GetFiltersAppliedToView(ExternalCommandData commandData)
         {
-            View view = commandData.Application.ActiveUIDocument.Document.ActiveView;
-            ICollection<ElementId> filterIds = view.GetFilters();
-            Document doc = commandData.Application.ActiveUIDocument.Document;
+            _view = commandData.Application.ActiveUIDocument.Document.ActiveView;
+            ICollection<ElementId> filterIds = _view.GetFilters();
+            _doc = commandData.Application.ActiveUIDocument.Document;
             _filterElementsAppliedToView = new List<ParameterFilterElement>();
             foreach (ElementId id in filterIds)
             {
-                _filterElementsAppliedToView.Add(doc.GetElement(id) as ParameterFilterElement);
+                _filterElementsAppliedToView.Add(_doc.GetElement(id) as ParameterFilterElement);
+            }
+        }
+
+        public void SwitchVisibility(ParameterFilterElement filter)
+        {
+            try
+            {
+                Transaction t = new Transaction(_doc, "Switch Visibility");
+                t.Start();
+                _view.SetFilterVisibility(filter.Id, !_view.GetFilterVisibility(filter.Id));
+                t.Commit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }
