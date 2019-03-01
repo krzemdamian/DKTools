@@ -3,6 +3,8 @@ using Autodesk.Revit.DB;
 using System.Collections.Generic;
 using System.Windows;
 using System;
+using System.Text.RegularExpressions;
+using RevitDKTools.Common;
 
 namespace RevitDKTools.Commands.Generate
 {
@@ -23,6 +25,8 @@ namespace RevitDKTools.Commands.Generate
             ElementSet elements)
         {
             GetFiltersAppliedToView(commandData);
+            EliminateFiltersNotMatchingRegex();
+
             return Result.Succeeded;
         }
 
@@ -50,6 +54,27 @@ namespace RevitDKTools.Commands.Generate
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void EliminateFiltersNotMatchingRegex()
+        {
+            if (RegexUtils.IsValidRegex(_visibilityNameRegex))
+            {
+                IList<ParameterFilterElement> filtersMatchingRegex =
+                    new List<ParameterFilterElement>();
+                foreach (ParameterFilterElement filterElement in _filterElementsAppliedToView)
+                {
+                    if (Regex.IsMatch(filterElement.Name, _visibilityNameRegex))
+                    {
+                        filtersMatchingRegex.Add(filterElement);
+                    }
+                }
+                _filterElementsAppliedToView = filtersMatchingRegex;
+            }
+            else
+            {
+                MessageBox.Show("Invalid regex!");
             }
         }
     }
