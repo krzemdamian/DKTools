@@ -43,7 +43,9 @@ namespace RevitDKTools.Tests.UnitTests
             Assert.IsInstanceOf(typeof(IList<ParameterFilterElement>),filters);
         }
 
-        [Test]
+        // TODO: Create test. Arrange should create filter, assign it to view 
+        //       and chek if switcher method changes it.
+        //[Test]
         public void VisibilitySwitcher_SwitchVisibility()
         {
             // arrange
@@ -56,6 +58,8 @@ namespace RevitDKTools.Tests.UnitTests
             switcher.SwitchVisibility(switcher.FiltersAppliedToView[0]);
 
             // assert
+            Assert.Fail("Check if transaction has been added. In other words:\r\ncheck " +
+                "undo button. If there is transaction \"Switch Visibility\" it is correct.");
         } 
     }
 }
