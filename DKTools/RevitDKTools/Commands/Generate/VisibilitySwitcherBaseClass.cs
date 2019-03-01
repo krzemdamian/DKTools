@@ -44,6 +44,11 @@ namespace RevitDKTools.Commands.Generate
 
         public void SwitchVisibility(ParameterFilterElement filter)
         {
+            if (IsViewTemplateApplied())
+            {
+                if (UserDecideToKeepTemplate()) return;
+            }
+
             try
             {
                 Transaction t = new Transaction(_doc, "Switch Visibility");
@@ -55,6 +60,31 @@ namespace RevitDKTools.Commands.Generate
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private bool UserDecideToKeepTemplate()
+        {
+            string templateName = _doc.GetElement(_view.ViewTemplateId).Name;
+            TaskDialog taskDialog = new TaskDialog("Template Applied");
+            taskDialog.MainContent = string.Format("Do you want to discard\r\n{0}\r\n" +
+                "template and switch requested visibility?",templateName);
+            taskDialog.CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No;
+            taskDialog.DefaultButton = TaskDialogResult.Yes;
+            TaskDialogResult result = taskDialog.Show();
+            if (result == TaskDialogResult.Yes)
+            {
+                Transaction t = new Transaction(_doc, "Discard Template");
+                t.Start();
+                _view.ViewTemplateId = ElementId.InvalidElementId;
+                t.Commit();
+                return false;
+            }
+            return true;
+        }
+
+        private bool IsViewTemplateApplied()
+        {
+            return !(_view.ViewTemplateId == ElementId.InvalidElementId);
         }
 
         private void EliminateFiltersNotMatchingRegex()

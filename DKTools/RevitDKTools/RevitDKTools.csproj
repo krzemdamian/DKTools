@@ -242,6 +242,7 @@
     <Compile Include="Commands\Generate\VisibilitySwitcherBaseClass.cs" />
     <Compile Include="Commands\Generate\XmlSettingsInterpreter.cs" />
     <Compile Include="Common\AssemblyResourceUtils.cs" />
+    <Compile Include="Common\RegexUtils.cs" />
     <Compile Include="ComponentRegistrator.cs" />
     <Compile Include="CompositionRoot.cs" />
     <Compile Include="DKToolsApp.cs" />
