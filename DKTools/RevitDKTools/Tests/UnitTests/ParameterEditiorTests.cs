@@ -51,22 +51,6 @@ namespace RevitDKTools.Tests.UnitTests
         }
 
         [Test]
-        public void PE_ShouldSetDocumentVariable()
-        {
-            //Arrange
-            DockablePanels.ParameterEditor.View.ParameterEditorWPFPage mrp = new DockablePanels.ParameterEditor.View.ParameterEditorWPFPage();
-            mrp.RevitDocument = GeneralHelper.ExternalCommandData.Application.ActiveUIDocument.Document;
-            mrp.VM.LengthModel.LengthInDouble = 5.726;
-
-            //Act
-            mrp.VM.TryFormatLengthToRepresentation();
-
-            //Assert
-            Assert.Fail(mrp.VM.LengthModel.LengthRepresentation);
-        }
-
-
-        [Test]
         public void PE_Window()
         {
             //Arrange
