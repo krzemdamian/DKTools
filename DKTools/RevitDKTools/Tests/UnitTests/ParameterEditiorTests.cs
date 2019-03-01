@@ -46,7 +46,7 @@ namespace RevitDKTools.Tests.UnitTests
             string output = UnitFormatUtils.Format(docUnits, UnitType.UT_Length, d, false, true);
 
             //Assert
-            Assert.Fail(output);
+            Assert.AreEqual(output, "5\'  8 23/32\"");
 
         }
 
