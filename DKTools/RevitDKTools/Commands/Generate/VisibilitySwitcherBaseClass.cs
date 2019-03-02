@@ -26,7 +26,7 @@ namespace RevitDKTools.Commands.Generate
         {
             GetFiltersAppliedToView(commandData);
             EliminateFiltersNotMatchingRegex();
-
+            SwitchFilters();
             return Result.Succeeded;
         }
 
@@ -42,7 +42,7 @@ namespace RevitDKTools.Commands.Generate
             }
         }
 
-        public void SwitchVisibility(ParameterFilterElement filter)
+        public void SwitchFilters(ParameterFilterElement filter = null)
         {
             if (IsViewTemplateApplied())
             {
@@ -53,7 +53,17 @@ namespace RevitDKTools.Commands.Generate
             {
                 Transaction t = new Transaction(_doc, "Switch Visibility");
                 t.Start();
-                _view.SetFilterVisibility(filter.Id, !_view.GetFilterVisibility(filter.Id));
+                if (filter != null)
+                {
+                    _view.SetFilterVisibility(filter.Id, !_view.GetFilterVisibility(filter.Id));
+                }
+                else
+                {
+                    foreach (ParameterFilterElement f in _filterElementsAppliedToView)
+                    {
+                        _view.SetFilterVisibility(f.Id, !_view.GetFilterVisibility(f.Id));
+                    }
+                }
                 t.Commit();
             }
             catch (Exception ex)
@@ -67,7 +77,7 @@ namespace RevitDKTools.Commands.Generate
             string templateName = _doc.GetElement(_view.ViewTemplateId).Name;
             TaskDialog taskDialog = new TaskDialog("Template Applied");
             taskDialog.MainContent = string.Format("Do you want to discard\r\n{0}\r\n" +
-                "template and switch requested visibility?",templateName);
+                "template and switch requested visibility?", templateName);
             taskDialog.CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No;
             taskDialog.DefaultButton = TaskDialogResult.Yes;
             TaskDialogResult result = taskDialog.Show();
