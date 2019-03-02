@@ -16,12 +16,6 @@ namespace RevitDKTools.Commands.Generate
         Document _doc;
         private IList<ParameterFilterElement> _filterElementsAppliedToView;
 
-        // Only for test purposes!!!
-        public VisibilitySwitcherBaseClass()
-        {
-            _visibilityNameRegex = @"Filter [0-9] \([0-9]\)";
-        }
-
         public IList<ParameterFilterElement> FiltersAppliedToView
         {
             get { return _filterElementsAppliedToView; }
