@@ -9,6 +9,8 @@ namespace RevitDKTools.Commands.Generate
 
         Type BuildCommandType<T>(string commandTypeName, string scriptPath)
             where T : IExternalCommand;
+        Type BuildVisibilityShortcutCommand<T>(string commandName, string visibilityRegex)
+            where T : IExternalCommand;
         void SaveAssembly();
     }
 }

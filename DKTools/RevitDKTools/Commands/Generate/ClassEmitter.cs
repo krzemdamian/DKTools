@@ -51,18 +51,18 @@ namespace RevitDKTools.Commands.Generate
             _assemblyBuilder = _appDomain.DefineDynamicAssembly(_asseblyName,
                 AssemblyBuilderAccess.Save,_location);
 
-            _moduleBuilder = _assemblyBuilder.DefineDynamicModule(_asseblyName.Name, 
+            _moduleBuilder = _assemblyBuilder.DefineDynamicModule(_asseblyName.Name,
                 _asseblyName.Name + ".dll");
         }
 
-        public Type BuildCommandType<T>(string commandTypeName, string scriptPath) 
+        public Type BuildCommandType<T>(string commandTypeName, string scriptPath)
             where T : IExternalCommand
         {
             TypeBuilder typeBuilder = _moduleBuilder.DefineType(
-                commandTypeName, TypeAttributes.Public | TypeAttributes.Class 
-                | TypeAttributes.BeforeFieldInit, 
+                commandTypeName, TypeAttributes.Public | TypeAttributes.Class
+                | TypeAttributes.BeforeFieldInit,
                 typeof(T), new Type[] { typeof(IExternalCommand) });
-            
+
             ConstructorBuilder ctorBuilder = typeBuilder.DefineConstructor(
                 MethodAttributes.Public|MethodAttributes.HideBySig|MethodAttributes.SpecialName
                 | MethodAttributes.RTSpecialName,
@@ -91,15 +91,14 @@ namespace RevitDKTools.Commands.Generate
             return typeBuilder.CreateType();
         }
 
-        /* this method will create dynamic commands to turn off visbility
-        public Type BuildVisibilityShortcutCommand<T>(string commandName, string visibilityRegex) 
+        public Type BuildVisibilityShortcutCommand<T>(string commandName, string visibilityRegex)
             where T : IExternalCommand
         {
             TypeBuilder typeBuilder = _moduleBuilder.DefineType(
-                commandName, TypeAttributes.Public | TypeAttributes.Class 
-                | TypeAttributes.BeforeFieldInit, 
+                commandName, TypeAttributes.Public | TypeAttributes.Class
+                | TypeAttributes.BeforeFieldInit,
                 typeof(T), new Type[] { typeof(IExternalCommand) });
-            
+
             ConstructorBuilder ctorBuilder = typeBuilder.DefineConstructor(
                 MethodAttributes.Public|MethodAttributes.HideBySig|MethodAttributes.SpecialName
                 | MethodAttributes.RTSpecialName,
@@ -112,7 +111,8 @@ namespace RevitDKTools.Commands.Generate
             typeBuilder.SetCustomAttribute(cinfo,b);
             ConstructorInfo objCtor = typeof(T).GetConstructor(Type.EmptyTypes);
 
-            FieldInfo scriptPathField = typeBuilder.BaseType.GetField("_scriptPath");
+            FieldInfo _visibilityNameRegexField = 
+                typeBuilder.BaseType.GetField("_visibilityNameRegex");
 
             ILGenerator ilg = ctorBuilder.GetILGenerator();
 
@@ -121,13 +121,13 @@ namespace RevitDKTools.Commands.Generate
             ilg.Emit(OpCodes.Nop);
             ilg.Emit(OpCodes.Nop);
             ilg.Emit(OpCodes.Ldarg_0);
-            ilg.Emit(OpCodes.Ldstr, scriptPath);
-            ilg.Emit(OpCodes.Stfld, scriptPathField);
+            ilg.Emit(OpCodes.Ldstr, visibilityRegex);
+            ilg.Emit(OpCodes.Stfld, _visibilityNameRegexField);
             ilg.Emit(OpCodes.Ret);
 
             return typeBuilder.CreateType();
         }
-        */
+
         public void SaveAssembly()
         {
             try
