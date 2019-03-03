@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autodesk.Revit.UI;
+using System;
 
 namespace RevitDKTools.Commands.Generate
 {
@@ -6,7 +7,10 @@ namespace RevitDKTools.Commands.Generate
     {
         string AssemblyLocation { get; }
 
-        Type BuildCommandType(string commandTypeName, string scriptPath);
+        Type BuildPythonCommandType<T>(string commandTypeName, string scriptPath)
+            where T : IExternalCommand;
+        Type BuildVisibilityShortcutCommand<T>(string commandName, string visibilityRegex)
+            where T : IExternalCommand;
         void SaveAssembly();
     }
 }

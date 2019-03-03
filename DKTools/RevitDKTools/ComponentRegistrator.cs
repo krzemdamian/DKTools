@@ -30,11 +30,15 @@ namespace RevitDKTools
             //types for dynamic buttons generation
             _container.Register(Component.For<ICommandsGenerator>().ImplementedBy<CommandsGenerator>());
             _container.Register(Component.For<IClassEmitter>().
-                               ImplementedBy<ClassEmitter<PythonCommandProxyBaseClass>>());
+                               ImplementedBy<ClassEmitter>());
             _container.Register(
                 Component.For<IEmitterSetting, IXmlPythonScriptsSettingsProvider>().
                 ImplementedBy<DefaultSettingsProvider>());
-            _container.Register(Component.For<ISettingsInterpreter>().ImplementedBy<XmlSettingsInterpreter>());
+            _container.Register(
+                Component.For<IXmlVisibilitySwitcherSettingsProvider>().
+                ImplementedBy<XmlVisibilitySwitcherSettingsProvider>());
+            _container.Register(Component.For<ISettingsInterpreter>().
+                ImplementedBy<XmlSettingsInterpreter>());
             _container.Register(Component.For<RibbonPanel>().Instance(_commandsRibbonPanel).
                 LifestyleSingleton());
             _container.Register(Component.For<IPythonExecutionEnvironment>().

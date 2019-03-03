@@ -98,7 +98,7 @@ namespace rvtUnit.Commands
          DoAction();
 
          // Return Cancelled so that this command is not recorded as modifying Document:
-         return Result.Cancelled;
+         return Result.Succeeded;
       }
 
 #endif

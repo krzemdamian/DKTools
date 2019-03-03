@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using System;
 using Helpers;
-using RevitDKTools.Command.Receiver;
+using RevitDKTools.Commands.Embed.Receiver;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.DB;
 using Moq;

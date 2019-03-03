@@ -129,7 +129,7 @@
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Lib\nunit.framework.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -232,15 +232,21 @@
     <Compile Include="Commands\Generate\IExternalPythonScriptSetting.cs" />
     <Compile Include="Commands\Generate\ISettingsInterpreter.cs" />
     <Compile Include="Commands\Generate\IXmlPythonScriptsSettingsProvider.cs" />
+    <Compile Include="Commands\Generate\IXmlVisibilitySwitcherSettingsProvider.cs" />
     <Compile Include="Commands\Generate\PythonCommandProxyBaseClass.cs" />
     <Compile Include="Commands\Generate\IClassEmitter.cs" />
     <Compile Include="Commands\Generate\IPythonExecutionEnviroment.cs" />
     <Compile Include="Commands\Embed\Receiver\ShowParameterEditor.cs" />
     <Compile Include="Commands\Embed\Receiver\Info.cs" />
+    <Compile Include="Commands\Generate\VisibilitySwitcherCommandSetting.cs" />
     <Compile Include="Commands\Generate\PythonExecutionEnviroment.cs" />
-    <Compile Include="Commands\Generate\CommandSetting.cs" />
+    <Compile Include="Commands\Generate\PythonCommandSetting.cs" />
+    <Compile Include="Commands\Generate\VisibilitySwitcherBaseClass.cs" />
+    <Compile Include="Commands\Generate\XmlVisibilitySwitcherSettingsProvider.cs" />
     <Compile Include="Commands\Generate\XmlSettingsInterpreter.cs" />
     <Compile Include="Common\AssemblyResourceUtils.cs" />
+    <Compile Include="Common\LinqExtensions.cs" />
+    <Compile Include="Common\RegexUtils.cs" />
     <Compile Include="ComponentRegistrator.cs" />
     <Compile Include="CompositionRoot.cs" />
     <Compile Include="DKToolsApp.cs" />
@@ -271,6 +277,8 @@
     <Compile Include="Tests\UnitTests\DynamicButtonGeneratorTests.cs" />
     <Compile Include="Tests\UnitTests\DynamicClassEmiterTests.cs" />
     <Compile Include="Tests\UnitTests\MyPythonEngineTests.cs" />
+    <Compile Include="Tests\UnitTests\XmlSettingsInterpreterTests.cs" />
+    <Compile Include="Tests\UnitTests\VisibilitySwitcherTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -283,17 +291,6 @@
     <Compile Include="Tests\UnitTests\TestWindow.xaml.cs">
       <DependentUpon>TestWindow.xaml</DependentUpon>
     </Compile>
-    <None Include="PythonScripts\Lib\ensurepip\_bundled\pip-8.1.1-py2.py3-none-any.whl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="PythonScripts\Lib\ensurepip\_bundled\setuptools-20.10.1-py2.py3-none-any.whl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="PythonScripts\GetInfo\SetParamForm.resx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -301,6 +298,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="PythonScripts\GetInfo\SetParamForm.resx" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="DockablePanels\ParameterEditor\View\MainPage.xaml">
@@ -324,6 +322,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Commands\Images\Small\blue\" />
+    <Folder Include="PythonScripts\Lib\ensurepip\_bundled\" />
+    <Folder Include="PythonScripts\Lib\importlib\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Commands\Images\Large\blue\laptop.png" />
@@ -338,1710 +338,541 @@
     <Content Include="Lib\nunit.framework.dll" />
     <Content Include="Lib\nunit.util.dll" />
     <Content Include="Lib\TechTalk.SpecFlow.dll" />
-    <Content Include="PythonScripts\Connections\ConnectionHostVerification.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Connections\ConnectionHostVerification_sub.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\General\CopyTemplate.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\General\ImportParameters.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\General\Info.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\General\ReserveShared.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\General\SectionBox.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\General\SelectFamily.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\General\ShowElements.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\General\WSInfo.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\GetInfo\GetIds.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\GetInfo\GetParams.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\GetInfo\SetParam.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\GetInfo\SetParamForm.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\brain-blue.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\brain-purple.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\brain-red.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\bug.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\credit-card.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\cursor96.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\eye-scan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\joint.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\light-bulb96.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\molecule96.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\packages96.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\paint-brush96.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\placeholder.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\push-pin96.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\tag-duplicated.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\tag-missing.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\tag-select.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\window.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Images\wrench96.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\abc.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\aifc.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\antigravity.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\anydbm.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\argparse.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ast.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\asynchat.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\asyncore.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\atexit.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\audiodev.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\base64.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\BaseHTTPServer.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\Bastion.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\bdb.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\binhex.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\bisect.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\calendar.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\cgi.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\CGIHTTPServer.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\cgitb.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\chunk.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\clrtype.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\cmd.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\code.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\codecs.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\codeop.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\collections.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\colorsys.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\commands.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\compileall.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ConfigParser.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\contextlib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\Cookie.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\cookielib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\copy.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\csv.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ctypes\macholib\dyld.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ctypes\macholib\dylib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ctypes\macholib\framework.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ctypes\macholib\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ctypes\util.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ctypes\wintypes.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ctypes\_endian.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ctypes\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\decimal.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\difflib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\dircache.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\dis.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\archive_util.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\bcppcompiler.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\ccompiler.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\cmd.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\bdist.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\bdist_dumb.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\bdist_rpm.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\bdist_wininst.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\build.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\build_clib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\build_ext.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\build_py.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\build_scripts.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\check.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\clean.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\config.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\install.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\install_data.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\install_egg_info.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\install_headers.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\install_lib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\install_scripts.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\register.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\sdist.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\upload.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\command\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\config.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\core.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\cygwinccompiler.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\debug.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\dep_util.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\dir_util.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\dist.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\emxccompiler.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\errors.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\extension.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\fancy_getopt.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\filelist.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\file_util.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\log.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\msvccompiler.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\spawn.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\sysconfig.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\text_file.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\unixccompiler.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\util.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\version.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\versionpredicate.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\distutils\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\doctest.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\DocXMLRPCServer.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\dumbdbm.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\dummy_thread.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\dummy_threading.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\base64mime.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\charset.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\encoders.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\errors.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\feedparser.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\generator.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\header.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\iterators.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\message.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\mime\application.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\mime\audio.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\mime\base.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\mime\image.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\mime\message.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\mime\multipart.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\mime\nonmultipart.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\mime\text.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\mime\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\parser.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\quoprimime.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\utils.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\_parseaddr.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\email\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\aliases.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\ascii.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\base64_codec.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\bz2_codec.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\charmap.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp037.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp1006.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp1026.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp1140.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp1250.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp1251.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp1252.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp1253.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp1254.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp1255.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp1256.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp1257.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp1258.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp424.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp437.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp500.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp720.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp737.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp775.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp850.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp852.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp855.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp856.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp857.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp858.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp860.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp861.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp862.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp863.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp864.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp865.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp866.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp869.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp874.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\cp875.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\hex_codec.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\hp_roman8.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\idna.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\iso8859_1.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\iso8859_10.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\iso8859_11.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\iso8859_13.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\iso8859_14.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\iso8859_15.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\iso8859_16.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\iso8859_2.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\iso8859_3.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\iso8859_4.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\iso8859_5.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\iso8859_6.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\iso8859_7.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\iso8859_8.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\iso8859_9.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\koi8_r.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\koi8_u.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\latin_1.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\mac_arabic.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\mac_centeuro.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\mac_croatian.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\mac_cyrillic.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\mac_farsi.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\mac_greek.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\mac_iceland.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\mac_latin2.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\mac_roman.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\mac_romanian.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\mac_turkish.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\mbcs.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\palmos.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\ptcp154.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\punycode.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\quopri_codec.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\raw_unicode_escape.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\rot_13.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\string_escape.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\tis_620.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\undefined.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\unicode_escape.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\unicode_internal.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\utf_16.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\utf_16_be.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\utf_16_le.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\utf_32.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\utf_32_be.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\utf_32_le.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\utf_7.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\utf_8.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\utf_8_sig.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\uu_codec.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\zlib_codec.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\encodings\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ensurepip\_uninstall.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ensurepip\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ensurepip\__main__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\filecmp.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\fileinput.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\fnmatch.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\formatter.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\fpformat.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\fractions.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ftplib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\functools.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\genericpath.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\getopt.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\getpass.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\gettext.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\glob.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\gzip.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\hashlib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\heapq.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\hmac.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\htmlentitydefs.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\htmllib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\HTMLParser.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\httplib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ihooks.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\imaplib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\imghdr.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\importlib\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\imputil.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\inspect.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\io.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\json\decoder.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\json\encoder.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\json\scanner.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\json\tool.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\json\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\keyword.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\btm_matcher.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\btm_utils.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixer_base.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixer_util.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_apply.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_asserts.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_basestring.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_buffer.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_dict.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_except.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_exec.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_execfile.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_exitfunc.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_filter.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_funcattrs.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_future.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_getcwdu.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_has_key.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_idioms.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_import.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_imports.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_imports2.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_input.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_intern.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_isinstance.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_itertools.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_itertools_imports.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_long.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_map.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_metaclass.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_methodattrs.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_ne.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_next.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_nonzero.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_numliterals.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_operator.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_paren.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_print.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_raise.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_raw_input.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_reduce.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_renames.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_repr.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_set_literal.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_standarderror.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_sys_exc.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_throw.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_tuple_params.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_types.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_unicode.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_urllib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_ws_comma.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_xrange.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_xreadlines.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_zip.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\fixes\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\main.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\patcomp.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\pgen2\conv.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\pgen2\driver.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\pgen2\grammar.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\pgen2\literals.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\pgen2\parse.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\pgen2\pgen.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\pgen2\token.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\pgen2\tokenize.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\pgen2\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\pygram.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\pytree.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\refactor.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\lib2to3\__main__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\linecache.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\locale.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\logging\config.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\logging\handlers.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\logging\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\macpath.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\macurl2path.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\mailbox.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\mailcap.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\markupbase.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\md5.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\mhlib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\mimetools.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\mimetypes.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\MimeWriter.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\mimify.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\modulefinder.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\multifile.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\multiprocessing\connection.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\multiprocessing\dummy\connection.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\multiprocessing\dummy\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\multiprocessing\forking.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\multiprocessing\heap.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\multiprocessing\managers.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\multiprocessing\pool.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\multiprocessing\process.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\multiprocessing\queues.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\multiprocessing\reduction.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\multiprocessing\sharedctypes.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\multiprocessing\synchronize.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\multiprocessing\util.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\multiprocessing\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\mutex.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\netrc.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\new.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\nntplib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ntpath.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\nturl2path.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\numbers.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\opcode.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\optparse.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\os.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\os2emxpath.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\pdb.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\pickle.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\pickletools.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\pipes.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\pkgutil.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\platform.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\plistlib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\popen2.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\poplib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\posixfile.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\posixpath.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\pprint.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\profile.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\pstats.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\pyclbr.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\pydoc.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\pydoc_data\topics.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\pydoc_data\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\py_compile.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\Queue.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\quopri.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\random.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\repr.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\rexec.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\rlcompleter.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\robotparser.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\runpy.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\sched.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\sets.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\sgmllib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\sha.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\shelve.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\shlex.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\shutil.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\SimpleHTTPServer.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\SimpleXMLRPCServer.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\site-packages\README.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\site.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\smtpd.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\smtplib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\sndhdr.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\socket.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\SocketServer.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\sqlite3\dbapi2.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\sqlite3\dump.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\sqlite3\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\sre_constants.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\sre_parse.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\ssl.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\stat.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\statvfs.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\string.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\StringIO.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\stringold.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\stringprep.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\struct.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\subprocess.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\sunau.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\sunaudio.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\symbol.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\sysconfig.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\telnetlib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\tempfile.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\textwrap.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\this.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\threading.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\timeit.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\toaiff.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\token.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\tokenize.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\trace.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\traceback.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\types.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\unittest\case.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\unittest\loader.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\unittest\main.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\unittest\result.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\unittest\runner.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\unittest\signals.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\unittest\suite.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\unittest\util.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\unittest\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\unittest\__main__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\urllib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\urlparse.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\user.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\UserDict.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\UserList.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\UserString.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\uu.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\uuid.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\warnings.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\wave.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\weakref.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\webbrowser.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\whichdb.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\wpf.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\wsgiref\handlers.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\wsgiref\headers.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\wsgiref\simple_server.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\wsgiref\util.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\wsgiref\validate.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\wsgiref\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xdrlib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xmllib.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\dom\domreg.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\dom\expatbuilder.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\dom\minicompat.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\dom\minidom.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\dom\NodeFilter.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\dom\pulldom.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\dom\xmlbuilder.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\dom\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\etree\ElementInclude.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\etree\ElementPath.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\etree\ElementTree.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\etree\SimpleXMLTreeBuilder.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\etree\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\parsers\expat.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\parsers\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\sax\expatreader.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\sax\handler.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\sax\saxutils.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\sax\xmlreader.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\sax\_exceptions.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\sax\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\xml\__init__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\_abcoll.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\_LWPCookieJar.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\_MozillaCookieJar.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\_osx_support.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\_pyio.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\_strptime.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\_threading_local.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\_weakrefset.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\__future__.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Lib\__phello__.foo.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\MainForm.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo1\Memo1_Add.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo1\Memo1_Difference.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo1\Memo1_Intersection.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo1\Memo1_Read.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo1\Memo1_Subtract.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo1\Memo1_Write.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo2\Memo2_Add.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo2\Memo2_Difference.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo2\Memo2_Intersection.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo2\Memo2_Read.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo2\Memo2_Subtract.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo2\Memo2_Write.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo3\Memo3_Add.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo3\Memo3_Difference.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo3\Memo3_Intersection.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo3\Memo3_Read.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo3\Memo3_Subtract.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Memo\Memo3\Memo3_Write.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Openings\GetOpenings.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Tags\DuplicatedTags.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Tags\MissingTags.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Tags\SelectTags.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PythonScripts\Test\Info.py">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="PythonScripts\Connections\ConnectionHostVerification.py" />
+    <Content Include="PythonScripts\Connections\ConnectionHostVerification_sub.py" />
+    <Content Include="PythonScripts\General\CopyTemplate.py" />
+    <Content Include="PythonScripts\General\ImportParameters.py" />
+    <Content Include="PythonScripts\General\Info.py" />
+    <Content Include="PythonScripts\General\ReserveShared.py" />
+    <Content Include="PythonScripts\General\SectionBox.py" />
+    <Content Include="PythonScripts\General\SelectFamily.py" />
+    <Content Include="PythonScripts\General\ShowElements.py" />
+    <Content Include="PythonScripts\General\WSInfo.py" />
+    <Content Include="PythonScripts\GetInfo\GetIds.py" />
+    <Content Include="PythonScripts\GetInfo\GetParams.py" />
+    <Content Include="PythonScripts\GetInfo\SetParam.py" />
+    <Content Include="PythonScripts\GetInfo\SetParamForm.py" />
+    <Content Include="PythonScripts\Images\brain-blue.png" />
+    <Content Include="PythonScripts\Images\brain-purple.png" />
+    <Content Include="PythonScripts\Images\brain-red.png" />
+    <Content Include="PythonScripts\Images\bug.png" />
+    <Content Include="PythonScripts\Images\credit-card.png" />
+    <Content Include="PythonScripts\Images\cursor96.png" />
+    <Content Include="PythonScripts\Images\eye-scan.png" />
+    <Content Include="PythonScripts\Images\joint.png" />
+    <Content Include="PythonScripts\Images\light-bulb96.png" />
+    <Content Include="PythonScripts\Images\molecule96.png" />
+    <Content Include="PythonScripts\Images\packages96.png" />
+    <Content Include="PythonScripts\Images\paint-brush96.png" />
+    <Content Include="PythonScripts\Images\placeholder.png" />
+    <Content Include="PythonScripts\Images\push-pin96.png" />
+    <Content Include="PythonScripts\Images\tag-duplicated.png" />
+    <Content Include="PythonScripts\Images\tag-missing.png" />
+    <Content Include="PythonScripts\Images\tag-select.png" />
+    <Content Include="PythonScripts\Images\window.png" />
+    <Content Include="PythonScripts\Images\wrench96.png" />
+    <Content Include="PythonScripts\Lib\abc.py" />
+    <Content Include="PythonScripts\Lib\aifc.py" />
+    <Content Include="PythonScripts\Lib\antigravity.py" />
+    <Content Include="PythonScripts\Lib\anydbm.py" />
+    <Content Include="PythonScripts\Lib\argparse.py" />
+    <Content Include="PythonScripts\Lib\ast.py" />
+    <Content Include="PythonScripts\Lib\asynchat.py" />
+    <Content Include="PythonScripts\Lib\asyncore.py" />
+    <Content Include="PythonScripts\Lib\atexit.py" />
+    <Content Include="PythonScripts\Lib\audiodev.py" />
+    <Content Include="PythonScripts\Lib\base64.py" />
+    <Content Include="PythonScripts\Lib\BaseHTTPServer.py" />
+    <Content Include="PythonScripts\Lib\Bastion.py" />
+    <Content Include="PythonScripts\Lib\bdb.py" />
+    <Content Include="PythonScripts\Lib\binhex.py" />
+    <Content Include="PythonScripts\Lib\bisect.py" />
+    <Content Include="PythonScripts\Lib\calendar.py" />
+    <Content Include="PythonScripts\Lib\cgi.py" />
+    <Content Include="PythonScripts\Lib\CGIHTTPServer.py" />
+    <Content Include="PythonScripts\Lib\cgitb.py" />
+    <Content Include="PythonScripts\Lib\chunk.py" />
+    <Content Include="PythonScripts\Lib\clrtype.py" />
+    <Content Include="PythonScripts\Lib\cmd.py" />
+    <Content Include="PythonScripts\Lib\code.py" />
+    <Content Include="PythonScripts\Lib\codecs.py" />
+    <Content Include="PythonScripts\Lib\codeop.py" />
+    <Content Include="PythonScripts\Lib\collections.py" />
+    <Content Include="PythonScripts\Lib\colorsys.py" />
+    <Content Include="PythonScripts\Lib\commands.py" />
+    <Content Include="PythonScripts\Lib\compileall.py" />
+    <Content Include="PythonScripts\Lib\ConfigParser.py" />
+    <Content Include="PythonScripts\Lib\contextlib.py" />
+    <Content Include="PythonScripts\Lib\Cookie.py" />
+    <Content Include="PythonScripts\Lib\cookielib.py" />
+    <Content Include="PythonScripts\Lib\copy.py" />
+    <Content Include="PythonScripts\Lib\csv.py" />
+    <Content Include="PythonScripts\Lib\ctypes\macholib\dyld.py" />
+    <Content Include="PythonScripts\Lib\ctypes\macholib\dylib.py" />
+    <Content Include="PythonScripts\Lib\ctypes\macholib\framework.py" />
+    <Content Include="PythonScripts\Lib\ctypes\util.py" />
+    <Content Include="PythonScripts\Lib\ctypes\wintypes.py" />
+    <Content Include="PythonScripts\Lib\decimal.py" />
+    <Content Include="PythonScripts\Lib\difflib.py" />
+    <Content Include="PythonScripts\Lib\dircache.py" />
+    <Content Include="PythonScripts\Lib\dis.py" />
+    <Content Include="PythonScripts\Lib\distutils\archive_util.py" />
+    <Content Include="PythonScripts\Lib\distutils\bcppcompiler.py" />
+    <Content Include="PythonScripts\Lib\distutils\ccompiler.py" />
+    <Content Include="PythonScripts\Lib\distutils\cmd.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\bdist.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\bdist_dumb.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\bdist_rpm.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\bdist_wininst.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\build.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\build_clib.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\build_ext.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\build_py.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\build_scripts.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\check.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\clean.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\config.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\install.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\install_data.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\install_egg_info.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\install_headers.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\install_lib.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\install_scripts.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\register.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\sdist.py" />
+    <Content Include="PythonScripts\Lib\distutils\command\upload.py" />
+    <Content Include="PythonScripts\Lib\distutils\config.py" />
+    <Content Include="PythonScripts\Lib\distutils\core.py" />
+    <Content Include="PythonScripts\Lib\distutils\cygwinccompiler.py" />
+    <Content Include="PythonScripts\Lib\distutils\debug.py" />
+    <Content Include="PythonScripts\Lib\distutils\dep_util.py" />
+    <Content Include="PythonScripts\Lib\distutils\dir_util.py" />
+    <Content Include="PythonScripts\Lib\distutils\dist.py" />
+    <Content Include="PythonScripts\Lib\distutils\emxccompiler.py" />
+    <Content Include="PythonScripts\Lib\distutils\errors.py" />
+    <Content Include="PythonScripts\Lib\distutils\extension.py" />
+    <Content Include="PythonScripts\Lib\distutils\fancy_getopt.py" />
+    <Content Include="PythonScripts\Lib\distutils\filelist.py" />
+    <Content Include="PythonScripts\Lib\distutils\file_util.py" />
+    <Content Include="PythonScripts\Lib\distutils\log.py" />
+    <Content Include="PythonScripts\Lib\distutils\msvccompiler.py" />
+    <Content Include="PythonScripts\Lib\distutils\spawn.py" />
+    <Content Include="PythonScripts\Lib\distutils\sysconfig.py" />
+    <Content Include="PythonScripts\Lib\distutils\text_file.py" />
+    <Content Include="PythonScripts\Lib\distutils\unixccompiler.py" />
+    <Content Include="PythonScripts\Lib\distutils\util.py" />
+    <Content Include="PythonScripts\Lib\distutils\version.py" />
+    <Content Include="PythonScripts\Lib\distutils\versionpredicate.py" />
+    <Content Include="PythonScripts\Lib\doctest.py" />
+    <Content Include="PythonScripts\Lib\DocXMLRPCServer.py" />
+    <Content Include="PythonScripts\Lib\dumbdbm.py" />
+    <Content Include="PythonScripts\Lib\dummy_thread.py" />
+    <Content Include="PythonScripts\Lib\dummy_threading.py" />
+    <Content Include="PythonScripts\Lib\email\base64mime.py" />
+    <Content Include="PythonScripts\Lib\email\charset.py" />
+    <Content Include="PythonScripts\Lib\email\encoders.py" />
+    <Content Include="PythonScripts\Lib\email\errors.py" />
+    <Content Include="PythonScripts\Lib\email\feedparser.py" />
+    <Content Include="PythonScripts\Lib\email\generator.py" />
+    <Content Include="PythonScripts\Lib\email\header.py" />
+    <Content Include="PythonScripts\Lib\email\iterators.py" />
+    <Content Include="PythonScripts\Lib\email\message.py" />
+    <Content Include="PythonScripts\Lib\email\mime\application.py" />
+    <Content Include="PythonScripts\Lib\email\mime\audio.py" />
+    <Content Include="PythonScripts\Lib\email\mime\base.py" />
+    <Content Include="PythonScripts\Lib\email\mime\image.py" />
+    <Content Include="PythonScripts\Lib\email\mime\message.py" />
+    <Content Include="PythonScripts\Lib\email\mime\multipart.py" />
+    <Content Include="PythonScripts\Lib\email\mime\nonmultipart.py" />
+    <Content Include="PythonScripts\Lib\email\mime\text.py" />
+    <Content Include="PythonScripts\Lib\email\parser.py" />
+    <Content Include="PythonScripts\Lib\email\quoprimime.py" />
+    <Content Include="PythonScripts\Lib\email\utils.py" />
+    <Content Include="PythonScripts\Lib\encodings\aliases.py" />
+    <Content Include="PythonScripts\Lib\encodings\ascii.py" />
+    <Content Include="PythonScripts\Lib\encodings\base64_codec.py" />
+    <Content Include="PythonScripts\Lib\encodings\bz2_codec.py" />
+    <Content Include="PythonScripts\Lib\encodings\charmap.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp037.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp1006.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp1026.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp1140.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp1250.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp1251.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp1252.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp1253.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp1254.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp1255.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp1256.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp1257.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp1258.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp424.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp437.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp500.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp720.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp737.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp775.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp850.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp852.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp855.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp856.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp857.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp858.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp860.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp861.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp862.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp863.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp864.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp865.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp866.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp869.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp874.py" />
+    <Content Include="PythonScripts\Lib\encodings\cp875.py" />
+    <Content Include="PythonScripts\Lib\encodings\hex_codec.py" />
+    <Content Include="PythonScripts\Lib\encodings\hp_roman8.py" />
+    <Content Include="PythonScripts\Lib\encodings\idna.py" />
+    <Content Include="PythonScripts\Lib\encodings\iso8859_1.py" />
+    <Content Include="PythonScripts\Lib\encodings\iso8859_10.py" />
+    <Content Include="PythonScripts\Lib\encodings\iso8859_11.py" />
+    <Content Include="PythonScripts\Lib\encodings\iso8859_13.py" />
+    <Content Include="PythonScripts\Lib\encodings\iso8859_14.py" />
+    <Content Include="PythonScripts\Lib\encodings\iso8859_15.py" />
+    <Content Include="PythonScripts\Lib\encodings\iso8859_16.py" />
+    <Content Include="PythonScripts\Lib\encodings\iso8859_2.py" />
+    <Content Include="PythonScripts\Lib\encodings\iso8859_3.py" />
+    <Content Include="PythonScripts\Lib\encodings\iso8859_4.py" />
+    <Content Include="PythonScripts\Lib\encodings\iso8859_5.py" />
+    <Content Include="PythonScripts\Lib\encodings\iso8859_6.py" />
+    <Content Include="PythonScripts\Lib\encodings\iso8859_7.py" />
+    <Content Include="PythonScripts\Lib\encodings\iso8859_8.py" />
+    <Content Include="PythonScripts\Lib\encodings\iso8859_9.py" />
+    <Content Include="PythonScripts\Lib\encodings\koi8_r.py" />
+    <Content Include="PythonScripts\Lib\encodings\koi8_u.py" />
+    <Content Include="PythonScripts\Lib\encodings\latin_1.py" />
+    <Content Include="PythonScripts\Lib\encodings\mac_arabic.py" />
+    <Content Include="PythonScripts\Lib\encodings\mac_centeuro.py" />
+    <Content Include="PythonScripts\Lib\encodings\mac_croatian.py" />
+    <Content Include="PythonScripts\Lib\encodings\mac_cyrillic.py" />
+    <Content Include="PythonScripts\Lib\encodings\mac_farsi.py" />
+    <Content Include="PythonScripts\Lib\encodings\mac_greek.py" />
+    <Content Include="PythonScripts\Lib\encodings\mac_iceland.py" />
+    <Content Include="PythonScripts\Lib\encodings\mac_latin2.py" />
+    <Content Include="PythonScripts\Lib\encodings\mac_roman.py" />
+    <Content Include="PythonScripts\Lib\encodings\mac_romanian.py" />
+    <Content Include="PythonScripts\Lib\encodings\mac_turkish.py" />
+    <Content Include="PythonScripts\Lib\encodings\mbcs.py" />
+    <Content Include="PythonScripts\Lib\encodings\palmos.py" />
+    <Content Include="PythonScripts\Lib\encodings\ptcp154.py" />
+    <Content Include="PythonScripts\Lib\encodings\punycode.py" />
+    <Content Include="PythonScripts\Lib\encodings\quopri_codec.py" />
+    <Content Include="PythonScripts\Lib\encodings\raw_unicode_escape.py" />
+    <Content Include="PythonScripts\Lib\encodings\rot_13.py" />
+    <Content Include="PythonScripts\Lib\encodings\string_escape.py" />
+    <Content Include="PythonScripts\Lib\encodings\tis_620.py" />
+    <Content Include="PythonScripts\Lib\encodings\undefined.py" />
+    <Content Include="PythonScripts\Lib\encodings\unicode_escape.py" />
+    <Content Include="PythonScripts\Lib\encodings\unicode_internal.py" />
+    <Content Include="PythonScripts\Lib\encodings\utf_16.py" />
+    <Content Include="PythonScripts\Lib\encodings\utf_16_be.py" />
+    <Content Include="PythonScripts\Lib\encodings\utf_16_le.py" />
+    <Content Include="PythonScripts\Lib\encodings\utf_32.py" />
+    <Content Include="PythonScripts\Lib\encodings\utf_32_be.py" />
+    <Content Include="PythonScripts\Lib\encodings\utf_32_le.py" />
+    <Content Include="PythonScripts\Lib\encodings\utf_7.py" />
+    <Content Include="PythonScripts\Lib\encodings\utf_8.py" />
+    <Content Include="PythonScripts\Lib\encodings\utf_8_sig.py" />
+    <Content Include="PythonScripts\Lib\encodings\uu_codec.py" />
+    <Content Include="PythonScripts\Lib\encodings\zlib_codec.py" />
+    <Content Include="PythonScripts\Lib\filecmp.py" />
+    <Content Include="PythonScripts\Lib\fileinput.py" />
+    <Content Include="PythonScripts\Lib\fnmatch.py" />
+    <Content Include="PythonScripts\Lib\formatter.py" />
+    <Content Include="PythonScripts\Lib\fpformat.py" />
+    <Content Include="PythonScripts\Lib\fractions.py" />
+    <Content Include="PythonScripts\Lib\ftplib.py" />
+    <Content Include="PythonScripts\Lib\functools.py" />
+    <Content Include="PythonScripts\Lib\genericpath.py" />
+    <Content Include="PythonScripts\Lib\getopt.py" />
+    <Content Include="PythonScripts\Lib\getpass.py" />
+    <Content Include="PythonScripts\Lib\gettext.py" />
+    <Content Include="PythonScripts\Lib\glob.py" />
+    <Content Include="PythonScripts\Lib\gzip.py" />
+    <Content Include="PythonScripts\Lib\hashlib.py" />
+    <Content Include="PythonScripts\Lib\heapq.py" />
+    <Content Include="PythonScripts\Lib\hmac.py" />
+    <Content Include="PythonScripts\Lib\htmlentitydefs.py" />
+    <Content Include="PythonScripts\Lib\htmllib.py" />
+    <Content Include="PythonScripts\Lib\HTMLParser.py" />
+    <Content Include="PythonScripts\Lib\httplib.py" />
+    <Content Include="PythonScripts\Lib\ihooks.py" />
+    <Content Include="PythonScripts\Lib\imaplib.py" />
+    <Content Include="PythonScripts\Lib\imghdr.py" />
+    <Content Include="PythonScripts\Lib\imputil.py" />
+    <Content Include="PythonScripts\Lib\inspect.py" />
+    <Content Include="PythonScripts\Lib\io.py" />
+    <Content Include="PythonScripts\Lib\json\decoder.py" />
+    <Content Include="PythonScripts\Lib\json\encoder.py" />
+    <Content Include="PythonScripts\Lib\json\scanner.py" />
+    <Content Include="PythonScripts\Lib\json\tool.py" />
+    <Content Include="PythonScripts\Lib\keyword.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\btm_matcher.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\btm_utils.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixer_base.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixer_util.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_apply.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_asserts.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_basestring.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_buffer.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_dict.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_except.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_exec.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_execfile.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_exitfunc.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_filter.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_funcattrs.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_future.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_getcwdu.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_has_key.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_idioms.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_import.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_imports.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_imports2.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_input.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_intern.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_isinstance.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_itertools.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_itertools_imports.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_long.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_map.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_metaclass.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_methodattrs.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_ne.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_next.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_nonzero.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_numliterals.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_operator.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_paren.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_print.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_raise.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_raw_input.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_reduce.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_renames.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_repr.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_set_literal.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_standarderror.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_sys_exc.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_throw.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_tuple_params.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_types.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_unicode.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_urllib.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_ws_comma.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_xrange.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_xreadlines.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\fixes\fix_zip.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\main.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\patcomp.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\pgen2\conv.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\pgen2\driver.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\pgen2\grammar.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\pgen2\literals.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\pgen2\parse.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\pgen2\pgen.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\pgen2\token.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\pgen2\tokenize.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\pygram.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\pytree.py" />
+    <Content Include="PythonScripts\Lib\lib2to3\refactor.py" />
+    <Content Include="PythonScripts\Lib\linecache.py" />
+    <Content Include="PythonScripts\Lib\locale.py" />
+    <Content Include="PythonScripts\Lib\logging\config.py" />
+    <Content Include="PythonScripts\Lib\logging\handlers.py" />
+    <Content Include="PythonScripts\Lib\macpath.py" />
+    <Content Include="PythonScripts\Lib\macurl2path.py" />
+    <Content Include="PythonScripts\Lib\mailbox.py" />
+    <Content Include="PythonScripts\Lib\mailcap.py" />
+    <Content Include="PythonScripts\Lib\markupbase.py" />
+    <Content Include="PythonScripts\Lib\md5.py" />
+    <Content Include="PythonScripts\Lib\mhlib.py" />
+    <Content Include="PythonScripts\Lib\mimetools.py" />
+    <Content Include="PythonScripts\Lib\mimetypes.py" />
+    <Content Include="PythonScripts\Lib\MimeWriter.py" />
+    <Content Include="PythonScripts\Lib\mimify.py" />
+    <Content Include="PythonScripts\Lib\modulefinder.py" />
+    <Content Include="PythonScripts\Lib\multifile.py" />
+    <Content Include="PythonScripts\Lib\multiprocessing\connection.py" />
+    <Content Include="PythonScripts\Lib\multiprocessing\dummy\connection.py" />
+    <Content Include="PythonScripts\Lib\multiprocessing\forking.py" />
+    <Content Include="PythonScripts\Lib\multiprocessing\heap.py" />
+    <Content Include="PythonScripts\Lib\multiprocessing\managers.py" />
+    <Content Include="PythonScripts\Lib\multiprocessing\pool.py" />
+    <Content Include="PythonScripts\Lib\multiprocessing\process.py" />
+    <Content Include="PythonScripts\Lib\multiprocessing\queues.py" />
+    <Content Include="PythonScripts\Lib\multiprocessing\reduction.py" />
+    <Content Include="PythonScripts\Lib\multiprocessing\sharedctypes.py" />
+    <Content Include="PythonScripts\Lib\multiprocessing\synchronize.py" />
+    <Content Include="PythonScripts\Lib\multiprocessing\util.py" />
+    <Content Include="PythonScripts\Lib\mutex.py" />
+    <Content Include="PythonScripts\Lib\netrc.py" />
+    <Content Include="PythonScripts\Lib\new.py" />
+    <Content Include="PythonScripts\Lib\nntplib.py" />
+    <Content Include="PythonScripts\Lib\ntpath.py" />
+    <Content Include="PythonScripts\Lib\nturl2path.py" />
+    <Content Include="PythonScripts\Lib\numbers.py" />
+    <Content Include="PythonScripts\Lib\opcode.py" />
+    <Content Include="PythonScripts\Lib\optparse.py" />
+    <Content Include="PythonScripts\Lib\os.py" />
+    <Content Include="PythonScripts\Lib\os2emxpath.py" />
+    <Content Include="PythonScripts\Lib\pdb.py" />
+    <Content Include="PythonScripts\Lib\pickle.py" />
+    <Content Include="PythonScripts\Lib\pickletools.py" />
+    <Content Include="PythonScripts\Lib\pipes.py" />
+    <Content Include="PythonScripts\Lib\pkgutil.py" />
+    <Content Include="PythonScripts\Lib\platform.py" />
+    <Content Include="PythonScripts\Lib\plistlib.py" />
+    <Content Include="PythonScripts\Lib\popen2.py" />
+    <Content Include="PythonScripts\Lib\poplib.py" />
+    <Content Include="PythonScripts\Lib\posixfile.py" />
+    <Content Include="PythonScripts\Lib\posixpath.py" />
+    <Content Include="PythonScripts\Lib\pprint.py" />
+    <Content Include="PythonScripts\Lib\profile.py" />
+    <Content Include="PythonScripts\Lib\pstats.py" />
+    <Content Include="PythonScripts\Lib\pyclbr.py" />
+    <Content Include="PythonScripts\Lib\pydoc.py" />
+    <Content Include="PythonScripts\Lib\pydoc_data\topics.py" />
+    <Content Include="PythonScripts\Lib\py_compile.py" />
+    <Content Include="PythonScripts\Lib\Queue.py" />
+    <Content Include="PythonScripts\Lib\quopri.py" />
+    <Content Include="PythonScripts\Lib\random.py" />
+    <Content Include="PythonScripts\Lib\repr.py" />
+    <Content Include="PythonScripts\Lib\rexec.py" />
+    <Content Include="PythonScripts\Lib\rfc822.py" />
+    <Content Include="PythonScripts\Lib\rlcompleter.py" />
+    <Content Include="PythonScripts\Lib\robotparser.py" />
+    <Content Include="PythonScripts\Lib\runpy.py" />
+    <Content Include="PythonScripts\Lib\sched.py" />
+    <Content Include="PythonScripts\Lib\sets.py" />
+    <Content Include="PythonScripts\Lib\sgmllib.py" />
+    <Content Include="PythonScripts\Lib\sha.py" />
+    <Content Include="PythonScripts\Lib\shelve.py" />
+    <Content Include="PythonScripts\Lib\shlex.py" />
+    <Content Include="PythonScripts\Lib\shutil.py" />
+    <Content Include="PythonScripts\Lib\SimpleHTTPServer.py" />
+    <Content Include="PythonScripts\Lib\SimpleXMLRPCServer.py" />
+    <Content Include="PythonScripts\Lib\site-packages\README.txt" />
+    <Content Include="PythonScripts\Lib\site.py" />
+    <Content Include="PythonScripts\Lib\smtpd.py" />
+    <Content Include="PythonScripts\Lib\smtplib.py" />
+    <Content Include="PythonScripts\Lib\sndhdr.py" />
+    <Content Include="PythonScripts\Lib\socket.py" />
+    <Content Include="PythonScripts\Lib\SocketServer.py" />
+    <Content Include="PythonScripts\Lib\sqlite3\dbapi2.py" />
+    <Content Include="PythonScripts\Lib\sqlite3\dump.py" />
+    <Content Include="PythonScripts\Lib\sre_constants.py" />
+    <Content Include="PythonScripts\Lib\sre_parse.py" />
+    <Content Include="PythonScripts\Lib\ssl.py" />
+    <Content Include="PythonScripts\Lib\stat.py" />
+    <Content Include="PythonScripts\Lib\statvfs.py" />
+    <Content Include="PythonScripts\Lib\string.py" />
+    <Content Include="PythonScripts\Lib\StringIO.py" />
+    <Content Include="PythonScripts\Lib\stringold.py" />
+    <Content Include="PythonScripts\Lib\stringprep.py" />
+    <Content Include="PythonScripts\Lib\struct.py" />
+    <Content Include="PythonScripts\Lib\subprocess.py" />
+    <Content Include="PythonScripts\Lib\sunau.py" />
+    <Content Include="PythonScripts\Lib\sunaudio.py" />
+    <Content Include="PythonScripts\Lib\symbol.py" />
+    <Content Include="PythonScripts\Lib\sysconfig.py" />
+    <Content Include="PythonScripts\Lib\tabnanny.py" />
+    <Content Include="PythonScripts\Lib\telnetlib.py" />
+    <Content Include="PythonScripts\Lib\tempfile.py" />
+    <Content Include="PythonScripts\Lib\textwrap.py" />
+    <Content Include="PythonScripts\Lib\this.py" />
+    <Content Include="PythonScripts\Lib\threading.py" />
+    <Content Include="PythonScripts\Lib\timeit.py" />
+    <Content Include="PythonScripts\Lib\toaiff.py" />
+    <Content Include="PythonScripts\Lib\token.py" />
+    <Content Include="PythonScripts\Lib\tokenize.py" />
+    <Content Include="PythonScripts\Lib\trace.py" />
+    <Content Include="PythonScripts\Lib\traceback.py" />
+    <Content Include="PythonScripts\Lib\types.py" />
+    <Content Include="PythonScripts\Lib\unittest\case.py" />
+    <Content Include="PythonScripts\Lib\unittest\loader.py" />
+    <Content Include="PythonScripts\Lib\unittest\main.py" />
+    <Content Include="PythonScripts\Lib\unittest\result.py" />
+    <Content Include="PythonScripts\Lib\unittest\runner.py" />
+    <Content Include="PythonScripts\Lib\unittest\signals.py" />
+    <Content Include="PythonScripts\Lib\unittest\suite.py" />
+    <Content Include="PythonScripts\Lib\unittest\util.py" />
+    <Content Include="PythonScripts\Lib\urllib.py" />
+    <Content Include="PythonScripts\Lib\urllib2.py" />
+    <Content Include="PythonScripts\Lib\urlparse.py" />
+    <Content Include="PythonScripts\Lib\user.py" />
+    <Content Include="PythonScripts\Lib\UserDict.py" />
+    <Content Include="PythonScripts\Lib\UserList.py" />
+    <Content Include="PythonScripts\Lib\UserString.py" />
+    <Content Include="PythonScripts\Lib\uu.py" />
+    <Content Include="PythonScripts\Lib\uuid.py" />
+    <Content Include="PythonScripts\Lib\warnings.py" />
+    <Content Include="PythonScripts\Lib\wave.py" />
+    <Content Include="PythonScripts\Lib\weakref.py" />
+    <Content Include="PythonScripts\Lib\webbrowser.py" />
+    <Content Include="PythonScripts\Lib\whichdb.py" />
+    <Content Include="PythonScripts\Lib\wpf.py" />
+    <Content Include="PythonScripts\Lib\wsgiref\handlers.py" />
+    <Content Include="PythonScripts\Lib\wsgiref\headers.py" />
+    <Content Include="PythonScripts\Lib\wsgiref\simple_server.py" />
+    <Content Include="PythonScripts\Lib\wsgiref\util.py" />
+    <Content Include="PythonScripts\Lib\wsgiref\validate.py" />
+    <Content Include="PythonScripts\Lib\xdrlib.py" />
+    <Content Include="PythonScripts\Lib\xmllib.py" />
+    <Content Include="PythonScripts\Lib\xmlrpclib.py" />
+    <Content Include="PythonScripts\Lib\xml\dom\domreg.py" />
+    <Content Include="PythonScripts\Lib\xml\dom\expatbuilder.py" />
+    <Content Include="PythonScripts\Lib\xml\dom\minicompat.py" />
+    <Content Include="PythonScripts\Lib\xml\dom\minidom.py" />
+    <Content Include="PythonScripts\Lib\xml\dom\NodeFilter.py" />
+    <Content Include="PythonScripts\Lib\xml\dom\pulldom.py" />
+    <Content Include="PythonScripts\Lib\xml\dom\xmlbuilder.py" />
+    <Content Include="PythonScripts\Lib\xml\etree\ElementInclude.py" />
+    <Content Include="PythonScripts\Lib\xml\etree\ElementPath.py" />
+    <Content Include="PythonScripts\Lib\xml\etree\ElementTree.py" />
+    <Content Include="PythonScripts\Lib\xml\etree\SimpleXMLTreeBuilder.py" />
+    <Content Include="PythonScripts\Lib\xml\parsers\expat.py" />
+    <Content Include="PythonScripts\Lib\xml\sax\expatreader.py" />
+    <Content Include="PythonScripts\Lib\xml\sax\handler.py" />
+    <Content Include="PythonScripts\Lib\xml\sax\saxutils.py" />
+    <Content Include="PythonScripts\Lib\xml\sax\xmlreader.py" />
+    <Content Include="PythonScripts\Lib\zipfile.py" />
+    <Content Include="PythonScripts\MainForm.py" />
+    <Content Include="PythonScripts\Memo\Memo1\Memo1_Add.py" />
+    <Content Include="PythonScripts\Memo\Memo1\Memo1_Difference.py" />
+    <Content Include="PythonScripts\Memo\Memo1\Memo1_Intersection.py" />
+    <Content Include="PythonScripts\Memo\Memo1\Memo1_Read.py" />
+    <Content Include="PythonScripts\Memo\Memo1\Memo1_Subtract.py" />
+    <Content Include="PythonScripts\Memo\Memo1\Memo1_Write.py" />
+    <Content Include="PythonScripts\Memo\Memo2\Memo2_Add.py" />
+    <Content Include="PythonScripts\Memo\Memo2\Memo2_Difference.py" />
+    <Content Include="PythonScripts\Memo\Memo2\Memo2_Intersection.py" />
+    <Content Include="PythonScripts\Memo\Memo2\Memo2_Read.py" />
+    <Content Include="PythonScripts\Memo\Memo2\Memo2_Subtract.py" />
+    <Content Include="PythonScripts\Memo\Memo2\Memo2_Write.py" />
+    <Content Include="PythonScripts\Memo\Memo3\Memo3_Add.py" />
+    <Content Include="PythonScripts\Memo\Memo3\Memo3_Difference.py" />
+    <Content Include="PythonScripts\Memo\Memo3\Memo3_Intersection.py" />
+    <Content Include="PythonScripts\Memo\Memo3\Memo3_Read.py" />
+    <Content Include="PythonScripts\Memo\Memo3\Memo3_Subtract.py" />
+    <Content Include="PythonScripts\Memo\Memo3\Memo3_Write.py" />
+    <Content Include="PythonScripts\Openings\GetOpenings.py" />
     <Content Include="PythonScripts\ScriptsSettings.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="PythonScripts\Tags\DuplicatedTags.py" />
+    <Content Include="PythonScripts\Tags\MissingTags.py" />
+    <Content Include="PythonScripts\Tags\SelectTags.py" />
+    <Content Include="PythonScripts\Test\Info.py" />
+    <Content Include="VisibilitySwitcher\CommandSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -129,4 +129,7 @@
   <data name="SCRIPTS_SETTINGS_XML_LOCATION" xml:space="preserve">
     <value>\PythonScripts\ScriptsSettings.xml</value>
   </data>
+  <data name="VISIBILITY_SWITCHER_XML_LOCATION" xml:space="preserve">
+    <value>\VisibilitySwitcher\CommandSettings.xml</value>
+  </data>
 </root>

@@ -4,6 +4,7 @@ namespace RevitDKTools.Commands.Generate
 {
     interface ISettingsInterpreter
     {
-        ICollection<CommandSetting> ScriptCommandSettings { get; }
+        ICollection<PythonCommandSetting> PythonCommandSettings { get; }
+        ICollection<VisibilitySwitcherCommandSetting> VisibilitySwitcherCommandSettings { get; }
     }
 }

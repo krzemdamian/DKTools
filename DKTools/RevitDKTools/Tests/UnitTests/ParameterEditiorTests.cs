@@ -46,25 +46,9 @@ namespace RevitDKTools.Tests.UnitTests
             string output = UnitFormatUtils.Format(docUnits, UnitType.UT_Length, d, false, true);
 
             //Assert
-            Assert.Fail(output);
+            Assert.AreEqual(output, "5\'  8 23/32\"");
 
         }
-
-        [Test]
-        public void PE_ShouldSetDocumentVariable()
-        {
-            //Arrange
-            DockablePanels.ParameterEditor.View.ParameterEditorWPFPage mrp = new DockablePanels.ParameterEditor.View.ParameterEditorWPFPage();
-            mrp.RevitDocument = GeneralHelper.ExternalCommandData.Application.ActiveUIDocument.Document;
-            mrp.VM.LengthModel.LengthInDouble = 5.726;
-
-            //Act
-            mrp.VM.TryFormatLengthToRepresentation();
-
-            //Assert
-            Assert.Fail(mrp.VM.LengthModel.LengthRepresentation);
-        }
-
 
         [Test]
         public void PE_Window()

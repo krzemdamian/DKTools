@@ -11,7 +11,7 @@ namespace RevitDKTools.Commands.Embed.Receiver
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             DKToolsApp.MyPythonEngine.RunScript(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\PythonScripts\Test\Info.py", 
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Replace(@"file:\",string.Empty) + @"\PythonScripts\Test\Info.py", 
                 commandData, out message, elements);
 
             return Result.Succeeded;

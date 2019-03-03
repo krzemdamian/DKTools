@@ -25,19 +25,40 @@ namespace RevitDKTools.Commands.Generate
             _ribbonPanel = ribbonPanel;
         }
 
-        public void GenerateDynamicCommands()    
+        public void GenerateDynamicCommands()
         {
             EmitProxyClassesToDynamicAssembly();
+            CreatePythonCommandButtonsOnRibbon();
+            CreateVisibilitySwitcherCommandsOnRibbonAsSlideOut();
+        }
 
+        private void CreatePythonCommandButtonsOnRibbon()
+        {
             Dictionary<string, PulldownButton> pulldownButtons = GetDictionaryWithPulldownButtons();
 
-            foreach (var commandSetting  in _settingsInterpreter.ScriptCommandSettings)
+            foreach (var commandSetting in _settingsInterpreter.PythonCommandSettings)
             {
-                PushButtonData dynamicCommandPushButton = 
-                    CreatePushButtonDataFromSetting(commandSetting);
+                PushButtonData dynamicCommandPushButton =
+                    CreatePythonPushButtonDataFromSetting(commandSetting);
 
                 PulldownButton parentPulldownButton = pulldownButtons[commandSetting.ParentButton];
                 parentPulldownButton.AddPushButton(dynamicCommandPushButton);
+            }
+        }
+
+        private void CreateVisibilitySwitcherCommandsOnRibbonAsSlideOut()
+        {
+            _ribbonPanel.AddSlideOut();
+            PulldownButtonData pdbd = 
+                new PulldownButtonData("VisibiitySwitcher", "VisibiitySwitcher");
+            PulldownButton pulldownButton = _ribbonPanel.AddItem(pdbd) as PulldownButton;
+            foreach (var commandSetting in _settingsInterpreter.VisibilitySwitcherCommandSettings)
+            {
+                PushButtonData dynamicCommandPushButton =
+                    CreateVisibilitySwitcherPushButtonDataFromSetting(commandSetting);
+                dynamicCommandPushButton.ToolTip = commandSetting.VisibilityNameRegex;
+
+                pulldownButton.AddPushButton(dynamicCommandPushButton);
             }
         }
 
@@ -46,25 +67,43 @@ namespace RevitDKTools.Commands.Generate
             ResourceManager resourceManager = new ResourceManager(
                 "RevitDKTools.Properties.Resources",
                 Assembly.GetExecutingAssembly());
-            string scriptFolderLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+            string scriptFolderLocation = Path.GetDirectoryName(
+                Assembly.GetExecutingAssembly().CodeBase).Replace(@"file:\",string.Empty) +
                 resourceManager.GetString("SCRIPTS_FOLDER_LOCATION");
 
-            foreach (CommandSetting setting in _settingsInterpreter.ScriptCommandSettings)
+            foreach (PythonCommandSetting setting in _settingsInterpreter.PythonCommandSettings)
             {
-                _emitter.BuildCommandType(
+                _emitter.BuildPythonCommandType<PythonCommandProxyBaseClass>(
                     setting.CommandName, scriptFolderLocation + setting.ScriptRelativePath);
+            }
+
+            foreach (VisibilitySwitcherCommandSetting setting
+                in _settingsInterpreter.VisibilitySwitcherCommandSettings)
+            {
+                _emitter.BuildVisibilityShortcutCommand<VisibilitySwitcherBaseClass>(
+                    setting.CommandName,setting.VisibilityNameRegex);
             }
 
             _emitter.SaveAssembly();
         }
 
-        private PushButtonData CreatePushButtonDataFromSetting(CommandSetting commandSetting)
+        private PushButtonData CreatePythonPushButtonDataFromSetting
+            (PythonCommandSetting commandSetting)
         {
             PushButtonData pushButton = new PushButtonData(
                 commandSetting.CommandName, commandSetting.NameOnRibbon,
                 _emitter.AssemblyLocation, commandSetting.CommandName);
-            if (!string.IsNullOrEmpty(commandSetting.ImageUri)) { AddPngImage(commandSetting, pushButton); } 
+            if (!string.IsNullOrEmpty(commandSetting.ImageUri)) { AddPngImage(commandSetting, pushButton); }
             AddToolTip(commandSetting, pushButton);
+            return pushButton;
+        }
+
+        private PushButtonData CreateVisibilitySwitcherPushButtonDataFromSetting(
+            VisibilitySwitcherCommandSetting commandSetting)
+        {
+            PushButtonData pushButton = new PushButtonData(
+                commandSetting.CommandName, commandSetting.CommandName,
+                _emitter.AssemblyLocation, commandSetting.CommandName);
             return pushButton;
         }
 
@@ -83,7 +122,7 @@ namespace RevitDKTools.Commands.Generate
             return pulldownButtons;
         }
 
-        private void AddToolTip(CommandSetting commandSetting, PushButtonData pushButtonData)
+        private void AddToolTip(PythonCommandSetting commandSetting, PushButtonData pushButtonData)
         {
             if (!string.IsNullOrEmpty(commandSetting.ToolTip))
             {
@@ -91,14 +130,14 @@ namespace RevitDKTools.Commands.Generate
             }
         }
 
-        private void AddPngImage(CommandSetting commandSetting, PushButtonData pbd)
+        private void AddPngImage(PythonCommandSetting commandSetting, PushButtonData pbd)
         {
             if (Path.GetExtension(commandSetting.ImageUri) == ".png")
             {
                 ResourceManager resourceManager = new ResourceManager(
                     "RevitDKTools.Properties.Resources",
                     Assembly.GetExecutingAssembly());
-                string imagePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                string imagePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Replace(@"file:\",string.Empty) +
                      resourceManager.GetString("SCRIPTS_FOLDER_LOCATION") + commandSetting.ImageUri;
                 imagePath = Path.GetFullPath(imagePath);
                 BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));

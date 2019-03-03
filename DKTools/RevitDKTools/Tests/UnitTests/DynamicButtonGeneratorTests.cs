@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using System;
 using Helpers;
-using RevitDKTools.Command.Receiver;
+using RevitDKTools.Commands.Embed.Receiver;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.DB;
 using Moq;
@@ -13,7 +13,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
-using RevitDKTools.Command.ButtonData;
+using RevitDKTools.Commands.Embed.ButtonData;
 
 namespace RevitDKTools.Tests.UnitTests
 {
@@ -46,7 +46,8 @@ namespace RevitDKTools.Tests.UnitTests
             // cleanup
         }
 
-       
+        // deprecated test
+        /*
         [Test]
         public void DynamicButtonGeneratorTests_GetNode()
         {
@@ -62,20 +63,8 @@ namespace RevitDKTools.Tests.UnitTests
             // assert
             Assert.Fail();
         }
+        */
 
-        [Test]
-        public void BitmapTest()
-        {
-            string output = Path.GetFullPath("Path/Images\\bug.png");
-            //string imagePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-            //            "\\PythonScripts\\" + cmd["ImageUri"];
-            //string output = string.Empty;
-            //foreach (Assembly ass in AppDomain.CurrentDomain.GetAssemblies())
-            //{
-            //    output = output + ass.FullName + Environment.NewLine;
-            //}
-            Assert.Fail(output);
-        }
         /*
         [Test]
         public void AssemblyTest()

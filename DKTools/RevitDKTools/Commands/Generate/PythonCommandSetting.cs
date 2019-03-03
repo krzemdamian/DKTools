@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace RevitDKTools.Commands.Generate
 {
-    internal class CommandSetting
+    internal class PythonCommandSetting
     {
         private string _commandName;
 

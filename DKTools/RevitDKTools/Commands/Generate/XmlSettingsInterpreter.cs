@@ -1,36 +1,72 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml;
+using System.Xml.Linq;
+using System.Linq;
+using RevitDKTools.Common;
+
 
 namespace RevitDKTools.Commands.Generate
 {
     class XmlSettingsInterpreter : ISettingsInterpreter
     {
-        private ICollection<CommandSetting> _scriptCommandSettings;
+        private ICollection<PythonCommandSetting> _pythonCommandSettings;
+        private ICollection<VisibilitySwitcherCommandSetting> _visibilitySwitcherCommandSettings;
 
-        public ICollection<CommandSetting> ScriptCommandSettings { get { return _scriptCommandSettings; } }
-
-        public XmlSettingsInterpreter(IXmlPythonScriptsSettingsProvider settingsProvider)
+        public ICollection<PythonCommandSetting> PythonCommandSettings
         {
-            _scriptCommandSettings = new List<CommandSetting>();
-            XmlDocument xml = settingsProvider.Xml;
-            AssignSettingsToCollection(xml);
+            get { return _pythonCommandSettings; }
         }
 
-        private void AssignSettingsToCollection(XmlDocument xml)
+        public ICollection<VisibilitySwitcherCommandSetting> VisibilitySwitcherCommandSettings
+        {
+            get { return _visibilitySwitcherCommandSettings; }
+        }
+
+        public XmlSettingsInterpreter(IXmlPythonScriptsSettingsProvider pythonSettingsProvider
+            ,IXmlVisibilitySwitcherSettingsProvider switcherSettingsProvider)
+        {
+            _pythonCommandSettings = new List<PythonCommandSetting>();
+            XmlDocument pythonXml = pythonSettingsProvider.Xml;
+            AssignPythonCommandSettingsToCollection(pythonXml);
+
+            _visibilitySwitcherCommandSettings = new List<VisibilitySwitcherCommandSetting>();
+            XDocument switcherXml = switcherSettingsProvider.XDoc;
+            AssignSwitcherCommandSettingsToCollection(switcherXml);
+        }
+
+        private void AssignPythonCommandSettingsToCollection(XmlDocument xml)
         {
             foreach (XmlNode node in xml.DocumentElement)
             {
-                CommandSetting scriptCommandSetting = GetSettingFromXmlNode(node);
+                PythonCommandSetting scriptCommandSetting = GetSettingFromXmlNode(node);
                 if (scriptCommandSetting.HasRequiredItems())
                 {
-                    _scriptCommandSettings.Add(scriptCommandSetting);
+                    _pythonCommandSettings.Add(scriptCommandSetting);
                 }
             }
         }
 
-        private CommandSetting GetSettingFromXmlNode(XmlNode node)
+        private void AssignSwitcherCommandSettingsToCollection(XDocument xdoc)
         {
-            CommandSetting scriptCommandSetting = new CommandSetting();
+            _visibilitySwitcherCommandSettings = xdoc.Root.Elements()
+                .Where(e => e.Name.LocalName == "VisibilitySwitcher")
+                .Where(e => e.Attribute(XName.Get("CommandName")) != null)
+                .Where(e => e.Attribute(XName.Get("VisibilityNameRegex")) != null)
+                .Select(e =>
+                {
+                    VisibilitySwitcherCommandSetting v = new VisibilitySwitcherCommandSetting();
+                    v.CommandName = e.Attribute(XName.Get("CommandName")).Value;
+                    v.VisibilityNameRegex = e.Attribute(XName.Get("VisibilityNameRegex")).Value;
+                    return v;
+                })
+                .DistinctBy(n => n.CommandName)
+                .ToList();
+        }
+
+        private PythonCommandSetting GetSettingFromXmlNode(XmlNode node)
+        {
+            PythonCommandSetting scriptCommandSetting = new PythonCommandSetting();
 
             foreach (XmlNode child in node)
             {

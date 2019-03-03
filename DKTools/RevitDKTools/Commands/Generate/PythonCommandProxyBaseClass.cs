@@ -13,7 +13,7 @@ namespace RevitDKTools.Commands.Generate
         public string _scriptPath;
 
         public PythonCommandProxyBaseClass() { }
-        
+
         // dynamic class have to have ctor assigning _scriptpath
 
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
