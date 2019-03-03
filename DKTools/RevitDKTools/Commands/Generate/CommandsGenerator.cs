@@ -98,7 +98,7 @@ namespace RevitDKTools.Commands.Generate
                 ResourceManager resourceManager = new ResourceManager(
                     "RevitDKTools.Properties.Resources",
                     Assembly.GetExecutingAssembly());
-                string imagePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                string imagePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Replace(@"file:\",string.Empty) +
                      resourceManager.GetString("SCRIPTS_FOLDER_LOCATION") + commandSetting.ImageUri;
                 imagePath = Path.GetFullPath(imagePath);
                 BitmapImage bitmapImage = new BitmapImage(new Uri(imagePath));

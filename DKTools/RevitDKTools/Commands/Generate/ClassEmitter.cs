@@ -35,7 +35,7 @@ namespace RevitDKTools.Commands.Generate
                     "RevitDKTools.Properties.Resources",
                     Assembly.GetExecutingAssembly());
 
-                _location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                _location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Replace(@"file:\",string.Empty) +
                     resourceManager.GetString("PROXY_DLL_LOCATION");
             }
             else

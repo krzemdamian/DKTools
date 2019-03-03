@@ -48,7 +48,7 @@ namespace RevitDKTools.Commands.Generate
                 defaultScope.SetVariable("_command_data_", commandData);
                 defaultScope.SetVariable("_my_path_", commandPath);
                 defaultScope.SetVariable("_app_path_",
-                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Replace(@"file:\",string.Empty));
                 _lastUsedScope = defaultScope;
 
                 //TODO: add scope from dictionary
@@ -64,7 +64,7 @@ namespace RevitDKTools.Commands.Generate
                 scope.SetVariable("_command_data_", commandData);
                 scope.SetVariable("_my_path_", commandPath);
                 scope.SetVariable("_app_path_",
-                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Replace(@"file:\",string.Empty));
                 CompiledCode compiled = source.Compile();
                 _lastUsedScope = scope;
                 source.Execute(scope);

@@ -35,7 +35,7 @@ namespace RevitDKTools.Commands.Generate
             _dynamicAssemblName = resourceManager.GetString("DYNAMIC_ASSEMBLY_NAME");
 
             _xml = new XmlDocument();
-            _xml.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+            _xml.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase).Replace(@"file:\",string.Empty) +
                       resourceManager.GetString("SCRIPTS_SETTINGS_XML_LOCATION"));
         }
     }
