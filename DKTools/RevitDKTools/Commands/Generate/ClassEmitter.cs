@@ -55,7 +55,7 @@ namespace RevitDKTools.Commands.Generate
                 _asseblyName.Name + ".dll");
         }
 
-        public Type BuildCommandType<T>(string commandTypeName, string scriptPath)
+        public Type BuildPythonCommandType<T>(string commandTypeName, string scriptPath)
             where T : IExternalCommand
         {
             TypeBuilder typeBuilder = _moduleBuilder.DefineType(
@@ -111,7 +111,7 @@ namespace RevitDKTools.Commands.Generate
             typeBuilder.SetCustomAttribute(cinfo,b);
             ConstructorInfo objCtor = typeof(T).GetConstructor(Type.EmptyTypes);
 
-            FieldInfo _visibilityNameRegexField = 
+            FieldInfo visibilityNameRegexField =
                 typeBuilder.BaseType.GetField("_visibilityNameRegex");
 
             ILGenerator ilg = ctorBuilder.GetILGenerator();
@@ -122,7 +122,7 @@ namespace RevitDKTools.Commands.Generate
             ilg.Emit(OpCodes.Nop);
             ilg.Emit(OpCodes.Ldarg_0);
             ilg.Emit(OpCodes.Ldstr, visibilityRegex);
-            ilg.Emit(OpCodes.Stfld, _visibilityNameRegexField);
+            ilg.Emit(OpCodes.Stfld, visibilityNameRegexField);
             ilg.Emit(OpCodes.Ret);
 
             return typeBuilder.CreateType();

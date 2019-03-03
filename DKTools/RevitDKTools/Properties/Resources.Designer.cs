@@ -95,5 +95,14 @@ namespace RevitDKTools.Properties {
                 return ResourceManager.GetString("SCRIPTS_SETTINGS_XML_LOCATION", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \VisibilitySwitcher\CommandSettings.xml.
+        /// </summary>
+        internal static string VISIBILITY_SWITCHER_XML_LOCATION {
+            get {
+                return ResourceManager.GetString("VISIBILITY_SWITCHER_XML_LOCATION", resourceCulture);
+            }
+        }
     }
 }

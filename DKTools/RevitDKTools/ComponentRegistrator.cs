@@ -34,6 +34,9 @@ namespace RevitDKTools
             _container.Register(
                 Component.For<IEmitterSetting, IXmlPythonScriptsSettingsProvider>().
                 ImplementedBy<DefaultSettingsProvider>());
+            _container.Register(
+                Component.For<IXmlVisibilitySwitcherSettingsProvider>().
+                ImplementedBy<XmlVisibilitySwitcherSettingsProvider>());
             _container.Register(Component.For<ISettingsInterpreter>().
                 ImplementedBy<XmlSettingsInterpreter>());
             _container.Register(Component.For<RibbonPanel>().Instance(_commandsRibbonPanel).

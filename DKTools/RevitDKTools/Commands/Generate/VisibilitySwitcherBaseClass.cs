@@ -9,9 +9,9 @@ using RevitDKTools.Common;
 namespace RevitDKTools.Commands.Generate
 {
     [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
-    class VisibilitySwitcherBaseClass : IExternalCommand
+    public class VisibilitySwitcherBaseClass : IExternalCommand
     {
-        private string _visibilityNameRegex;
+        public string _visibilityNameRegex;
         private View _view;
         Document _doc;
         private IList<ParameterFilterElement> _filterElementsAppliedToView;
@@ -20,6 +20,8 @@ namespace RevitDKTools.Commands.Generate
         {
             get { return _filterElementsAppliedToView; }
         }
+
+        public VisibilitySwitcherBaseClass() { }
 
         public Result Execute(ExternalCommandData commandData, ref string message,
             ElementSet elements)

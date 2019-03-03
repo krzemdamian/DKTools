@@ -232,16 +232,20 @@
     <Compile Include="Commands\Generate\IExternalPythonScriptSetting.cs" />
     <Compile Include="Commands\Generate\ISettingsInterpreter.cs" />
     <Compile Include="Commands\Generate\IXmlPythonScriptsSettingsProvider.cs" />
+    <Compile Include="Commands\Generate\IXmlVisibilitySwitcherSettingsProvider.cs" />
     <Compile Include="Commands\Generate\PythonCommandProxyBaseClass.cs" />
     <Compile Include="Commands\Generate\IClassEmitter.cs" />
     <Compile Include="Commands\Generate\IPythonExecutionEnviroment.cs" />
     <Compile Include="Commands\Embed\Receiver\ShowParameterEditor.cs" />
     <Compile Include="Commands\Embed\Receiver\Info.cs" />
+    <Compile Include="Commands\Generate\VisibilitySwitcherCommandSetting.cs" />
     <Compile Include="Commands\Generate\PythonExecutionEnviroment.cs" />
-    <Compile Include="Commands\Generate\CommandSetting.cs" />
+    <Compile Include="Commands\Generate\PythonCommandSetting.cs" />
     <Compile Include="Commands\Generate\VisibilitySwitcherBaseClass.cs" />
+    <Compile Include="Commands\Generate\XmlVisibilitySwitcherSettingsProvider.cs" />
     <Compile Include="Commands\Generate\XmlSettingsInterpreter.cs" />
     <Compile Include="Common\AssemblyResourceUtils.cs" />
+    <Compile Include="Common\LinqExtensions.cs" />
     <Compile Include="Common\RegexUtils.cs" />
     <Compile Include="ComponentRegistrator.cs" />
     <Compile Include="CompositionRoot.cs" />
@@ -273,6 +277,7 @@
     <Compile Include="Tests\UnitTests\DynamicButtonGeneratorTests.cs" />
     <Compile Include="Tests\UnitTests\DynamicClassEmiterTests.cs" />
     <Compile Include="Tests\UnitTests\MyPythonEngineTests.cs" />
+    <Compile Include="Tests\UnitTests\XmlSettingsInterpreterTests.cs" />
     <Compile Include="Tests\UnitTests\VisibilitySwitcherTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -866,6 +871,9 @@
     <Content Include="PythonScripts\Tags\MissingTags.py" />
     <Content Include="PythonScripts\Tags\SelectTags.py" />
     <Content Include="PythonScripts\Test\Info.py" />
+    <Content Include="VisibilitySwitcher\CommandSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
