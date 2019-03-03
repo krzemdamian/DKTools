@@ -2,6 +2,4 @@
 <CommandSetting>
   <VisibilitySwitcher CommandName="Switcher1"
                       VisibilityNameRegex="Filter [0-9]"/>
-  <VisibilitySwitcher CommandName="Switcher2"
-                      VisibilityNameRegex="Filter [0-9]"/>
 </CommandSetting>
