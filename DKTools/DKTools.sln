@@ -5,6 +5,11 @@ VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RevitDKTools", "RevitDKTools\RevitDKTools.csproj", "{2129C1A4-5FBE-42FD-966E-7E2BD60E55BD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1B5C8C5C-8517-4AC1-A8B9-B9C824B44955}"
+	ProjectSection(SolutionItems) = preProject
+		DKTools_v2.addin = DKTools_v2.addin
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

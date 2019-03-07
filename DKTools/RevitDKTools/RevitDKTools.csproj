@@ -282,9 +282,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="DKTools_v2.addin">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <Compile Include="Tests\UnitTests\ParameterEditiorTests.cs" />
     <Compile Include="Tests\UnitTests\TestWindow.xaml.cs">
